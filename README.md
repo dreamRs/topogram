@@ -1,7 +1,6 @@
 
 # topogRam
 
-<span style="color: white">made for dreamRs</span>
 
 Make interactive cartograms with `d3.js` based on this [example](https://github.com/shawnbot/topogram) by Shawn Allen. I also used this [example](http://www.comeetie.fr/galerie/d3-cartogram/) by Etienne Côme.
 
