@@ -8,6 +8,9 @@ For France, boundaries come from [OpenStreetMap](https://www.openstreetmap.org/#
 For USA, boundaries and data come from Shawn Allen's [project](https://github.com/shawnbot/topogram)
 
 
+*Warning :* sizing is a little manual for the moment...
+
+
 ### Installation
 
 To install:
