@@ -19,7 +19,12 @@ data(frRegPop)
 head(frRegPop)
 
 # one var
-topogRam(data = frRegPop, key_var = "P13_POP", geo_lab = "region", colors = brewer.pal("Reds", n = 3))
+topogRam(
+  data = frRegPop,
+  key_var = "P13_POP",
+  geo_lab = "region",
+  colors = brewer.pal("Reds", n = 3)
+)
 
 
 # several vars
