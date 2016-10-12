@@ -12,6 +12,7 @@
 #'
 #' @import htmlwidgets
 #' @import jsonlite
+#' @importFrom stats runif
 #'
 #' @export
 
