@@ -5,8 +5,8 @@
 \title{`d3.js` topogram}
 \usage{
 topogRam(data, key_var, shape = "france-reg", geo_id = "id",
-  geo_lab = NULL, colors, origin = NULL, width = 500, height = 500,
-  elementId = NULL)
+  geo_lab = NULL, colors, origin = NULL, scale = NULL, width = 500,
+  height = 500, elementId = NULL)
 }
 \arguments{
 \item{data}{a \code{data.frame} with at least two variables : the geo id and the value associated}
