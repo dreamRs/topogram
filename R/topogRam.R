@@ -2,12 +2,21 @@
 #'
 #' Continuous area cartograms with `d3.js`
 #'
-#' @param data a \code{data.frame} with at least two variables : the geo id and the value associated
-#' @param key_var a character vector of length one or more, or a named list. The value to represent on the map
-#' @param shape geographical shape to use, should be one of \code{france-reg}, \code{france-reg-2016}, \code{france-dep}, \code{usa-states}
-#' @param geo_id name of variable containing the geographical id
-#' @param geo_lab name of variable containing the geographical label
-#' @param colors a vector of color to use on the map
+#' @param data A \code{data.frame} with at least two variables : the geo id and the value associated
+#' @param key_var A character vector of length one or more, or a named list. The value to represent on the map
+#' @param shape Geographical shape to use, should be one of \code{france-reg}, \code{france-reg-2016}, \code{france-dep}, \code{usa-states}
+#' @param geo_id Name of variable containing the geographical id
+#' @param geo_lab Name of variable containing the geographical label
+#' @param colors A vector of color to use on the map
+#' @param origin For France only, a numeric vector of length two for centering the map
+#' @param scale For France only, a numeric for sizing the map
+#' @param width,height height and width of widget
+#' @param elementId	string id as a valid CSS element id.
+#'
+#' @examples
+#' library("topogRam")
+#' topogRam(data = frRegPop, key_var = "P13_POP", geo_lab = "region")
+#'
 #'
 #'
 #' @import htmlwidgets

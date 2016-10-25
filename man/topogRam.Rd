@@ -9,19 +9,34 @@ topogRam(data, key_var, shape = "france-reg", geo_id = "id",
   height = 500, elementId = NULL)
 }
 \arguments{
-\item{data}{a \code{data.frame} with at least two variables : the geo id and the value associated}
+\item{data}{A \code{data.frame} with at least two variables : the geo id and the value associated}
 
-\item{key_var}{a character vector of length one or more, or a named list. The value to represent on the map}
+\item{key_var}{A character vector of length one or more, or a named list. The value to represent on the map}
 
-\item{shape}{geographical shape to use, should be one of \code{france-reg}, \code{france-reg-2016}, \code{france-dep}, \code{usa-states}}
+\item{shape}{Geographical shape to use, should be one of \code{france-reg}, \code{france-reg-2016}, \code{france-dep}, \code{usa-states}}
 
-\item{geo_id}{name of variable containing the geographical id}
+\item{geo_id}{Name of variable containing the geographical id}
 
-\item{geo_lab}{name of variable containing the geographical label}
+\item{geo_lab}{Name of variable containing the geographical label}
 
-\item{colors}{a vector of color to use on the map}
+\item{colors}{A vector of color to use on the map}
+
+\item{origin}{For France only, a numeric vector of length two for centering the map}
+
+\item{scale}{For France only, a numeric for sizing the map}
+
+\item{width, height}{height and width of widget}
+
+\item{elementId}{string id as a valid CSS element id.}
 }
 \description{
 Continuous area cartograms with `d3.js`
+}
+\examples{
+library("topogRam")
+topogRam(data = frRegPop, key_var = "P13_POP", geo_lab = "region")
+
+
+
 }
 
