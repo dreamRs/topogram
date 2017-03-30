@@ -89,7 +89,7 @@ HTMLWidgets.widget({
         		.attr("class", "state")
         		.attr("id", function(d) {
         		  if (typeof d.properties !== 'undefined') {
-        		    if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016') {
+        		    if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016' || x.shape == 'sweden-1') {
           		    //console.log(d);
           		    return d.properties.id;
           		  } else {
@@ -246,14 +246,17 @@ HTMLWidgets.widget({
         //var shape = HTMLWidgets.getAttachmentUrl('shapes', x.shape);
         //console.log(shape);
 
+        var shapejs;
         if (x.shape == 'usa-states') {
-	        var shapejs = usaStates;
+	        shapejs = usaStates;
 	      } else if (x.shape == 'france-reg') {
-	        var shapejs = frReg;
+	        shapejs = frReg;
 	      } else if (x.shape == 'france-dep') {
-	        var shapejs = frDep;
+	        shapejs = frDep;
 	      } else if (x.shape == 'france-reg-2016') {
-	        var shapejs = frReg2016;
+	        shapejs = frReg2016;
+	      } else if (x.shape == 'sweden-1') {
+	        shapejs = sweden1;
 	      }
 
         //d3.json(shape, function(topo) {
@@ -263,7 +266,7 @@ HTMLWidgets.widget({
           	rawData = data;
           	dataById = d3.nest()
           		.key(function(d) {
-          		  if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016') {
+          		  if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016' || x.shape == 'sweden-1') {
           		    return d.id;
           		  } else {
           		    return d.NAME;

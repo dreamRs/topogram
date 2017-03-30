@@ -43,7 +43,7 @@ topogRam <- function(data, key_var, shape = "france-reg", geo_id = "id", geo_lab
   if (!is.list(key_var) & is.character(key_var))
     key_var <- lapply(key_var, function(x) list(key = x, name = "", format = "", lab = ""))
 
-  shape <- match.arg(arg = shape, choices = c("france-reg", "france-reg-2016", "france-dep", "france-dep-2", "usa-states"))
+  shape <- match.arg(arg = shape, choices = c("france-reg", "france-reg-2016", "france-dep", "france-dep-2", "usa-states", "sweden-1"))
 
   if (is.null(origin))
     origin <- c(8, 45.5)
