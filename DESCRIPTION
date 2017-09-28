@@ -1,6 +1,6 @@
 Package: topogRam
 Title: 'Htmlwidget' for 'Shawn Allen' 'd3.js' topogram
-Version: 0.1.9000
+Version: 0.1.9200
 Authors@R: c(
       person(
         "Victor", "Perrier"

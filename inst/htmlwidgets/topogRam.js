@@ -26,11 +26,20 @@ HTMLWidgets.widget({
 	      console.log(instance.width);
 
 	      // Projection
-	      var projection = d3.geo.albers().origin(x.origin).scale(x.scale);
+	      var projection;
 	      //var projection = d3.geo.albers().center(x.origin).scale(x.scale);
 	      //var projection = d3.geo.albers().origin(x.origin).scale(2500);
 	      if (x.shape == 'usa-states') {
-	        var projection = d3.geo.albersUsa();
+	        projection = d3.geo.albersUsa();
+	      } else if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016' || x.shape == 'sweden-1') {
+	        projection = d3.geo.albers().origin(x.origin).scale(x.scale);
+	      } else if (x.shape == 'nz-reg') {
+	        var width = instance.width, height = instance.height;
+	        var sc = Math.min(width,height) * 0.5;
+          projection = d3.geo.equirectangular()
+              .scale(x.scale)
+              .translate(x.origin);
+              //equirectangular
 	      }
 
 
@@ -89,11 +98,11 @@ HTMLWidgets.widget({
         		.attr("class", "state")
         		.attr("id", function(d) {
         		  if (typeof d.properties !== 'undefined') {
-        		    if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016' || x.shape == 'sweden-1') {
+        		    if (x.shape == 'usa-states') {
           		    //console.log(d);
-          		    return d.properties.id;
-          		  } else {
           		    return d.properties.NAME;
+          		  } else {
+          		    return d.properties.id;
           		  }
         		  } else {
         		    return Math.random()
@@ -257,6 +266,8 @@ HTMLWidgets.widget({
 	        shapejs = frReg2016;
 	      } else if (x.shape == 'sweden-1') {
 	        shapejs = sweden1;
+	      } else if (x.shape == 'nz-reg') {
+	        shapejs = nzReg;
 	      }
 
         //d3.json(shape, function(topo) {
@@ -266,10 +277,10 @@ HTMLWidgets.widget({
           	rawData = data;
           	dataById = d3.nest()
           		.key(function(d) {
-          		  if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016' || x.shape == 'sweden-1') {
-          		    return d.id;
-          		  } else {
+          		  if (x.shape == 'usa-states') {
           		    return d.NAME;
+          		  } else {
+          		    return d.id;
         		    }
           		})
           		.rollup(function(d) { return d[0]; })
