@@ -45,7 +45,7 @@ Or check these examples :
 
 * [USA example](http://rpubs.com/Victorp/topogRam_USA)
 * [France example](http://rpubs.com/Victorp/topogRam_France)
-
+* [Spain example](http://rpubs.com/cyague/spain-cartogram)
 
 
 
