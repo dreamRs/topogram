@@ -45,7 +45,7 @@ topogRam <- function(data, key_var, shape = "france-reg", geo_id = "id", geo_lab
 
   shape <- match.arg(
     arg = shape,
-    choices = c("france-reg", "france-reg-2016", "france-dep", "france-dep-2", "usa-states", "sweden-1", "nz-reg")
+    choices = c("france-reg", "france-reg-2016", "france-dep", "france-dep-2", "usa-states", "sweden-1", "nz-reg","spain-regions")
   )
 
   if (is.null(origin))
