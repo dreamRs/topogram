@@ -17,7 +17,8 @@ Authors@R: c(
         "Shawn", "Allen"
         , role = c("cph")
         , comment = "topogram library in htmlwidgets/lib, https://github.com/shawnbot/topogram"
-      )
+      ),
+      person("Carlos", "Herrera", role = c("ctb"), comment = "Include Spain")
     )
 Description: Construct continuous area cartograms with D3.
 Depends:

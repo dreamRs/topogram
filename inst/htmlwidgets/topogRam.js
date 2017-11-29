@@ -31,7 +31,7 @@ HTMLWidgets.widget({
 	      //var projection = d3.geo.albers().origin(x.origin).scale(2500);
 	      if (x.shape == 'usa-states') {
 	        projection = d3.geo.albersUsa();
-	      } else if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016' || x.shape == 'sweden-1') {
+	      } else if (x.shape == 'france-reg' || x.shape == 'france-dep' || x.shape == 'france-dep-2' || x.shape == 'france-reg-2016' || x.shape == 'sweden-1' || x.shape=='spain-regions') {
 	        projection = d3.geo.albers().origin(x.origin).scale(x.scale);
 	      } else if (x.shape == 'nz-reg') {
 	        var width = instance.width, height = instance.height;
@@ -268,6 +268,8 @@ HTMLWidgets.widget({
 	        shapejs = sweden1;
 	      } else if (x.shape == 'nz-reg') {
 	        shapejs = nzReg;
+	      } else if (x.shape == 'spain-regions') {
+	        shapejs = spReg;
 	      }
 
         //d3.json(shape, function(topo) {
