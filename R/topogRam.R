@@ -1,103 +1,97 @@
-#' `d3.js` topogram
+#' Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology
 #'
 #' Continuous area cartograms with `d3.js`
 #'
-#' @param data A \code{data.frame} with at least two variables : the geo id and the value associated
-#' @param key_var A character vector of length one or more, or a named list. The value to represent on the map
-#' @param shape Geographical shape to use, should be one of \code{france-reg}, \code{france-reg-2016}, \code{france-dep}, \code{usa-states}
-#' @param geo_id Name of variable containing the geographical id
-#' @param geo_lab Name of variable containing the geographical label
-#' @param colors A vector of color to use on the map
-#' @param origin For France only, a numeric vector of length two for centering the map
-#' @param scale For France only, a numeric for sizing the map
-#' @param width,height height and width of widget
-#' @param elementId	string id as a valid CSS element id.
-#'
-#' @examples
-#' library("topogRam")
-#' topogRam(data = frRegPop, key_var = "P13_POP", geo_lab = "region")
-#'
-#'
-#'
-#' @import htmlwidgets
-#' @import jsonlite
-#' @importFrom stats runif
+#' @param shape An \code{sf} object.
+#' @param value Variable name to use to distort topology.
+#' @param tooltip_label Formula for tooltip's label.
+#' @param format_value Character, D3 format to use, see \url{https://github.com/d3/d3-format}.
+#' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
+#' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
+#'  at the cost of performance.
+#' @param width A numeric input in pixels.
+#' @param height A numeric input in pixels.
+#' @param elementId Use an explicit element ID for the widget.
 #'
 #' @export
+#'
+#' @importFrom htmlwidgets createWidget JS sizingPolicy
+#' @importFrom geojsonio geojson_json geojson_list geo2topo
+#' @importFrom stats model.frame
+#' @importFrom utils packageVersion
+#'
+topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
+                     palette = "Viridis", n_iteration = 20,
+                     width = NULL, height = NULL, elementId = NULL) {
 
-topogRam <- function(data, key_var, shape = "france-reg", geo_id = "id", geo_lab = NULL,
-                     colors, origin = NULL, scale = NULL, width = 500, height = 500, elementId = NULL) {
+  if (packageVersion("geojsonio") < "0.6.0.9100")
+    stop("You need geojsonio >= 0.6.0.9100 to use this function.", call. = FALSE)
 
-  if (missing(colors))
-    colors <- c("#FEE5D9", "#FCAE91", "#FB6A4A", "#DE2D26", "#A50F15")
-
-  if (geo_id != "id")
-    names(data)[names(data) == geo_id] <- "id"
-
-  if (!is.null(geo_lab))
-    names(data)[names(data) == geo_lab] <- "NAME"
-
-  if (is.list(key_var) && !is.list(unlist(key_var, recursive = FALSE)))
-    key_var <- list(key_var)
-
-  if (!is.list(key_var) & is.character(key_var))
-    key_var <- lapply(key_var, function(x) list(key = x, name = "", format = "", lab = ""))
-
-  shape <- match.arg(
-    arg = shape,
-    choices = c("france-reg", "france-reg-2016", "france-dep", "france-dep-2", "usa-states", "sweden-1", "nz-reg","spain-regions")
+  palette <- match.arg(
+    arg = palette, choices = c(
+      "Viridis", "Inferno", "Magma", "Plasma", "Warm", "Cool", "CubehelixDefault",
+      "BuGn", "BuPu", "GnBu", "OrRd", "PuBuGn", "PuBu", "PuRd", "RdPu", "YlGnBu",
+      "YlGn", "YlOrBr", "YlOrRd", "Rainbow", "Sinebow",
+      "Reds", "Purples", "Oranges", "Greens", "Blues",
+      "BrBG", "PRGn", "PiYG", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral"
+    )
   )
 
-  if (is.null(origin))
-    origin <- c(8, 45.5)
-  if (is.null(scale))
-    scale <- 2500
+  if (!is.null(tooltip_label)) {
+    tooltip_label <- model.frame(formula = tooltip_label, data = shape)[[1]]
+  } else {
+    if (!is.null(shape$name)) {
+      tooltip_label <- shape$name
+    } else {
+      tooltip_label <- rep_len("", nrow(shape))
+    }
+  }
 
-  # shapejs <- switch(
-  #   shape,
-  #   "france-reg" = 'frReg',
-  #   "france-dep" = 'frDep',
-  #   "france-dep-2" = 'frDep2',
-  #   "france-reg-2016" = 'frReg2016',
-  #   "usa-states" = 'usaStates'
-  # )
+  if (is.null(format_value)) {
+    format_value <- JS("function(n) {return n;}")
+  } else {
+    format_value <- JS(sprintf('d3.format("%s")', format_value))
+  }
 
-  # forward options using x
+  geo_list <- geojson_list(input = shape)
+  for (i in seq_along(geo_list$features)) {
+    geo_list$features[[i]]$id <- i - 1
+    geo_list$features[[i]]$properties$id <- i - 1
+  }
+  geo_json <- geojson_json(input = geo_list)
+
+  # convert to topojson
+  geo_topo <- geo2topo(x = geo_json, object_name = "states", quantization = 1e5)
+
   x = list(
-    data = jsonlite::toJSON(x = data),
-    colors = jsonlite::toJSON(x = colors),
-    fields = jsonlite::toJSON(x = key_var, auto_unbox = TRUE),
-    shape = shape, #shapejs = shapejs,
-    addSelect = jsonlite::toJSON(length(key_var) > 1, auto_unbox = TRUE),
-    idSelect = paste0("selectfield", round(runif(1,1e6,9e6))),
-    origin = jsonlite::toJSON(x = origin), scale = jsonlite::toJSON(x = scale)
+    shape = geo_topo,
+    value = value,
+    palette = paste0("interpolate", palette),
+    range = range(shape[[value]], na.rm = TRUE),
+    tooltip_label = tooltip_label,
+    format_value = format_value,
+    n_iteration = n_iteration
   )
 
-  # shapesDisp <- list(
-  #   "france-reg" = 'france-regions.topojson',
-  #   "france-dep" = 'france-departements.topojson',
-  #   "france-dep-2" = 'france-departements-2.topojson',
-  #   "france-reg-2016" = 'france-regions-2016.topojson',
-  #   "usa-states" = 'usa-states.topojson'
-  # )
-  #
-  # # Dependancies
-  # shapeDep <- htmltools::htmlDependency(
-  #   name = "shapes",
-  #   version = '1.0',
-  #   src = system.file('htmlwidgets/lib/shapes', package = 'topogRam'),
-  #   attachment = shapesDisp[shape]
-  # )
 
   # create widget
-  htmlwidgets::createWidget(
+  createWidget(
     name = 'topogRam',
-    x,
+    x = x,
     width = width,
     height = height,
-    # dependencies = shapeDep,
     package = 'topogRam',
-    elementId = elementId
+    elementId = elementId,
+    sizingPolicy = sizingPolicy(
+      defaultWidth = "95%",
+      viewer.defaultHeight = "100%",
+      viewer.defaultWidth = "100%",
+      knitr.figure = FALSE,
+      viewer.suppress = TRUE,
+      browser.external = TRUE,
+      browser.fill = TRUE,
+      padding = 10
+    )
   )
 }
 
@@ -116,6 +110,8 @@ topogRam <- function(data, key_var, shape = "france-reg", geo_id = "id", geo_lab
 #'   is useful if you want to save an expression in a variable.
 #'
 #' @name topogRam-shiny
+#'
+#' @importFrom htmlwidgets shinyWidgetOutput shinyRenderWidget
 #'
 #' @export
 topogRamOutput <- function(outputId, width = '500px', height = '500px'){

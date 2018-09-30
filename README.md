@@ -1,51 +1,79 @@
-
 # topogRam
 
+> Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology (using [cartogram-chart](https://github.com/vasturiano/cartogram-chart))
 
-Make interactive cartograms with `d3.js` based on this [example](https://github.com/shawnbot/topogram) by Shawn Allen. I also used this [example](http://www.comeetie.fr/galerie/d3-cartogram/) by Etienne Côme.
-
-For France, boundaries come from [OpenStreetMap](https://www.openstreetmap.org/#map=7/47.324/0.406), data from [INSEE](http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=base-cc-evol-struct-pop-2013).
-
-For USA, boundaries and data come from Shawn Allen's [project](https://github.com/shawnbot/topogram)
-
-
-*Warning :* sizing is a little manual for the moment...
+[![Travis build status](https://travis-ci.org/pvictor/topogRam.svg?branch=master)](https://travis-ci.org/pvictor/topogRam)
 
 
 ### Installation
 
-To install:
+Install from GitHub:
 
 ```r
-if (!require("devtools")) install.packages("devtools")
+# with remotes
+remotes::install_github("pvictor/topogRam")
+
+# or with install-github.me service (based on remotes)
+source("https://install-github.me/pvictor/topogRam")
+
+# or with devtools:
 devtools::install_github("pvictor/topogRam")
 ```
 
-### Usage
+### Examples
 
-You can use it like any other htmlwidget :
+Use a {sf} object as input :
 
 ```r
-library("topogRam")
-data(frRegPop)
+library( rnaturalearth )
+library( topogRam )
+
+# sf polygons
+fr_dept <- ne_states(country = "france", returnclass = "sf")
+fr_dept <- fr_dept[fr_dept$type_en %in% "Metropolitan department", ]
+
+# Add a numeric column
+fr_dept$foo <- sample.int(100, nrow(fr_dept))
+
+# Create cartogram
 topogRam(
-  data = frRegPop,
-  key_var = "P13_POP",
-  geo_lab = "region",
-  colors = c("#FEE0D2", "#FC9272", "#DE2D26")
+  shape = fr_dept, 
+  value = "foo"
 )
 ```
 
+![](img/france.png)
 
-### Examples
 
-See the [examples](https://github.com/pvictor/topogRam/tree/master/inst/examples).
+```r
+library( rnaturalearth )
+library( eurostat )
+library( sf )
+library( topogRam )
 
-Or check these examples :
+# Get polygons
+europe <- ne_countries(scale = 50, continent = "europe", returnclass = "sf")
+europe <- europe[europe$name %in% eu_countries$name, ]
+europe <- st_crop(europe, xmin = -20, ymin = 10, xmax = 35, ymax = 75)
+# plot(sf::st_geometry(europe))
 
-* [USA example](http://rpubs.com/Victorp/topogRam_USA)
-* [France example](http://rpubs.com/Victorp/topogRam_France)
-* [Spain example](http://rpubs.com/cyague/spain-cartogram)
+# Add a numeric column 
+europe$foo <- sample.int(100, nrow(europe))
 
+# Create cartogram
+topogRam(
+  shape = europe, 
+  value = "foo", 
+  tooltip_label = ~name, 
+  n_iteration = 10, 
+  palette = "Blues"
+)
+```
+![](img/europe.png)
+
+
+### Note
+
+The use of `cartogram-chart` has involved many changes, so that previous features are no longer available.
 
 

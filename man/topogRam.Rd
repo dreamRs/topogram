@@ -2,41 +2,32 @@
 % Please edit documentation in R/topogRam.R
 \name{topogRam}
 \alias{topogRam}
-\title{`d3.js` topogram}
+\title{Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology}
 \usage{
-topogRam(data, key_var, shape = "france-reg", geo_id = "id",
-  geo_lab = NULL, colors, origin = NULL, scale = NULL, width = 500,
-  height = 500, elementId = NULL)
+topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
+  palette = "Viridis", n_iteration = 20, width = NULL,
+  height = NULL, elementId = NULL)
 }
 \arguments{
-\item{data}{A \code{data.frame} with at least two variables : the geo id and the value associated}
+\item{shape}{An \code{sf} object.}
 
-\item{key_var}{A character vector of length one or more, or a named list. The value to represent on the map}
+\item{value}{Variable name to use to distort topology.}
 
-\item{shape}{Geographical shape to use, should be one of \code{france-reg}, \code{france-reg-2016}, \code{france-dep}, \code{usa-states}}
+\item{tooltip_label}{Formula for tooltip's label.}
 
-\item{geo_id}{Name of variable containing the geographical id}
+\item{format_value}{Character, D3 format to use, see \url{https://github.com/d3/d3-format}.}
 
-\item{geo_lab}{Name of variable containing the geographical label}
+\item{palette}{Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.}
 
-\item{colors}{A vector of color to use on the map}
+\item{n_iteration}{Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
+at the cost of performance.}
 
-\item{origin}{For France only, a numeric vector of length two for centering the map}
+\item{width}{A numeric input in pixels.}
 
-\item{scale}{For France only, a numeric for sizing the map}
+\item{height}{A numeric input in pixels.}
 
-\item{width, height}{height and width of widget}
-
-\item{elementId}{string id as a valid CSS element id.}
+\item{elementId}{Use an explicit element ID for the widget.}
 }
 \description{
 Continuous area cartograms with `d3.js`
 }
-\examples{
-library("topogRam")
-topogRam(data = frRegPop, key_var = "P13_POP", geo_lab = "region")
-
-
-
-}
-
