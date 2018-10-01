@@ -1,6 +1,6 @@
 Package: topogRam
 Title: Create Continuous Cartogram in 'D3.js'
-Version: 0.2.9400
+Version: 0.2.9410
 Authors@R: c(
       person(
         "Victor", "Perrier"

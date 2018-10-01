@@ -6,7 +6,7 @@
 \usage{
 topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
   palette = "Viridis", n_iteration = 20, select_label = NULL,
-  width = NULL, height = NULL, elementId = NULL)
+  layerId = NULL, width = NULL, height = NULL, elementId = NULL)
 }
 \arguments{
 \item{shape}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
@@ -24,6 +24,8 @@ in that case a dropdownmenu will be added to select a variable.}
 at the cost of performance.}
 
 \item{select_label}{Label for the dropdown menu if \code{length(value) > 1}.}
+
+\item{layerId}{A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.}
 
 \item{width}{A numeric input in pixels.}
 

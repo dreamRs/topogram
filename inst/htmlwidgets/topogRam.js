@@ -38,8 +38,19 @@ HTMLWidgets.widget({
             return x.tooltip_label[d.id];
           })
           .valFormatter(x.format_value)
-          .onClick(function(d) {console.info(d)})
+          //.onClick(function(d) {console.info(d)})
           (document.getElementById(el.id));
+
+          if (HTMLWidgets.shinyMode) {
+            carto
+              .onClick(function(d) {
+                if (x.layerId === null) {
+                  Shiny.onInputChange(el.id + '_click', d.properties);
+                } else {
+                  Shiny.onInputChange(el.id + '_click', x.layerId[d.id]);
+                }
+              });
+          }
 
       },
 

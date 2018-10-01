@@ -11,6 +11,7 @@
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
 #' @param select_label Label for the dropdown menu if \code{length(value) > 1}.
+#' @param layerId A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.
 #' @param width A numeric input in pixels.
 #' @param height A numeric input in pixels.
 #' @param elementId Use an explicit element ID for the widget.
@@ -77,7 +78,7 @@
 
 topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
                      palette = "Viridis", n_iteration = 20,
-                     select_label = NULL,
+                     select_label = NULL, layerId = NULL,
                      width = NULL, height = NULL, elementId = NULL) {
 
   check_sf(shape)
@@ -105,6 +106,10 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     } else {
       tooltip_label <- rep_len("", nrow(shape))
     }
+  }
+
+  if (!is.null(layerId)) {
+    layerId <- model.frame(formula = layerId, data = shape)[[1]]
   }
 
   if (is.null(format_value)) {
@@ -143,7 +148,8 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     format_value = format_value,
     n_iteration = n_iteration,
     select_opts = select_opts,
-    select_label = select_label
+    select_label = select_label,
+    layerId = layerId
   )
 
 

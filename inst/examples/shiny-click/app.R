@@ -52,9 +52,9 @@ ui <- fluidPage(
   fluidRow(
     column(
       width = 10, offset = 1,
-      tags$h2("topogRam : update number of iterations with proxy"),
-      sliderInput(inputId = "n_iteration", label = "Number of iteration (more takes longer)", min = 1, max = 60, value = 20),
-      topogRamOutput(outputId = "carto", height = "600px")
+      tags$h2("topogRam : retrieve data by clicking"),
+      topogRamOutput(outputId = "carto", height = "600px"),
+      verbatimTextOutput(outputId = "click")
     )
   )
 )
@@ -68,14 +68,14 @@ server <- function(input, output, session) {
       value = "femmes_0_a_19_ans",
       tooltip_label = ~name,
       n_iteration = 10
+      # , layerId = ~name # use this to only return "name" otherwise all are returned
     )
   })
 
-  # Update
-  observeEvent(input$n_iteration, {
-    topogramProxy(shinyId = "carto") %>%
-      proxy_update_iteration(n_iteration = input$n_iteration)
-  }, ignoreInit = TRUE)
+  # retrieve value clicked
+  output$click <- renderPrint({
+    input$carto_click
+  })
 
 }
 
