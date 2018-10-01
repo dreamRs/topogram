@@ -5,13 +5,14 @@
 \title{Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology}
 \usage{
 topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
-  palette = "Viridis", n_iteration = 20, width = NULL,
-  height = NULL, elementId = NULL)
+  palette = "Viridis", n_iteration = 20, select_label = NULL,
+  width = NULL, height = NULL, elementId = NULL)
 }
 \arguments{
-\item{shape}{An \code{sf} object.}
+\item{shape}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
 
-\item{value}{Variable name to use to distort topology.}
+\item{value}{Variable name to use to distort topology. You can use a character vector or a named list of length > 1,
+in that case a dropdownmenu will be added to select a variable.}
 
 \item{tooltip_label}{Formula for tooltip's label.}
 
@@ -22,6 +23,8 @@ topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
 \item{n_iteration}{Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 at the cost of performance.}
 
+\item{select_label}{Label for the dropdown menu if \code{length(value) > 1}.}
+
 \item{width}{A numeric input in pixels.}
 
 \item{height}{A numeric input in pixels.}
@@ -30,4 +33,57 @@ at the cost of performance.}
 }
 \description{
 Continuous area cartograms with `d3.js`
+}
+\examples{
+
+## Example from sf
+
+library(topogRam)
+library(sf)
+
+demo(nc, ask = FALSE, echo = FALSE)
+
+# Create a cartogram
+topogRam(
+  shape = nc,
+  value = "NWBIR74",
+  tooltip_label = ~NAME
+)
+
+
+# if you pass several values, a dropdown menu
+# will be added on top of the cartogram
+# to interactively select variable to use
+topogRam(
+  shape = nc,
+  value = c("BIR74", "NWBIR74", "BIR79", "NWBIR79"),
+  tooltip_label = ~NAME
+)
+
+
+## World example
+
+library(topogRam)
+library(sf)
+library(rnaturalearth)
+
+wrld <- st_as_sf(countries110)
+# doesn't support missing values !
+wrld <- wrld[!is.na(wrld$pop_est), c("name", "pop_est", "gdp_md_est")]
+# Antarctica is not a whole polygon
+wrld <- wrld[wrld$name != "Antarctica", ]
+
+topogRam(
+  shape = wrld,
+  value = "pop_est",
+  tooltip_label = ~name,
+  n_iteration = 50
+)
+
+topogRam(
+  shape = wrld,
+  value = c("pop_est", "gdp_md_est"),
+  tooltip_label = ~name,
+  n_iteration = 30
+)
 }

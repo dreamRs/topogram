@@ -1,6 +1,6 @@
 HTMLWidgets.widget({
 
-  name: 'topogRam',
+  name: 'topogRamSelect',
 
   type: 'output',
 
@@ -11,6 +11,11 @@ HTMLWidgets.widget({
     return {
 
       renderValue: function(x) {
+
+        // select menu
+        var $selectMenu = $('#' + el.id + '_select');
+        $selectMenu.empty().append(x.select_opts);
+        $selectMenu.parent().parent().find('label[for="' + el.id + '_select' + '"]').text(x.select_label);
 
         projection = d3.geoMercator();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
@@ -40,6 +45,17 @@ HTMLWidgets.widget({
           .valFormatter(x.format_value)
           .onClick(function(d) {console.info(d)})
           (document.getElementById(el.id));
+
+
+          var selectValue = x.value;
+          $('#' + el.id + '_select').on('change', function() {
+            selectValue = this.value;
+            carto
+              .value(function(d) {
+                //console.log(d);
+                return d.properties[selectValue];
+              });
+          });
 
       },
 

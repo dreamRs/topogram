@@ -1,4 +1,6 @@
+^data-raw$
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^img$
+^dev$

@@ -1,6 +1,6 @@
 Package: topogRam
 Title: Create Continuous Cartogram in 'D3.js'
-Version: 0.2.9200
+Version: 0.2.9300
 Authors@R: c(
       person(
         "Victor", "Perrier"
@@ -16,24 +16,28 @@ Authors@R: c(
       person(
         "Shawn", "Allen"
         , role = c("cph")
-        , comment = "topogram library in htmlwidgets/lib, https://github.com/shawnbot/topogram"
+        , comment = "topogram library"
       ),
       person(
         "Vasco", "Asturiano"
         , role = c("cph")
         , comment = "cartogram-chart library in htmlwidgets/lib, https://github.com/vasturiano/cartogram-chart"
       ),
-      person("Carlos", "Herrera", role = c("ctb"), comment = "Include Spain")
+      person("Carlos", "Herrera", role = c("ctb"), comment = "Include Spain (in previous release)")
     )
 Description: Cartogram 'htmlwidget' for visualizing geographical data by distorting a TopoJson topology.
 Depends: R (>= 2.10)
 Imports: 
     htmlwidgets,
-    geojsonio
+    geojsonio,
+    htmltools,
+    shiny,
+    rmarkdown
 Remotes: ropensci/geojsonio
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
 Suggests: 
-    rnaturalearth
+    rnaturalearth,
+    sf

@@ -2,13 +2,15 @@
 #'
 #' Continuous area cartograms with `d3.js`
 #'
-#' @param shape An \code{sf} object.
-#' @param value Variable name to use to distort topology.
+#' @param shape An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).
+#' @param value Variable name to use to distort topology. You can use a character vector or a named list of length > 1,
+#'  in that case a dropdownmenu will be added to select a variable.
 #' @param tooltip_label Formula for tooltip's label.
 #' @param format_value Character, D3 format to use, see \url{https://github.com/d3/d3-format}.
 #' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
+#' @param select_label Label for the dropdown menu if \code{length(value) > 1}.
 #' @param width A numeric input in pixels.
 #' @param height A numeric input in pixels.
 #' @param elementId Use an explicit element ID for the widget.
@@ -20,9 +22,67 @@
 #' @importFrom stats model.frame
 #' @importFrom utils packageVersion
 #'
+#' @examples
+#'
+#' ## Example from sf
+#'
+#' library(topogRam)
+#' library(sf)
+#'
+#' demo(nc, ask = FALSE, echo = FALSE)
+#'
+#' # Create a cartogram
+#' topogRam(
+#'   shape = nc,
+#'   value = "NWBIR74",
+#'   tooltip_label = ~NAME
+#' )
+#'
+#'
+#' # if you pass several values, a dropdown menu
+#' # will be added on top of the cartogram
+#' # to interactively select variable to use
+#' topogRam(
+#'   shape = nc,
+#'   value = c("BIR74", "NWBIR74", "BIR79", "NWBIR79"),
+#'   tooltip_label = ~NAME
+#' )
+#'
+#'
+#' ## World example
+#'
+#' library(topogRam)
+#' library(sf)
+#' library(rnaturalearth)
+#'
+#' wrld <- st_as_sf(countries110)
+#' # doesn't support missing values !
+#' wrld <- wrld[!is.na(wrld$pop_est), c("name", "pop_est", "gdp_md_est")]
+#' # Antarctica is not a whole polygon
+#' wrld <- wrld[wrld$name != "Antarctica", ]
+#'
+#' topogRam(
+#'   shape = wrld,
+#'   value = "pop_est",
+#'   tooltip_label = ~name,
+#'   n_iteration = 50
+#' )
+#'
+#' topogRam(
+#'   shape = wrld,
+#'   value = c("pop_est", "gdp_md_est"),
+#'   tooltip_label = ~name,
+#'   n_iteration = 30
+#' )
+
 topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
                      palette = "Viridis", n_iteration = 20,
+                     select_label = NULL,
                      width = NULL, height = NULL, elementId = NULL) {
+
+  check_sf(shape)
+  check_variables(shape, value)
+  check_na(shape, value)
 
   if (packageVersion("geojsonio") < "0.6.0.9100")
     stop("You need geojsonio >= 0.6.0.9100 to use this function.", call. = FALSE)
@@ -53,6 +113,17 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     format_value <- JS(sprintf('d3.format("%s")', format_value))
   }
 
+  if (length(value) > 1) {
+    select <- TRUE
+    values <- choicesWithNames(value)
+    select_opts <- selectOptions(values)
+    value <- unlist(value, use.names = FALSE)[1]
+    select_label <- if (is.null(select_label)) "" else select_label
+  } else {
+    select_opts <- list()
+    select <- FALSE
+  }
+
   geo_list <- geojson_list(input = shape)
   for (i in seq_along(geo_list$features)) {
     geo_list$features[[i]]$id <- i - 1
@@ -70,17 +141,19 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     range = range(shape[[value]], na.rm = TRUE),
     tooltip_label = tooltip_label,
     format_value = format_value,
-    n_iteration = n_iteration
+    n_iteration = n_iteration,
+    select_opts = select_opts,
+    select_label = select_label
   )
 
 
   # create widget
   createWidget(
-    name = 'topogRam',
+    name = if (select) "topogRamSelect" else "topogRam",
     x = x,
     width = width,
     height = height,
-    package = 'topogRam',
+    package = "topogRam",
     elementId = elementId,
     sizingPolicy = sizingPolicy(
       defaultWidth = "95%",
@@ -92,6 +165,29 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
       browser.fill = TRUE,
       padding = 10
     )
+  )
+}
+
+#' @importFrom shiny selectInput
+#' @importFrom htmltools tags attachDependencies tagAppendAttributes
+#' @importFrom rmarkdown html_dependency_jquery
+topogRamSelect_html <- function(id, style, class, ...) {
+  selectMenu <- selectInput(
+    inputId = paste0(id, "_select"), label = "",
+    choices = NULL, selectize = FALSE, width = "300px"
+  )
+  selectMenu$children[[2]]$children[[1]] <- tagAppendAttributes(
+    tag = selectMenu$children[[2]]$children[[1]],
+    class = "custom-select"
+  )
+  attachDependencies(
+    x = tags$div(
+      selectMenu,
+      tags$div(
+        id = id, class = class, style = style
+      )
+    ),
+    value = html_dependency_jquery()
   )
 }
 
