@@ -1,6 +1,6 @@
 dependencies:
 - name: d3
-  version: 4.11.0
+  version: 5.7.0
   src: htmlwidgets/lib
   script: d3.v5.min.js
 - name: cartogram-chart
