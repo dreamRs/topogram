@@ -191,32 +191,3 @@ topogRamSelect_html <- function(id, style, class, ...) {
   )
 }
 
-#' Shiny bindings for topogRam
-#'
-#' Output and render functions for using topogRam within Shiny
-#' applications and interactive Rmd documents.
-#'
-#' @param outputId output variable to read from
-#' @param width,height Must be a valid CSS unit (like \code{'100\%'},
-#'   \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-#'   string and have \code{'px'} appended.
-#' @param expr An expression that generates a topogRam
-#' @param env The environment in which to evaluate \code{expr}.
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
-#'   is useful if you want to save an expression in a variable.
-#'
-#' @name topogRam-shiny
-#'
-#' @importFrom htmlwidgets shinyWidgetOutput shinyRenderWidget
-#'
-#' @export
-topogRamOutput <- function(outputId, width = '500px', height = '500px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'topogRam', width, height, package = 'topogRam')
-}
-
-#' @rdname topogRam-shiny
-#' @export
-renderTopogRam <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, topogRamOutput, env, quoted = TRUE)
-}

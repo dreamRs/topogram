@@ -43,6 +43,9 @@ HTMLWidgets.widget({
 
       },
 
+      getChart: function(){
+        return carto;
+      },
 
       resize: function(width, height) {
         projection.fitSize([width, height], statesbbox);
@@ -68,3 +71,32 @@ function get_widget(id){
 
   return(widgetObj);
 }
+
+
+
+
+
+if (HTMLWidgets.shinyMode) {
+  // Update value used
+  Shiny.addCustomMessageHandler('update-topogram-value',
+    function(params) {
+      var carto = get_widget(params.id);
+      if (typeof carto != 'undefined') {
+        carto
+          .value(function(d) {
+            return d.properties[params.data.new_value];
+          });
+      }
+  });
+  // Update number of iteration
+  Shiny.addCustomMessageHandler('update-topogram-iteration',
+    function(params) {
+      var carto = get_widget(params.id);
+      if (typeof carto != 'undefined') {
+        carto.iterations(params.data.n_iteration);
+      }
+  });
+}
+
+
+
