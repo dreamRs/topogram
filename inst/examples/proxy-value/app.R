@@ -73,6 +73,10 @@ server <- function(input, output, session) {
       value = "femmes_0_a_19_ans",
       tooltip_label = ~name,
       n_iteration = 10
+    ) %>% add_labs(
+      title = "My cartogram",
+      subtitle = "A subtitle",
+      caption = "Data from {sf}"
     )
   })
 

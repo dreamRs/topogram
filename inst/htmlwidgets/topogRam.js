@@ -8,9 +8,36 @@ HTMLWidgets.widget({
 
     var carto, statesbbox, projection;
 
+    function removeElement(elementId) {
+      var element = document.getElementById(elementId);
+      element.parentNode.removeChild(element);
+    }
+
     return {
 
       renderValue: function(x) {
+
+        if (!x.labs) {
+          removeElement(el.id + '-title');
+          removeElement(el.id + '-subtitle');
+          removeElement(el.id + '-caption');
+        } else {
+          if (x.labsOpts.title !== null) {
+            document.getElementById(el.id + '-title').innerHTML = x.labsOpts.title;
+          } else {
+            removeElement(el.id + '-title');
+          }
+          if (x.labsOpts.subtitle !== null) {
+            document.getElementById(el.id + '-subtitle').innerHTML = x.labsOpts.subtitle;
+          } else {
+            removeElement(el.id + '-subtitle');
+          }
+          if (x.labsOpts.caption !== null) {
+            document.getElementById(el.id + '-caption').innerHTML = x.labsOpts.caption;
+          } else {
+            removeElement(el.id + '-caption');
+          }
+        }
 
         projection = d3[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);

@@ -160,7 +160,9 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     select_opts = select_opts,
     select_label = select_label,
     layerId = layerId,
-    projection = paste0("geo", projection)
+    projection = paste0("geo", projection),
+    labs = FALSE,
+    labsOpts = list()
   )
 
 
@@ -182,6 +184,19 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
       browser.fill = TRUE,
       padding = 10
     )
+  )
+}
+
+
+topogRam_html <- function(id, style, class, ...) {
+  tags$div(
+    tags$div(
+      style = "position: absolute;",
+      tags$h2(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold;"),
+      tags$h5(id = paste0(id, "-subtitle"), class = "topogram-subtitle")
+    ),
+    tags$div(id = id, class = class, style = style),
+    tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "position: absolute; bottom: 0; right: 15px;")
   )
 }
 
