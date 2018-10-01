@@ -5,8 +5,9 @@
 \title{Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology}
 \usage{
 topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
-  palette = "Viridis", n_iteration = 20, select_label = NULL,
-  layerId = NULL, width = NULL, height = NULL, elementId = NULL)
+  palette = "Viridis", n_iteration = 20, projection = "Mercator",
+  select_label = NULL, layerId = NULL, width = NULL, height = NULL,
+  elementId = NULL)
 }
 \arguments{
 \item{shape}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
@@ -22,6 +23,10 @@ in that case a dropdownmenu will be added to select a variable.}
 
 \item{n_iteration}{Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 at the cost of performance.}
+
+\item{projection}{D3 projection to use among : \code{"Mercator"}, \code{"Albers"}, \code{"ConicEqualArea"}, \code{"NaturalEarth1"},
+\code{"Eckert1"}, \code{"Eckert2"}, \code{"Eckert3"}, \code{"Eckert4"}, \code{"Eckert5"}, \code{"Eckert6"}, \code{"Wagner4"},
+\code{"Wagner6"}, \code{"Wagner7"}, \code{"Armadillo"}.}
 
 \item{select_label}{Label for the dropdown menu if \code{length(value) > 1}.}
 

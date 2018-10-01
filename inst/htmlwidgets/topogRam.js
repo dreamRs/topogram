@@ -12,7 +12,7 @@ HTMLWidgets.widget({
 
       renderValue: function(x) {
 
-        projection = d3.geoMercator();
+        projection = d3[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
         projection.fitSize([width, height], statesbbox);
 

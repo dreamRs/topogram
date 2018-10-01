@@ -17,7 +17,7 @@ HTMLWidgets.widget({
         $selectMenu.empty().append(x.select_opts);
         $selectMenu.parent().parent().find('label[for="' + el.id + '_select' + '"]').text(x.select_label);
 
-        projection = d3.geoMercator();
+        projection = d3[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
         projection.fitSize([width, height], statesbbox);
 
@@ -43,9 +43,20 @@ HTMLWidgets.widget({
             return x.tooltip_label[d.id];
           })
           .valFormatter(x.format_value)
-          .onClick(function(d) {console.info(d)})
+          //.onClick(function(d) {console.info(d)})
           (document.getElementById(el.id));
 
+
+          if (HTMLWidgets.shinyMode) {
+            carto
+              .onClick(function(d) {
+                if (x.layerId === null) {
+                  Shiny.onInputChange(el.id + '_click', d.properties);
+                } else {
+                  Shiny.onInputChange(el.id + '_click', x.layerId[d.id]);
+                }
+              });
+          }
 
           var selectValue = x.value;
           $('#' + el.id + '_select').on('change', function() {

@@ -10,6 +10,9 @@
 #' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
+#' @param projection D3 projection to use among : \code{"Mercator"}, \code{"Albers"}, \code{"ConicEqualArea"}, \code{"NaturalEarth1"},
+#'  \code{"Eckert1"}, \code{"Eckert2"}, \code{"Eckert3"}, \code{"Eckert4"}, \code{"Eckert5"}, \code{"Eckert6"}, \code{"Wagner4"},
+#'  \code{"Wagner6"}, \code{"Wagner7"}, \code{"Armadillo"}.
 #' @param select_label Label for the dropdown menu if \code{length(value) > 1}.
 #' @param layerId A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.
 #' @param width A numeric input in pixels.
@@ -78,6 +81,7 @@
 
 topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
                      palette = "Viridis", n_iteration = 20,
+                     projection = "Mercator",
                      select_label = NULL, layerId = NULL,
                      width = NULL, height = NULL, elementId = NULL) {
 
@@ -88,6 +92,12 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
   if (packageVersion("geojsonio") < "0.6.0.9100")
     stop("You need geojsonio >= 0.6.0.9100 to use this function.", call. = FALSE)
 
+  projection <- match.arg(
+    arg = projection,
+    choices = c("Mercator", "Albers", "ConicEqualArea", "NaturalEarth1",
+                "Eckert1", "Eckert2", "Eckert3", "Eckert4", "Eckert5", "Eckert6",
+                "Wagner4", "Wagner6", "Wagner7", "Armadillo")
+  )
   palette <- match.arg(
     arg = palette, choices = c(
       "Viridis", "Inferno", "Magma", "Plasma", "Warm", "Cool", "CubehelixDefault",
@@ -149,7 +159,8 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     n_iteration = n_iteration,
     select_opts = select_opts,
     select_label = select_label,
-    layerId = layerId
+    layerId = layerId,
+    projection = paste0("geo", projection)
   )
 
 

@@ -11,3 +11,7 @@ dependencies:
   version: 3.0.2
   src: htmlwidgets/lib
   script: topojson.min.js
+- name: d3-geo-projection
+  version: 2.4.1
+  src: htmlwidgets/lib
+  script: d3-geo-projection.v2.min.js
