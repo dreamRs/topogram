@@ -1,6 +1,6 @@
 Package: topogRam
 Title: Create Continuous Cartogram in 'D3.js'
-Version: 0.2.9440
+Version: 0.2.9450
 Authors@R: c(
       person(
         "Victor", "Perrier"
@@ -33,12 +33,13 @@ Imports:
     htmltools,
     shiny,
     rmarkdown,
-    jsonlite
+    jsonlite,
+    magrittr
+Suggests: 
+    rnaturalearth,
+    sf
 Remotes: ropensci/geojsonio
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
-Suggests: 
-    rnaturalearth,
-    sf
