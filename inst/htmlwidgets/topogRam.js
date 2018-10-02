@@ -51,7 +51,6 @@ HTMLWidgets.widget({
 
         projection = d3[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
-        //projection.fitSize([topoWidth, topoHeight], statesbbox);
         projection.fitExtent([[40, 40], [topoWidth, topoHeight]], statesbbox);
 
         var colorScale = d3.scaleSequential(d3[palette]).domain(x.range);
@@ -76,6 +75,7 @@ HTMLWidgets.widget({
             return tooltip_label[d.id];
           })
           .valFormatter(format_value)
+          .units(x.unit_value)
           //.onClick(function(d) {console.info(d)})
           (document.getElementById(el.id + '-topogram'));
 
@@ -103,7 +103,6 @@ HTMLWidgets.widget({
       resize: function(width, height) {
         topoWidth = width - width*0;
         topoHeight = height - height*0;
-        //projection.fitSize([topoWidth, topoHeight], statesbbox);
         projection.fitExtent([[40, 40], [topoWidth, topoHeight]], statesbbox);
         carto.width(topoWidth).height(topoHeight).projection(projection);
       }

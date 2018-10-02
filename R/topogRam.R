@@ -7,6 +7,7 @@
 #'  in that case a dropdownmenu will be added to select a variable.
 #' @param tooltip_label Formula for tooltip's label.
 #' @param format_value Character, D3 format to use, see \url{https://github.com/d3/d3-format}.
+#' @param unit_value Character, the value unit, to include in the tooltip.
 #' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
@@ -80,6 +81,7 @@
 #' )
 
 topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
+                     unit_value = "",
                      palette = "Viridis", n_iteration = 20,
                      projection = "Mercator",
                      select_label = NULL, layerId = NULL,
@@ -156,6 +158,7 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     range = range(shape[[value]], na.rm = TRUE),
     tooltip_label = tooltip_label,
     format_value = format_value,
+    unit_value = unit_value,
     n_iteration = n_iteration,
     select_opts = select_opts,
     select_label = select_label,

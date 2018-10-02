@@ -74,6 +74,7 @@ check_variables <- function(data, vars) {
   }
 }
 check_na <- function(data, vars) {
+  vars <- unlist(vars, use.names = FALSE, recursive = TRUE)
   if (anyNA(data[, vars])) {
     stop("topogRam does not support missing values.", call. = FALSE)
   }

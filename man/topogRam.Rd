@@ -5,9 +5,9 @@
 \title{Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology}
 \usage{
 topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
-  palette = "Viridis", n_iteration = 20, projection = "Mercator",
-  select_label = NULL, layerId = NULL, width = NULL, height = NULL,
-  elementId = NULL)
+  unit_value = "", palette = "Viridis", n_iteration = 20,
+  projection = "Mercator", select_label = NULL, layerId = NULL,
+  width = NULL, height = NULL, elementId = NULL)
 }
 \arguments{
 \item{shape}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
@@ -18,6 +18,8 @@ in that case a dropdownmenu will be added to select a variable.}
 \item{tooltip_label}{Formula for tooltip's label.}
 
 \item{format_value}{Character, D3 format to use, see \url{https://github.com/d3/d3-format}.}
+
+\item{unit_value}{Character, the value unit, to include in the tooltip.}
 
 \item{palette}{Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.}
 
