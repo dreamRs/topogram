@@ -8,6 +8,8 @@ HTMLWidgets.widget({
 
     var carto, statesbbox, projection, topoWidth, topoHeight, palette, format_value, tooltip_label;
 
+    var padding = 30;
+
     function removeElement(elementId) {
       var element = document.getElementById(elementId);
       element.parentNode.removeChild(element);
@@ -16,6 +18,10 @@ HTMLWidgets.widget({
     return {
 
       renderValue: function(x) {
+
+        if (x.d3_locale) {
+          d3.formatDefaultLocale(x.d3_locale);
+        }
 
         // Color palette
         palette = x.palette;
@@ -46,18 +52,18 @@ HTMLWidgets.widget({
           }
         }
 
-        topoWidth = width - width*0;
-        topoHeight = height - height*0;
+        topoWidth = width - padding;
+        topoHeight = height - padding;
 
         projection = d3[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
-        projection.fitExtent([[40, 40], [topoWidth, topoHeight]], statesbbox);
+        projection.fitExtent([[padding, padding], [topoWidth, topoHeight]], statesbbox);
 
         var colorScale = d3.scaleSequential(d3[palette]).domain(x.range);
 
         carto = Cartogram()
-          .width(topoWidth)
-          .height(topoHeight)
+          .width(width)
+          .height(height)
           .topoJson(x.shape)
           .topoObjectName('states')
           .projection(projection)
@@ -101,10 +107,10 @@ HTMLWidgets.widget({
       },
 
       resize: function(width, height) {
-        topoWidth = width - width*0;
-        topoHeight = height - height*0;
-        projection.fitExtent([[40, 40], [topoWidth, topoHeight]], statesbbox);
-        carto.width(topoWidth).height(topoHeight).projection(projection);
+        topoWidth = width - padding;
+        topoHeight = height - padding;
+        projection.fitExtent([[padding, padding], [topoWidth, topoHeight]], statesbbox);
+        carto.width(width).height(height).projection(projection);
       }
 
     };

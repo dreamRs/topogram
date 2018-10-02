@@ -6,7 +6,8 @@
 #' @param value Variable name to use to distort topology. You can use a character vector or a named list of length > 1,
 #'  in that case a dropdownmenu will be added to select a variable.
 #' @param tooltip_label Formula for tooltip's label.
-#' @param format_value Character, D3 format to use, see \url{https://github.com/d3/d3-format}.
+#' @param format_value A string passed to \code{d3.format},
+#'  see \url{https://github.com/d3/d3-format}.
 #' @param unit_value Character, the value unit, to include in the tooltip.
 #' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
@@ -14,6 +15,8 @@
 #' @param projection D3 projection to use among : \code{"Mercator"}, \code{"Albers"}, \code{"ConicEqualArea"}, \code{"NaturalEarth1"},
 #'  \code{"Eckert1"}, \code{"Eckert2"}, \code{"Eckert3"}, \code{"Eckert4"}, \code{"Eckert5"}, \code{"Eckert6"}, \code{"Wagner4"},
 #'  \code{"Wagner6"}, \code{"Wagner7"}, \code{"Armadillo"}.
+#' @param d3_locale Locale for \code{d3_format}, for exemple \code{"fr-FR"} for french,
+#'  see possible values here \url{https://github.com/d3/d3-format/tree/master/locale}.
 #' @param select_label Label for the dropdown menu if \code{length(value) > 1}.
 #' @param layerId A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.
 #' @param width A numeric input in pixels.
@@ -80,10 +83,10 @@
 #'   n_iteration = 30
 #' )
 
-topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
-                     unit_value = "",
+topogRam <- function(shape, value, tooltip_label = NULL,
+                     format_value = NULL, unit_value = "",
                      palette = "Viridis", n_iteration = 20,
-                     projection = "Mercator",
+                     projection = "Mercator", d3_locale = NULL,
                      select_label = NULL, layerId = NULL,
                      width = NULL, height = NULL, elementId = NULL) {
 
@@ -124,10 +127,23 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     layerId <- model.frame(formula = layerId, data = shape)[[1]]
   }
 
+  if (!is.null(d3_locale)) {
+    check_locale(d3_locale)
+    path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogRam")
+    if (path != "") {
+      d3_locale <- jsonlite::fromJSON(txt = path)
+    }
+  }
+
   if (is.null(format_value)) {
     format_value <- JS("function(n) {return n;}")
   } else {
-    format_value <- JS(sprintf('d3.format("%s")', format_value))
+    if (is.null(d3_locale)) {
+      format_value <- sprintf('d3.format("%s")', format_value)
+    } else {
+      format_value <- paste0('d3.formatLocale(', jsonlite::toJSON(x = d3_locale), sprintf(').format("%s")', format_value))
+    }
+    format_value <- JS(format_value)
   }
 
   if (length(value) > 1) {
@@ -165,7 +181,8 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     layerId = layerId,
     projection = paste0("geo", projection),
     labs = FALSE,
-    labsOpts = list()
+    labsOpts = list(),
+    d3_locale = d3_locale
   )
 
 

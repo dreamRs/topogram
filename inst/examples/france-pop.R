@@ -48,7 +48,9 @@ topogRam(
   shape = fr_data,
   value = "femmes_20_a_39_ans",
   tooltip_label = ~name,
-  n_iteration = 10
+  n_iteration = 10,
+  format_value = ",",
+  d3_locale = "fr-FR"
 )
 
 

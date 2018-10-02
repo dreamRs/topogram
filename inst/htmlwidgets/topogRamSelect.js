@@ -8,6 +8,8 @@ HTMLWidgets.widget({
 
     var carto, statesbbox, projection, topoWidth, topoHeight;
 
+    var padding = 30;
+
     return {
 
       renderValue: function(x) {
@@ -17,12 +19,12 @@ HTMLWidgets.widget({
         $selectMenu.empty().append(x.select_opts);
         $selectMenu.parent().parent().find('label[for="' + el.id + '_select' + '"]').text(x.select_label);
 
-        topoWidth = width - width*0;
-        topoHeight = height - height*0;
+        topoWidth = width - padding;
+        topoHeight = height - padding;
 
         projection = d3[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
-        projection.fitExtent([[40, 40], [topoWidth, topoHeight]], statesbbox);
+        projection.fitExtent([[padding, padding], [topoWidth, topoHeight]], statesbbox);
 
         var colorScale = d3.scaleSequential(d3[x.palette]).domain(x.range);
 
@@ -76,10 +78,10 @@ HTMLWidgets.widget({
 
 
       resize: function(width, height) {
-        topoWidth = width - width*0;
-        topoHeight = height - height*0;
-        projection.fitExtent([[40, 40], [topoWidth, topoHeight]], statesbbox);
-        carto.width(topoWidth).height(topoHeight).projection(projection);
+        topoWidth = width - padding;
+        topoHeight = height - padding;
+        projection.fitExtent([[padding, padding], [topoWidth, topoHeight]], statesbbox);
+        carto.width(width).height(height).projection(projection);
       }
 
     };

@@ -82,6 +82,14 @@ check_na <- function(data, vars) {
 
 
 
-
-
+check_locale <- function(x) {
+  json <- list.files(system.file("htmlwidgets/locale", package = "topogRam"))
+  njson <- gsub("\\.json", "", json)
+  if (!x %in% njson) {
+    stop(paste(
+      "Invalid D3 locale, must be one of:",
+      paste(njson, collapse = ", ")
+    ), call. = FALSE)
+  }
+}
 

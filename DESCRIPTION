@@ -32,7 +32,8 @@ Imports:
     geojsonio,
     htmltools,
     shiny,
-    rmarkdown
+    rmarkdown,
+    jsonlite
 Remotes: ropensci/geojsonio
 License: GPL-3 | file LICENSE
 Encoding: UTF-8

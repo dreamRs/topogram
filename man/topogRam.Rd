@@ -6,8 +6,8 @@
 \usage{
 topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
   unit_value = "", palette = "Viridis", n_iteration = 20,
-  projection = "Mercator", select_label = NULL, layerId = NULL,
-  width = NULL, height = NULL, elementId = NULL)
+  projection = "Mercator", d3_locale = NULL, select_label = NULL,
+  layerId = NULL, width = NULL, height = NULL, elementId = NULL)
 }
 \arguments{
 \item{shape}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
@@ -17,7 +17,8 @@ in that case a dropdownmenu will be added to select a variable.}
 
 \item{tooltip_label}{Formula for tooltip's label.}
 
-\item{format_value}{Character, D3 format to use, see \url{https://github.com/d3/d3-format}.}
+\item{format_value}{A string passed to \code{d3.format},
+see \url{https://github.com/d3/d3-format}.}
 
 \item{unit_value}{Character, the value unit, to include in the tooltip.}
 
@@ -29,6 +30,9 @@ at the cost of performance.}
 \item{projection}{D3 projection to use among : \code{"Mercator"}, \code{"Albers"}, \code{"ConicEqualArea"}, \code{"NaturalEarth1"},
 \code{"Eckert1"}, \code{"Eckert2"}, \code{"Eckert3"}, \code{"Eckert4"}, \code{"Eckert5"}, \code{"Eckert6"}, \code{"Wagner4"},
 \code{"Wagner6"}, \code{"Wagner7"}, \code{"Armadillo"}.}
+
+\item{d3_locale}{Locale for \code{d3_format}, for exemple \code{"fr-FR"} for french,
+see possible values here \url{https://github.com/d3/d3-format/tree/master/locale}.}
 
 \item{select_label}{Label for the dropdown menu if \code{length(value) > 1}.}
 
