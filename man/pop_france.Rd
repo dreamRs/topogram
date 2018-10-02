@@ -24,7 +24,7 @@
   \item{\code{femmes_20_a_39_ans}}{Total population of women aged 20-39 years}
   \item{\code{femmes_40_a_59_ans}}{Total population of women aged 40-59 years}
   \item{\code{femmes_60_a_74_ans}}{Total population of women aged 60-74 years}
-  \item{\code{femmes_75_ans_et_plus}}{Total population of women aged 75 and more}
+  \item{\code{femmes_75_ans_et_plus}}{Total population of women aged 75 and over}
   \item{\code{femmes_total}}{Total population of women}
 }}
 \source{

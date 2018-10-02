@@ -22,23 +22,8 @@ library( dplyr )
 
 # Data --------------------------------------------------------------------
 
-# population data
-data("pop_france")
-
-
-# map data
-fr_dept <- ne_states(country = "france", returnclass = "sf")
-fr_dept <- fr_dept[fr_dept$type_en %in% "Metropolitan department", ]
-
-
-
-# join data
-fr_data <- left_join(
-  x = fr_dept %>% select(name, iso_3166_2) %>% mutate(code_dep = gsub("FR-", "", iso_3166_2)),
-  y = pop_france,
-  by = c("code_dep" = "departements_code")
-)
-
+# Paris population data
+data("paris")
 
 
 
@@ -53,12 +38,7 @@ ui <- fluidPage(
     column(
       width = 10, offset = 1,
       tags$h2("topogRam : update value with proxy"),
-      radioButtons(
-        inputId = "new_value",
-        label = "Variable to use:",
-        choices = grep(pattern = "femmes", x = names(fr_data), value = TRUE),
-        inline = TRUE
-      ),
+      actionButton(inputId = "update", label = "Update random data"),
       topogRamOutput(outputId = "carto", height = "600px")
     )
   )
@@ -69,17 +49,17 @@ server <- function(input, output, session) {
   # Initialize
   output$carto <- renderTopogRam({
     topogRam(
-      shape = fr_data,
-      value = "femmes_0_a_19_ans",
-      tooltip_label = ~name,
-      n_iteration = 10
+      shape = paris,
+      value = "AGE_00",
+      tooltip_label = ~paste0(LIB, " (", NAME, ")"),
+      n_iteration = 1
     )
   })
 
   # Update
-  observeEvent(input$new_value, {
+  observeEvent(input$update, {
     topogramProxy(shinyId = "carto") %>%
-      proxy_update_value(new_value = input$new_value)
+      proxy_update_value(new_value = floor(runif(20, min = 1000, max = 1000000)))
   }, ignoreInit = TRUE)
 
 }

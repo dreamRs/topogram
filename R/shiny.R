@@ -98,8 +98,14 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #'
 #' }
 proxy_update_value <- function(proxy, new_value) {
-  stopifnot(is.character(new_value) && length(new_value) == 1)
-  .topogram_proxy(proxy, "value", list(new_value = new_value))
+  if (is.character(new_value) && length(new_value) == 1) {
+    .topogram_proxy(proxy, "value",  l = list(new_value = new_value))
+  } else if (is.vector(new_value) && is.numeric(new_value)) {
+    .topogram_proxy(proxy, "vector",  l = list(new_value = new_value, range = range(new_value, na.rm = TRUE)))
+  } else {
+    stop("'new_value' must a character of length 1 or a numeric vector.", call. = FALSE)
+  }
+
 }
 
 

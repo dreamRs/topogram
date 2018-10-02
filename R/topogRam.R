@@ -176,6 +176,7 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
     elementId = elementId,
     sizingPolicy = sizingPolicy(
       defaultWidth = "95%",
+      defaultHeight = "90%",
       viewer.defaultHeight = "100%",
       viewer.defaultWidth = "100%",
       knitr.figure = FALSE,
@@ -190,15 +191,18 @@ topogRam <- function(shape, value, tooltip_label = NULL, format_value = NULL,
 
 topogRam_html <- function(id, style, class, ...) {
   tags$div(
-    tags$div(
-      style = "position: absolute;",
-      tags$h2(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold;"),
-      tags$h5(id = paste0(id, "-subtitle"), class = "topogram-subtitle")
-    ),
-    tags$div(id = id, class = class, style = style),
+    id = id, class = class, style = style,
+    # tags$div(
+      # style = "position: absolute;",
+      tags$div(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold; font-size: 160%;"),
+      tags$div(id = paste0(id, "-subtitle"), class = "topogram-subtitle", style = "font-size: 110%;"),
+    # ),
+    tags$div(id = paste0(id, "-topogram")),
     tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "position: absolute; bottom: 0; right: 15px;")
   )
 }
+
+# , style = "margin-top: 20px; margin-bottom: 10px;"
 
 #' @importFrom shiny selectInput
 #' @importFrom htmltools tags attachDependencies tagAppendAttributes
