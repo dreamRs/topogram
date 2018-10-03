@@ -229,6 +229,8 @@ if (HTMLWidgets.shinyMode) {
       var carto = get_widget(params.id);
       if (typeof carto != 'undefined') {
         var paramsTopo = get_params(params.id);
+        var lgdTopo = get_legend(params.id);
+        var svg = get_svg(params.id);
         var pal = paramsTopo.palette;
         var fval = paramsTopo.format_value;
         var tlab = paramsTopo.tooltip_label;
@@ -247,6 +249,9 @@ if (HTMLWidgets.shinyMode) {
         carto
           .color(function(d) {
             var colorScale = d3.scaleSequential(d3[pal]).domain([Math.min.apply(null, values), Math.max.apply(null, values)]);
+            lgdTopo.scale(colorScale);
+            svg.select(".legendSequential")
+               .call(lgdTopo);
             return colorScale(d.properties[params.data.new_value]);
           });
       }

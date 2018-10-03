@@ -72,7 +72,14 @@ server <- function(input, output, session) {
       shape = fr_data,
       value = "femmes_0_a_19_ans",
       tooltip_label = ~name,
-      n_iteration = 10
+      n_iteration = 10,
+      format_value = ",",
+      d3_locale = "fr-FR"
+    )%>% add_legend(
+      title = "Population",
+      title_width = 200,
+      orientation = "vertical",
+      label_format = ",.2r" #.2s
     )
   })
 
