@@ -182,7 +182,9 @@ topogRam <- function(shape, value, tooltip_label = NULL,
     projection = paste0("geo", projection),
     labs = FALSE,
     labsOpts = list(),
-    d3_locale = d3_locale
+    d3_locale = d3_locale,
+    legend = FALSE,
+    legendOpts = list()
   )
 
 
@@ -196,7 +198,7 @@ topogRam <- function(shape, value, tooltip_label = NULL,
     elementId = elementId,
     sizingPolicy = sizingPolicy(
       defaultWidth = "95%",
-      defaultHeight = "90%",
+      # defaultHeight = "90%",
       viewer.defaultHeight = "100%",
       viewer.defaultWidth = "100%",
       knitr.figure = FALSE,

@@ -60,6 +60,8 @@ topogRam(
   value = names(fr_data)[5:22],
   tooltip_label = ~name,
   n_iteration = 10,
-  select_label = NULL
+  select_label = NULL,
+  format_value = ",",
+  d3_locale = "fr-FR"
 )
 

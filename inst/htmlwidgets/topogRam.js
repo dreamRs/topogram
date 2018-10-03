@@ -96,6 +96,30 @@ HTMLWidgets.widget({
               });
           }
 
+
+          if (x.legend) {
+            var svg = d3.select("svg");
+
+            svg.append("g")
+              .attr("class", "legendSequential")
+              .attr("transform", "translate(20,40)");
+
+            var legendSequential = d3.legendColor()
+                .title(x.legendOpts.title)
+                .titleWidth(x.legendOpts.title_width)
+                .labelFormat(d3.format(x.legendOpts.label_format))
+                .labels(x.legendOpts.labels)
+                .shapeWidth(x.legendOpts.cells_width)
+                .shapeHeight(x.legendOpts.cells_height)
+                .shapePadding(x.legendOpts.cells_padding)
+                .cells(x.legendOpts.n_cells)
+                .orient(x.legendOpts.orientation)
+                .scale(colorScale);
+
+            svg.select(".legendSequential")
+              .call(legendSequential);
+          }
+
       },
 
       getChart: function(){
