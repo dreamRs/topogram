@@ -249,9 +249,14 @@ if (HTMLWidgets.shinyMode) {
         carto
           .color(function(d) {
             var colorScale = d3.scaleSequential(d3[pal]).domain([Math.min.apply(null, values), Math.max.apply(null, values)]);
-            lgdTopo.scale(colorScale);
-            svg.select(".legendSequential")
-               .call(lgdTopo);
+            if (typeof lgdTopo !== 'undefined') {
+              lgdTopo.scale(colorScale);
+              if (params.data.hasOwnProperty('legend_title')) {
+                lgdTopo.title(params.data.legend_title);
+              }
+              svg.select(".legendSequential")
+                 .call(lgdTopo);
+            }
             return colorScale(d.properties[params.data.new_value]);
           });
       }
@@ -268,9 +273,14 @@ if (HTMLWidgets.shinyMode) {
         var fval = paramsTopo.format_value;
         var tlab = paramsTopo.tooltip_label;
         var colorScale = d3.scaleSequential(d3[pal]).domain(params.data.range);
-        lgdTopo.scale(colorScale);
-        svg.select(".legendSequential")
-           .call(lgdTopo);
+        if (typeof lgdTopo !== 'undefined') {
+          lgdTopo.scale(colorScale);
+          if (params.data.hasOwnProperty('legend_title')) {
+            lgdTopo.title(params.data.legend_title);
+          }
+          svg.select(".legendSequential")
+             .call(lgdTopo);
+        }
         carto
           .color(function(d) {
             return colorScale(params.data.new_value[d.id]);
@@ -288,7 +298,7 @@ if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler('update-topogram-iteration',
     function(params) {
       var carto = get_widget(params.id);
-      if (typeof carto != 'undefined') {
+      if (typeof carto !== 'undefined') {
         carto.iterations(params.data.n_iteration);
       }
   });

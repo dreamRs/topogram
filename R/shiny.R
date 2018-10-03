@@ -87,6 +87,7 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #' @param proxy A \code{topogramProxy} \code{htmlwidget} object.
 #' @param new_value New variable to use, must a \code{character} of length one,
 #'  and a valid variable name of data used to construct the cartogram.
+#' @param legend_title New title for the legend.
 #'
 #' @return A \code{topogramProxy} \code{htmlwidget} object.
 #' @export
@@ -97,11 +98,16 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #'
 #'
 #' }
-proxy_update_value <- function(proxy, new_value) {
+proxy_update_value <- function(proxy, new_value, legend_title = NULL) {
   if (is.character(new_value) && length(new_value) == 1) {
-    .topogram_proxy(proxy, "value",  l = list(new_value = new_value))
+    .topogram_proxy(proxy, "value",  l = dropNulls(list(
+      new_value = new_value, legend_title = legend_title
+    )))
   } else if (is.vector(new_value) && is.numeric(new_value)) {
-    .topogram_proxy(proxy, "vector",  l = list(new_value = new_value, range = range(new_value, na.rm = TRUE)))
+    .topogram_proxy(proxy, "vector",  l = dropNulls(list(
+      new_value = new_value, range = range(new_value, na.rm = TRUE),
+      legend_title = legend_title
+    )))
   } else {
     stop("'new_value' must a character of length 1 or a numeric vector.", call. = FALSE)
   }

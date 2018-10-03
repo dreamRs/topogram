@@ -4,13 +4,15 @@
 \alias{proxy_update_value}
 \title{Update variable used to distort topology with proxy}
 \usage{
-proxy_update_value(proxy, new_value)
+proxy_update_value(proxy, new_value, legend_title = NULL)
 }
 \arguments{
 \item{proxy}{A \code{topogramProxy} \code{htmlwidget} object.}
 
 \item{new_value}{New variable to use, must a \code{character} of length one,
 and a valid variable name of data used to construct the cartogram.}
+
+\item{legend_title}{New title for the legend.}
 }
 \value{
 A \code{topogramProxy} \code{htmlwidget} object.

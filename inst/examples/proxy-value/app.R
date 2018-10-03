@@ -75,7 +75,7 @@ server <- function(input, output, session) {
       n_iteration = 10,
       format_value = ",",
       d3_locale = "fr-FR"
-    )%>% add_legend(
+    ) %>% add_legend(
       title = "Population",
       title_width = 200,
       orientation = "vertical",
@@ -86,7 +86,7 @@ server <- function(input, output, session) {
   # Update
   observeEvent(input$new_value, {
     topogramProxy(shinyId = "carto") %>%
-      proxy_update_value(new_value = input$new_value)
+      proxy_update_value(new_value = input$new_value, legend_title = gsub("_", " ", input$new_value))
   }, ignoreInit = TRUE)
 
 }
