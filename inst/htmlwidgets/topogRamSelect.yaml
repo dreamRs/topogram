@@ -19,3 +19,7 @@ dependencies:
   version: 2.4.1
   src: htmlwidgets/lib
   script: d3-geo-projection.v2.min.js
+- name: d3-svg-legend
+  version: 2.25.6
+  src: htmlwidgets/lib
+  script: d3-legend.min.js

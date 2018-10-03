@@ -6,13 +6,23 @@ HTMLWidgets.widget({
 
   factory: function(el, width, height) {
 
-    var carto, statesbbox, projection, topoWidth, topoHeight;
+    var carto, statesbbox, projection, topoWidth, topoHeight, palette;
 
     var padding = 30;
+
+      Array.prototype.max = function() {
+        return Math.max.apply(null, this);
+      };
+
+      Array.prototype.min = function() {
+        return Math.min.apply(null, this);
+      };
 
     return {
 
       renderValue: function(x) {
+
+        palette = x.palette;
 
         // select menu
         var $selectMenu = $('#' + el.id + '_select');
@@ -26,7 +36,7 @@ HTMLWidgets.widget({
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
         projection.fitExtent([[padding, padding], [topoWidth, topoHeight]], statesbbox);
 
-        var colorScale = d3.scaleSequential(d3[x.palette]).domain(x.range);
+        var colorScale = d3.scaleSequential(d3[palette]).domain(x.range);
 
         carto = Cartogram()
           .width(width)
@@ -64,13 +74,46 @@ HTMLWidgets.widget({
               });
           }
 
+          if (x.legend) {
+            var svg = d3.select("svg");
+
+            svg.append("g")
+              .attr("class", "legendSequential")
+              .attr("transform", "translate(20,40)");
+
+            var legendSequential = d3.legendColor()
+                .title(x.legendOpts.title)
+                .titleWidth(x.legendOpts.title_width)
+                .locale(x.d3_locale)
+                .labelFormat(x.legendOpts.label_format)
+                .labels(x.legendOpts.labels)
+                .shapeWidth(x.legendOpts.cells_width)
+                .shapeHeight(x.legendOpts.cells_height)
+                .shapePadding(x.legendOpts.cells_padding)
+                .cells(x.legendOpts.n_cells)
+                .orient(x.legendOpts.orientation)
+                .scale(colorScale);
+
+            svg.select(".legendSequential")
+              .call(legendSequential);
+          }
+
           var selectValue = x.value;
           $('#' + el.id + '_select').on('change', function() {
             selectValue = this.value;
+            values = [];
             carto
               .value(function(d) {
-                //console.log(d);
+                values.push(d.properties[selectValue]);
                 return d.properties[selectValue];
+              });
+            carto
+              .color(function(d) {
+                var colorScale = d3.scaleSequential(d3[palette]).domain([Math.min.apply(null, values), Math.max.apply(null, values)]);
+                legendSequential.scale(colorScale);
+                svg.select(".legendSequential")
+                  .call(legendSequential);
+                return colorScale(d.properties[selectValue]);
               });
           });
 

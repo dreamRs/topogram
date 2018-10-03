@@ -182,7 +182,7 @@ topogRam <- function(shape, value, tooltip_label = NULL,
     projection = paste0("geo", projection),
     labs = FALSE,
     labsOpts = list(),
-    d3_locale = d3_locale,
+    d3_locale = jsonlite::toJSON(x = d3_locale, auto_unbox = FALSE),
     legend = FALSE,
     legendOpts = list()
   )

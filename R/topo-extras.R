@@ -12,8 +12,8 @@
 #' @noRd
 .topo_opt <- function(topo, name, ...) {
 
-  if(!any(class(topo) %in% c("topogRam", "topogram_Proxy"))){
-    stop("bb must be a topogRam or a topogramProxy object")
+  if(!any(class(topo) %in% c("topogRam", "topogRamSelect"))){
+    stop("bb must be a topogRam object")
   }
 
   if (is.null(topo$x$bb_opts[[name]])) {

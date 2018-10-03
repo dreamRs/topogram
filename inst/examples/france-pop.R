@@ -51,6 +51,11 @@ topogRam(
   n_iteration = 10,
   format_value = ",",
   d3_locale = "fr-FR"
+) %>% add_legend(
+  title = "Femme 20-39 ans",
+  title_width = 200,
+  orientation = "vertical",
+  label_format = ",.2r" #.2s
 )
 
 
@@ -63,5 +68,10 @@ topogRam(
   select_label = NULL,
   format_value = ",",
   d3_locale = "fr-FR"
+) %>% add_legend(
+  title = "",
+  title_width = 200,
+  orientation = "vertical",
+  label_format = ",.2r" #.2s
 )
 
