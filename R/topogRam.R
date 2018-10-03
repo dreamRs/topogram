@@ -86,7 +86,7 @@
 topogRam <- function(shape, value, tooltip_label = NULL,
                      format_value = NULL, unit_value = "",
                      palette = "Viridis", n_iteration = 20,
-                     projection = "Mercator", d3_locale = NULL,
+                     projection = "Mercator", d3_locale = "en-US",
                      select_label = NULL, layerId = NULL,
                      width = NULL, height = NULL, elementId = NULL) {
 
@@ -127,12 +127,11 @@ topogRam <- function(shape, value, tooltip_label = NULL,
     layerId <- model.frame(formula = layerId, data = shape)[[1]]
   }
 
-  if (!is.null(d3_locale)) {
-    check_locale(d3_locale)
-    path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogRam")
-    if (path != "") {
-      d3_locale <- jsonlite::fromJSON(txt = path)
-    }
+
+  check_locale(d3_locale)
+  path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogRam")
+  if (path != "") {
+    d3_locale <- jsonlite::fromJSON(txt = path)
   }
 
   if (is.null(format_value)) {

@@ -73,6 +73,13 @@ topogRam(
 ![](img/europe.png)
 
 
+
+# Markdown
+
+An example in a r markdown document is availabel here : https://pvictor.github.io/NZ-topogRam/
+
+
+
 ### Note
 
 The use of `cartogram-chart` has involved many changes, so that previous features are no longer available.

@@ -6,7 +6,7 @@
 \usage{
 topogRam(shape, value, tooltip_label = NULL, format_value = NULL,
   unit_value = "", palette = "Viridis", n_iteration = 20,
-  projection = "Mercator", d3_locale = NULL, select_label = NULL,
+  projection = "Mercator", d3_locale = "en-US", select_label = NULL,
   layerId = NULL, width = NULL, height = NULL, elementId = NULL)
 }
 \arguments{
