@@ -53,7 +53,8 @@ server <- function(input, output, session) {
       value = "AGE_00",
       tooltip_label = ~paste0(LIB, " (", NAME, ")"),
       n_iteration = 1
-    )
+    ) %>%
+      add_legend(title = "FOOOO", label_format = ".2s")
   })
 
   # Update

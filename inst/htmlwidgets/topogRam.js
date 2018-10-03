@@ -6,7 +6,7 @@ HTMLWidgets.widget({
 
   factory: function(el, width, height) {
 
-    var carto, statesbbox, projection, topoWidth, topoHeight, palette, format_value, tooltip_label;
+    var carto, statesbbox, projection, topoWidth, topoHeight, palette, format_value, tooltip_label, legendSequential, svg;
 
     var padding = 30;
 
@@ -98,13 +98,13 @@ HTMLWidgets.widget({
 
 
           if (x.legend) {
-            var svg = d3.select("svg");
+            svg = d3.select("svg");
 
             svg.append("g")
               .attr("class", "legendSequential")
               .attr("transform", "translate(20,40)");
 
-            var legendSequential = d3.legendColor()
+            legendSequential = d3.legendColor()
                 .title(x.legendOpts.title)
                 .titleWidth(x.legendOpts.title_width)
                 .locale(x.d3_locale) // d3.formatLocale(x.d3_locale)
@@ -123,11 +123,19 @@ HTMLWidgets.widget({
 
       },
 
-      getChart: function(){
+      getChart: function() {
         return carto;
       },
 
-      getParams: function(){
+      getLegend: function() {
+        return legendSequential;
+      },
+
+      getSvg: function() {
+        return svg;
+      },
+
+      getParams: function() {
         return {palette: palette, format_value: format_value, tooltip_label: tooltip_label};
       },
 
@@ -173,6 +181,35 @@ function get_params(id){
   return(params);
 }
 
+function get_legend(id){
+
+  // Get the HTMLWidgets object
+  var htmlWidgetsObj = HTMLWidgets.find("#" + id);
+
+  // Use the getChart method we created to get the underlying billboard chart
+  var lgd ;
+
+  if (typeof htmlWidgetsObj != 'undefined') {
+    lgd = htmlWidgetsObj.getLegend();
+  }
+
+  return(lgd);
+}
+
+function get_svg(id){
+
+  // Get the HTMLWidgets object
+  var htmlWidgetsObj = HTMLWidgets.find("#" + id);
+
+  // Use the getChart method we created to get the underlying billboard chart
+  var svg ;
+
+  if (typeof htmlWidgetsObj != 'undefined') {
+    svg = htmlWidgetsObj.getSvg();
+  }
+
+  return(svg);
+}
 
 
 
@@ -220,10 +257,15 @@ if (HTMLWidgets.shinyMode) {
       var carto = get_widget(params.id);
       if (typeof carto != 'undefined') {
         var paramsTopo = get_params(params.id);
+        var lgdTopo = get_legend(params.id);
+        var svg = get_svg(params.id);
         var pal = paramsTopo.palette;
         var fval = paramsTopo.format_value;
         var tlab = paramsTopo.tooltip_label;
         var colorScale = d3.scaleSequential(d3[pal]).domain(params.data.range);
+        lgdTopo.scale(colorScale);
+        svg.select(".legendSequential")
+           .call(lgdTopo);
         carto
           .color(function(d) {
             return colorScale(params.data.new_value[d.id]);
