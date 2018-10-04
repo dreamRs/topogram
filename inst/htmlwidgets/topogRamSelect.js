@@ -110,9 +110,11 @@ HTMLWidgets.widget({
             carto
               .color(function(d) {
                 var colorScale = d3.scaleSequential(d3[palette]).domain([Math.min.apply(null, values), Math.max.apply(null, values)]);
-                legendSequential.scale(colorScale);
-                svg.select(".legendSequential")
-                  .call(legendSequential);
+                if (typeof lgdTopo !== 'undefined') {
+                  legendSequential.scale(colorScale);
+                  svg.select(".legendSequential")
+                    .call(legendSequential);
+                }
                 return colorScale(d.properties[selectValue]);
               });
           });
