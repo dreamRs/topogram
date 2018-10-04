@@ -2,7 +2,7 @@
 
 > Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology (using [cartogram-chart](https://github.com/vasturiano/cartogram-chart))
 
-[![Travis build status](https://travis-ci.org/pvictor/topogRam.svg?branch=master)](https://travis-ci.org/pvictor/topogRam)
+[![Travis build status](https://travis-ci.org/dreamRs/topogRam.svg?branch=master)](https://travis-ci.org/dreamRs/topogRam)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
 
@@ -12,13 +12,13 @@ Install from GitHub:
 
 ```r
 # with remotes
-remotes::install_github("pvictor/topogRam")
+remotes::install_github("dreamRs/topogRam")
 
 # or with install-github.me service (based on remotes)
-source("https://install-github.me/pvictor/topogRam")
+source("https://install-github.me/dreamRs/topogRam")
 
 # or with devtools:
-devtools::install_github("pvictor/topogRam")
+devtools::install_github("dreamRs/topogRam")
 ```
 
 
@@ -95,9 +95,5 @@ A proxy method is implemented to update an existing cartogram with calssic Shiny
 ![](img/topogRam-proxy.gif)
 
 
-
-### Note
-
-The use of `cartogram-chart` has involved many changes, so that previous features are no longer available.
 
 
