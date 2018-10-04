@@ -37,7 +37,19 @@
 #' @export
 #'
 #' @examples
-#' #TODO
+#' library(topogRam)
+#' data(paris)
+#'
+#' topogRam(
+#'   shape = paris,
+#'   value = "TOTAL",
+#'   n_iteration = 10
+#' ) %>% add_labs(
+#'   title = "Paris",
+#'   subtitle = "A subtitle",
+#'   caption = "Data source: INSEE & opendata.paris.fr"
+#' )
+
 add_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
   topo$x$labs <- TRUE
   .topo_opt(topo, "labsOpts", title = title, subtitle = subtitle, caption = caption)
@@ -63,7 +75,47 @@ add_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 #' @export
 #'
 #' @examples
-#' # TODO
+#' library(topogRam)
+#' data(paris)
+#'
+#' topogRam(
+#'   shape = paris,
+#'   value = "TOTAL",
+#'   n_iteration = 10
+#' ) %>% add_legend(
+#'   title = "Population",
+#'   n_cells = 12,
+#'   orientation = "vertical"
+#' )
+#'
+#'
+#' # Format labels favue with D3 format
+#' topogRam(
+#'   shape = paris,
+#'   value = "TOTAL",
+#'   n_iteration = 10
+#' ) %>% add_legend(
+#'   title = "Population",
+#'   label_format = ".2s",
+#'   orientation = "vertical"
+#' )
+#'
+#'
+#' # No space between cells
+#' # and custom labels
+#' topogRam(
+#'   shape = paris,
+#'   value = "TOTAL",
+#'   n_iteration = 10
+#' ) %>% add_legend(
+#'   title = "Population",
+#'   n_cells = 20,
+#'   cells_padding = 0,
+#'   cells_width = 10,
+#'   cells_height = 20,
+#'   labels = c("15 000", rep("", 18), "250 000"),
+#'   orientation = "vertical"
+#' )
 add_legend <- function(topo, title, n_cells = 10,
                        label_format = ".2f", labels = NULL,
                        orientation = "horizontal",

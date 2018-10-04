@@ -34,5 +34,45 @@ see \url{https://github.com/d3/d3-format}.}
 Legend for topogRam
 }
 \examples{
-# TODO
+library(topogRam)
+data(paris)
+
+topogRam(
+  shape = paris,
+  value = "TOTAL",
+  n_iteration = 10
+) \%>\% add_legend(
+  title = "Population",
+  n_cells = 12,
+  orientation = "vertical"
+)
+
+
+# Format labels favue with D3 format
+topogRam(
+  shape = paris,
+  value = "TOTAL",
+  n_iteration = 10
+) \%>\% add_legend(
+  title = "Population",
+  label_format = ".2s",
+  orientation = "vertical"
+)
+
+
+# No space between cells
+# and custom labels
+topogRam(
+  shape = paris,
+  value = "TOTAL",
+  n_iteration = 10
+) \%>\% add_legend(
+  title = "Population",
+  n_cells = 20,
+  cells_padding = 0,
+  cells_width = 10,
+  cells_height = 20,
+  labels = c("15 000", rep("", 18), "250 000"),
+  orientation = "vertical"
+)
 }

@@ -21,6 +21,13 @@ source("https://install-github.me/pvictor/topogRam")
 devtools::install_github("pvictor/topogRam")
 ```
 
+
+### Features
+
+
+![](img/features.png)
+
+
 ### Examples
 
 Use a {sf} object as input :
@@ -74,9 +81,18 @@ topogRam(
 
 
 
-# Markdown
+### Markdown
 
-An example in a r markdown document is availabel here : https://pvictor.github.io/NZ-topogRam/
+You can pass several column names, in that case a dropdown menu is added to the widget to select the variable used to distort topology. Use this in markdown to add interactivity.
+
+An example in a R markdown document is availabe here : https://pvictor.github.io/NZ-topogRam/
+
+
+### Shiny
+
+A proxy method is implemented to update an existing cartogram with calssic Shiny inputs.
+
+![](img/topogRam-proxy.gif)
 
 
 

@@ -20,7 +20,59 @@ Use this in 'shiny' application to update an already generated cartogram.
 \examples{
 if (interactive()) {
 
+library(topogRam)
+library(sf)
+library(rnaturalearth)
 
+wrld <- st_as_sf(countries110)
+# doesn't support missing values !
+wrld <- wrld[, c("name", "pop_est", "gdp_md_est")]
+# Antarctica is not a whole polygon
+wrld <- wrld[wrld$name != "Antarctica", ]
+
+# add dummy vars
+wrld$foo <- floor(runif(nrow(wrld), 500, 5000))
+
+
+library(shiny)
+
+library(shiny)
+
+ui <- fluidPage(
+  fluidRow(
+    column(
+      width = 10, offset = 1,
+      tags$h2("topogRam : update number of iterations with proxy"),
+      sliderInput(
+        inputId = "n_iteration", label = "Number of iteration (more takes longer)",
+        min = 1, max = 60, value = 20
+      ),
+      topogRamOutput(outputId = "carto", height = "600px")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+
+  # Initialize
+  output$carto <- renderTopogRam({
+    topogRam(
+      shape = wrld,
+      value = "foo",
+      tooltip_label = ~name,
+      n_iteration = 20
+    )
+  })
+
+  # Update
+  observeEvent(input$n_iteration, {
+    topogramProxy(shinyId = "carto") \%>\%
+      proxy_update_iteration(n_iteration = input$n_iteration)
+  }, ignoreInit = TRUE)
+
+}
+
+shinyApp(ui, server)
 
 }
 }

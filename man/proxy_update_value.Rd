@@ -23,7 +23,95 @@ Use this in 'shiny' application to update an already generated cartogram.
 \examples{
 if (interactive()) {
 
+library(topogRam)
+library(sf)
+library(rnaturalearth)
 
+wrld <- st_as_sf(countries110)
+# doesn't support missing values !
+wrld <- wrld[, c("name", "pop_est", "gdp_md_est")]
+# Antarctica is not a whole polygon
+wrld <- wrld[wrld$name != "Antarctica", ]
+
+# add dummies vars
+wrld$foo1 <- floor(runif(nrow(wrld), 500, 5000))
+wrld$foo2 <- floor(runif(nrow(wrld), 500, 5000))
+wrld$foo3 <- floor(runif(nrow(wrld), 500, 5000))
+wrld$foo4 <- floor(runif(nrow(wrld), 500, 5000))
+
+library(shiny)
+
+
+
+#### Update with variable name
+
+ui <- fluidPage(
+  tags$h2("Update value use to distort topology"),
+  tags$h4("Use a column name of the original data"),
+  radioButtons(
+    inputId = "new_value",
+    label = "Update value:",
+    choices = paste0("foo", 1:4),
+    inline = TRUE
+  ),
+  topogRamOutput(outputId = "world", height = "800px")
+)
+
+server <- function(input, output, session) {
+
+  # Initialize the cartogram (non reactive)
+  output$world <- renderTopogRam({
+    topogRam(
+      shape = wrld,
+      value = "foo1",
+      tooltip_label = ~name,
+      n_iteration = 10
+    )
+  })
+
+  # Update variable used (foo1, foo2, foo3, foo4)
+  observeEvent(input$new_value, {
+    topogramProxy(shinyId = "world") \%>\%
+      proxy_update_value(new_value = input$new_value)
+  }, ignoreInit = TRUE)
+
+}
+
+shinyApp(ui, server)
+
+
+
+
+#### Update with a numeric vector
+
+ui <- fluidPage(
+  tags$h2("Update value use to distort topology"),
+  tags$h4("Use a vector to update data"),
+  actionButton(inputId = "update", label = "Update !"),
+  topogRamOutput(outputId = "world", height = "800px")
+)
+
+server <- function(input, output, session) {
+
+  # Initialize the cartogram (non reactive)
+  output$world <- renderTopogRam({
+    topogRam(
+      shape = wrld,
+      value = "foo1",
+      tooltip_label = ~name,
+      n_iteration = 10
+    )
+  })
+
+  # Update with a vector (must be same length as data used in topogRam)
+  observeEvent(input$update, {
+    topogramProxy(shinyId = "world") \%>\%
+      proxy_update_value(new_value = floor(runif(nrow(wrld), 500, 5000)))
+  }, ignoreInit = TRUE)
+
+}
+
+shinyApp(ui, server)
 
 }
 }

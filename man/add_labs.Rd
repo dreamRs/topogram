@@ -19,5 +19,16 @@ add_labs(topo, title = NULL, subtitle = NULL, caption = NULL)
 Labs for topogRam
 }
 \examples{
-#TODO
+library(topogRam)
+data(paris)
+
+topogRam(
+  shape = paris,
+  value = "TOTAL",
+  n_iteration = 10
+) \%>\% add_labs(
+  title = "Paris",
+  subtitle = "A subtitle",
+  caption = "Data source: INSEE & opendata.paris.fr"
+)
 }

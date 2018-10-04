@@ -75,7 +75,7 @@ HTMLWidgets.widget({
           }
 
           if (x.legend) {
-            var svg = d3.select("svg");
+            var svg = d3.select("div#" + el.id + "-topogram>svg");
 
             svg.append("g")
               .attr("class", "legendSequential")

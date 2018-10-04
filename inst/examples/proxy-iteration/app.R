@@ -53,7 +53,10 @@ ui <- fluidPage(
     column(
       width = 10, offset = 1,
       tags$h2("topogRam : update number of iterations with proxy"),
-      sliderInput(inputId = "n_iteration", label = "Number of iteration (more takes longer)", min = 1, max = 60, value = 20),
+      sliderInput(
+        inputId = "n_iteration", label = "Number of iteration (more takes longer)",
+        min = 1, max = 120, value = 20
+      ),
       topogRamOutput(outputId = "carto", height = "600px")
     )
   )

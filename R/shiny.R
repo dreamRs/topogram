@@ -95,7 +95,95 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #' @examples
 #' if (interactive()) {
 #'
+#' library(topogRam)
+#' library(sf)
+#' library(rnaturalearth)
 #'
+#' wrld <- st_as_sf(countries110)
+#' # doesn't support missing values !
+#' wrld <- wrld[, c("name", "pop_est", "gdp_md_est")]
+#' # Antarctica is not a whole polygon
+#' wrld <- wrld[wrld$name != "Antarctica", ]
+#'
+#' # add dummies vars
+#' wrld$foo1 <- floor(runif(nrow(wrld), 500, 5000))
+#' wrld$foo2 <- floor(runif(nrow(wrld), 500, 5000))
+#' wrld$foo3 <- floor(runif(nrow(wrld), 500, 5000))
+#' wrld$foo4 <- floor(runif(nrow(wrld), 500, 5000))
+#'
+#' library(shiny)
+#'
+#'
+#'
+#' #### Update with variable name
+#'
+#' ui <- fluidPage(
+#'   tags$h2("Update value use to distort topology"),
+#'   tags$h4("Use a column name of the original data"),
+#'   radioButtons(
+#'     inputId = "new_value",
+#'     label = "Update value:",
+#'     choices = paste0("foo", 1:4),
+#'     inline = TRUE
+#'   ),
+#'   topogRamOutput(outputId = "world", height = "800px")
+#' )
+#'
+#' server <- function(input, output, session) {
+#'
+#'   # Initialize the cartogram (non reactive)
+#'   output$world <- renderTopogRam({
+#'     topogRam(
+#'       shape = wrld,
+#'       value = "foo1",
+#'       tooltip_label = ~name,
+#'       n_iteration = 10
+#'     )
+#'   })
+#'
+#'   # Update variable used (foo1, foo2, foo3, foo4)
+#'   observeEvent(input$new_value, {
+#'     topogramProxy(shinyId = "world") %>%
+#'       proxy_update_value(new_value = input$new_value)
+#'   }, ignoreInit = TRUE)
+#'
+#' }
+#'
+#' shinyApp(ui, server)
+#'
+#'
+#'
+#'
+#' #### Update with a numeric vector
+#'
+#' ui <- fluidPage(
+#'   tags$h2("Update value use to distort topology"),
+#'   tags$h4("Use a vector to update data"),
+#'   actionButton(inputId = "update", label = "Update !"),
+#'   topogRamOutput(outputId = "world", height = "800px")
+#' )
+#'
+#' server <- function(input, output, session) {
+#'
+#'   # Initialize the cartogram (non reactive)
+#'   output$world <- renderTopogRam({
+#'     topogRam(
+#'       shape = wrld,
+#'       value = "foo1",
+#'       tooltip_label = ~name,
+#'       n_iteration = 10
+#'     )
+#'   })
+#'
+#'   # Update with a vector (must be same length as data used in topogRam)
+#'   observeEvent(input$update, {
+#'     topogramProxy(shinyId = "world") %>%
+#'       proxy_update_value(new_value = floor(runif(nrow(wrld), 500, 5000)))
+#'   }, ignoreInit = TRUE)
+#'
+#' }
+#'
+#' shinyApp(ui, server)
 #'
 #' }
 proxy_update_value <- function(proxy, new_value, legend_title = NULL) {
@@ -129,7 +217,59 @@ proxy_update_value <- function(proxy, new_value, legend_title = NULL) {
 #' @examples
 #' if (interactive()) {
 #'
+#' library(topogRam)
+#' library(sf)
+#' library(rnaturalearth)
 #'
+#' wrld <- st_as_sf(countries110)
+#' # doesn't support missing values !
+#' wrld <- wrld[, c("name", "pop_est", "gdp_md_est")]
+#' # Antarctica is not a whole polygon
+#' wrld <- wrld[wrld$name != "Antarctica", ]
+#'
+#' # add dummy vars
+#' wrld$foo <- floor(runif(nrow(wrld), 500, 5000))
+#'
+#'
+#' library(shiny)
+#'
+#' library(shiny)
+#'
+#' ui <- fluidPage(
+#'   fluidRow(
+#'     column(
+#'       width = 10, offset = 1,
+#'       tags$h2("topogRam : update number of iterations with proxy"),
+#'       sliderInput(
+#'         inputId = "n_iteration", label = "Number of iteration (more takes longer)",
+#'         min = 1, max = 60, value = 20
+#'       ),
+#'       topogRamOutput(outputId = "carto", height = "600px")
+#'     )
+#'   )
+#' )
+#'
+#' server <- function(input, output, session) {
+#'
+#'   # Initialize
+#'   output$carto <- renderTopogRam({
+#'     topogRam(
+#'       shape = wrld,
+#'       value = "foo",
+#'       tooltip_label = ~name,
+#'       n_iteration = 20
+#'     )
+#'   })
+#'
+#'   # Update
+#'   observeEvent(input$n_iteration, {
+#'     topogramProxy(shinyId = "carto") %>%
+#'       proxy_update_iteration(n_iteration = input$n_iteration)
+#'   }, ignoreInit = TRUE)
+#'
+#' }
+#'
+#' shinyApp(ui, server)
 #'
 #' }
 proxy_update_iteration <- function(proxy, n_iteration) {
