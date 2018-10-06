@@ -1,8 +1,8 @@
-# topogRam
+# topogram
 
 > Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology (using [cartogram-chart](https://github.com/vasturiano/cartogram-chart))
 
-[![Travis build status](https://travis-ci.org/dreamRs/topogRam.svg?branch=master)](https://travis-ci.org/dreamRs/topogRam)
+[![Travis build status](https://travis-ci.org/dreamRs/topogram.svg?branch=master)](https://travis-ci.org/dreamRs/topogram)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
 
@@ -12,13 +12,13 @@ Install from GitHub:
 
 ```r
 # with remotes
-remotes::install_github("dreamRs/topogRam")
+remotes::install_github("dreamRs/topogram")
 
 # or with install-github.me service (based on remotes)
-source("https://install-github.me/dreamRs/topogRam")
+source("https://install-github.me/dreamRs/topogram")
 
 # or with devtools:
-devtools::install_github("dreamRs/topogRam")
+devtools::install_github("dreamRs/topogram")
 ```
 
 
@@ -34,7 +34,7 @@ Use a {sf} object as input :
 
 ```r
 library( rnaturalearth )
-library( topogRam )
+library( topogram )
 
 # sf polygons
 fr_dept <- ne_states(country = "france", returnclass = "sf")
@@ -44,7 +44,7 @@ fr_dept <- fr_dept[fr_dept$type_en %in% "Metropolitan department", ]
 fr_dept$foo <- sample.int(100, nrow(fr_dept))
 
 # Create cartogram
-topogRam(
+topogram(
   shape = fr_dept, 
   value = "foo"
 )
@@ -57,7 +57,7 @@ topogRam(
 library( rnaturalearth )
 library( eurostat )
 library( sf )
-library( topogRam )
+library( topogram )
 
 # Get polygons
 europe <- ne_countries(scale = 50, continent = "europe", returnclass = "sf")
@@ -69,7 +69,7 @@ europe <- st_crop(europe, xmin = -20, ymin = 10, xmax = 35, ymax = 75)
 europe$foo <- sample.int(100, nrow(europe))
 
 # Create cartogram
-topogRam(
+topogram(
   shape = europe, 
   value = "foo", 
   tooltip_label = ~name, 
@@ -85,14 +85,14 @@ topogRam(
 
 You can pass several column names, in that case a dropdown menu is added to the widget to select the variable used to distort topology. Use this in markdown to add interactivity.
 
-An example in a R markdown document is availabe here : https://pvictor.github.io/NZ-topogRam/
+An example in a R markdown document is availabe here : https://pvictor.github.io/NZ-topogram/
 
 
 ### Shiny
 
 A proxy method is implemented to update an existing cartogram with calssic Shiny inputs.
 
-![](img/topogRam-proxy.gif)
+![](img/topogram-proxy.gif)
 
 
 

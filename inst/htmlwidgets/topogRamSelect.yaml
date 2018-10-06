@@ -14,7 +14,7 @@ dependencies:
 - name: css
   version: 0.1.0
   src: htmlwidgets
-  stylesheet: topogRamSelect.css
+  stylesheet: topogramSelect.css
 - name: d3-geo-projection
   version: 2.4.1
   src: htmlwidgets/lib

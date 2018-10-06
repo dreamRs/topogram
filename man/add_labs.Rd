@@ -2,12 +2,12 @@
 % Please edit documentation in R/topo-extras.R
 \name{add_labs}
 \alias{add_labs}
-\title{Labs for topogRam}
+\title{Labs for topogram}
 \usage{
 add_labs(topo, title = NULL, subtitle = NULL, caption = NULL)
 }
 \arguments{
-\item{topo}{A \code{topogRam} \code{htmlwidget} object.}
+\item{topo}{A \code{topogram} \code{htmlwidget} object.}
 
 \item{title}{Main title.}
 
@@ -16,13 +16,13 @@ add_labs(topo, title = NULL, subtitle = NULL, caption = NULL)
 \item{caption}{Brief explanation of the source of the data.}
 }
 \description{
-Labs for topogRam
+Labs for topogram
 }
 \examples{
-library(topogRam)
+library(topogram)
 data(paris)
 
-topogRam(
+topogram(
   shape = paris,
   value = "TOTAL",
   n_iteration = 10

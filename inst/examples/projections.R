@@ -10,7 +10,7 @@
 
 # Packages ----------------------------------------------------------------
 
-library( topogRam )
+library( topogram )
 library( rnaturalearth )
 library( dplyr )
 library( sf )
@@ -33,7 +33,7 @@ wrld
 
 # Mercator ----------------------------------------------------------------
 
-topogRam(
+topogram(
   shape = wrld,
   value = "pop_est",
   n_iteration = 1 # no distortion
@@ -43,7 +43,7 @@ topogRam(
 
 # Albers ------------------------------------------------------------------
 
-topogRam(
+topogram(
   shape = wrld,
   value = "pop_est",
   n_iteration = 1 # no distortion
@@ -54,7 +54,7 @@ topogRam(
 
 # Natural Earth -----------------------------------------------------------
 
-topogRam(
+topogram(
   shape = wrld,
   value = "pop_est",
   n_iteration = 1 # no distortion
@@ -64,7 +64,7 @@ topogRam(
 
 # ConicEqualArea ----------------------------------------------------------
 
-topogRam(
+topogram(
   shape = wrld,
   value = "pop_est",
   n_iteration = 1 # no distortion
@@ -75,7 +75,7 @@ topogRam(
 
 # Eckert IV ---------------------------------------------------------------
 
-topogRam(
+topogram(
   shape = wrld,
   value = "pop_est",
   n_iteration = 1 # no distortion

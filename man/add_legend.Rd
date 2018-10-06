@@ -2,14 +2,14 @@
 % Please edit documentation in R/topo-extras.R
 \name{add_legend}
 \alias{add_legend}
-\title{Legend for topogRam}
+\title{Legend for topogram}
 \usage{
 add_legend(topo, title, n_cells = 10, label_format = ".2f",
   labels = NULL, orientation = "horizontal", cells_width = 30,
   cells_height = 15, cells_padding = 2, title_width = 100)
 }
 \arguments{
-\item{topo}{A \code{topogRam} \code{htmlwidget} object.}
+\item{topo}{A \code{topogram} \code{htmlwidget} object.}
 
 \item{title}{Legend title}
 
@@ -31,13 +31,13 @@ see \url{https://github.com/d3/d3-format}.}
 \item{title_width}{Width for the title.}
 }
 \description{
-Legend for topogRam
+Legend for topogram
 }
 \examples{
-library(topogRam)
+library(topogram)
 data(paris)
 
-topogRam(
+topogram(
   shape = paris,
   value = "TOTAL",
   n_iteration = 10
@@ -49,7 +49,7 @@ topogRam(
 
 
 # Format labels favue with D3 format
-topogRam(
+topogram(
   shape = paris,
   value = "TOTAL",
   n_iteration = 10
@@ -62,7 +62,7 @@ topogRam(
 
 # No space between cells
 # and custom labels
-topogRam(
+topogram(
   shape = paris,
   value = "TOTAL",
   n_iteration = 10

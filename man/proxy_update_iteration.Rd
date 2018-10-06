@@ -20,7 +20,7 @@ Use this in 'shiny' application to update an already generated cartogram.
 \examples{
 if (interactive()) {
 
-library(topogRam)
+library(topogram)
 library(sf)
 library(rnaturalearth)
 
@@ -42,12 +42,12 @@ ui <- fluidPage(
   fluidRow(
     column(
       width = 10, offset = 1,
-      tags$h2("topogRam : update number of iterations with proxy"),
+      tags$h2("topogram : update number of iterations with proxy"),
       sliderInput(
         inputId = "n_iteration", label = "Number of iteration (more takes longer)",
         min = 1, max = 60, value = 20
       ),
-      topogRamOutput(outputId = "carto", height = "600px")
+      topogramOutput(outputId = "carto", height = "600px")
     )
   )
 )
@@ -56,7 +56,7 @@ server <- function(input, output, session) {
 
   # Initialize
   output$carto <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = wrld,
       value = "foo",
       tooltip_label = ~name,

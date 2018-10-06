@@ -1,14 +1,14 @@
 
-#' Shiny bindings for topogRam
+#' Shiny bindings for topogram
 #'
-#' Output and render functions for using topogRam within Shiny
+#' Output and render functions for using topogram within Shiny
 #' applications and interactive Rmd documents.
 #'
 #' @param outputId output variable to read from
 #' @param width,height Must be a valid CSS unit (like \code{'100\%'},
 #'   \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
 #'   string and have \code{'px'} appended.
-#' @param expr An expression that generates a topogRam
+#' @param expr An expression that generates a topogram
 #' @param env The environment in which to evaluate \code{expr}.
 #' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
 #'   is useful if you want to save an expression in a variable.
@@ -18,30 +18,30 @@
 #' @param session the Shiny session object to which the chart belongs; usually the
 #'   default value will suffice
 #'
-#' @name topogRam-shiny
+#' @name topogram-shiny
 #'
 #' @importFrom htmlwidgets shinyWidgetOutput shinyRenderWidget
 #' @importFrom shiny getDefaultReactiveDomain
 #'
 #' @export
-topogRamOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'topogRam', width, height, package = 'topogRam')
+topogramOutput <- function(outputId, width = '100%', height = '400px'){
+  htmlwidgets::shinyWidgetOutput(outputId, 'topogram', width, height, package = 'topogram')
 }
 
-#' @rdname topogRam-shiny
+#' @rdname topogram-shiny
 #' @export
-renderTopogRam <- function(expr, env = parent.frame(), quoted = FALSE) {
+renderTopogram <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, topogRamOutput, env, quoted = TRUE)
+  htmlwidgets::shinyRenderWidget(expr, topogramOutput, env, quoted = TRUE)
 }
 
 
-#' @rdname topogRam-shiny
+#' @rdname topogram-shiny
 #' @export
 topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) {
 
   if (is.null(session)) {
-    stop("billboarderProxy must be called from the server function of a Shiny app")
+    stop("topogramProxy must be called from the server function of a Shiny app")
   }
 
   if (!is.null(session$ns) && nzchar(session$ns(NULL)) && substring(shinyId, 1, nchar(session$ns(""))) != session$ns("")) {
@@ -95,7 +95,7 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #' @examples
 #' if (interactive()) {
 #'
-#' library(topogRam)
+#' library(topogram)
 #' library(sf)
 #' library(rnaturalearth)
 #'
@@ -126,14 +126,14 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #'     choices = paste0("foo", 1:4),
 #'     inline = TRUE
 #'   ),
-#'   topogRamOutput(outputId = "world", height = "800px")
+#'   topogramOutput(outputId = "world", height = "800px")
 #' )
 #'
 #' server <- function(input, output, session) {
 #'
 #'   # Initialize the cartogram (non reactive)
 #'   output$world <- renderTopogRam({
-#'     topogRam(
+#'     topogram(
 #'       shape = wrld,
 #'       value = "foo1",
 #'       tooltip_label = ~name,
@@ -160,14 +160,14 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #'   tags$h2("Update value use to distort topology"),
 #'   tags$h4("Use a vector to update data"),
 #'   actionButton(inputId = "update", label = "Update !"),
-#'   topogRamOutput(outputId = "world", height = "800px")
+#'   topogramOutput(outputId = "world", height = "800px")
 #' )
 #'
 #' server <- function(input, output, session) {
 #'
 #'   # Initialize the cartogram (non reactive)
 #'   output$world <- renderTopogRam({
-#'     topogRam(
+#'     topogram(
 #'       shape = wrld,
 #'       value = "foo1",
 #'       tooltip_label = ~name,
@@ -175,7 +175,7 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #'     )
 #'   })
 #'
-#'   # Update with a vector (must be same length as data used in topogRam)
+#'   # Update with a vector (must be same length as data used in topogram)
 #'   observeEvent(input$update, {
 #'     topogramProxy(shinyId = "world") %>%
 #'       proxy_update_value(new_value = floor(runif(nrow(wrld), 500, 5000)))
@@ -217,7 +217,7 @@ proxy_update_value <- function(proxy, new_value, legend_title = NULL) {
 #' @examples
 #' if (interactive()) {
 #'
-#' library(topogRam)
+#' library(topogram)
 #' library(sf)
 #' library(rnaturalearth)
 #'
@@ -239,12 +239,12 @@ proxy_update_value <- function(proxy, new_value, legend_title = NULL) {
 #'   fluidRow(
 #'     column(
 #'       width = 10, offset = 1,
-#'       tags$h2("topogRam : update number of iterations with proxy"),
+#'       tags$h2("topogram : update number of iterations with proxy"),
 #'       sliderInput(
 #'         inputId = "n_iteration", label = "Number of iteration (more takes longer)",
 #'         min = 1, max = 60, value = 20
 #'       ),
-#'       topogRamOutput(outputId = "carto", height = "600px")
+#'       topogramOutput(outputId = "carto", height = "600px")
 #'     )
 #'   )
 #' )
@@ -253,7 +253,7 @@ proxy_update_value <- function(proxy, new_value, legend_title = NULL) {
 #'
 #'   # Initialize
 #'   output$carto <- renderTopogRam({
-#'     topogRam(
+#'     topogram(
 #'       shape = wrld,
 #'       value = "foo",
 #'       tooltip_label = ~name,

@@ -1,6 +1,6 @@
 HTMLWidgets.widget({
 
-  name: 'topogRamSelect',
+  name: 'topogramSelect',
 
   type: 'output',
 

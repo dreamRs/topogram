@@ -11,7 +11,7 @@
 
 # Packages ----------------------------------------------------------------
 
-library(topogRam)
+library(topogram)
 library(rnaturalearth)
 library(sf)
 library(rmapshaper)
@@ -33,7 +33,7 @@ nz_retail
 
 # Cartogram ---------------------------------------------------------------
 
-topogRam(
+topogram(
   shape = nz_retail,
   value = "Per_capita",
   tooltip_label = ~REGC2018_V,
@@ -41,7 +41,7 @@ topogRam(
 )
 
 
-topogRam(
+topogram(
   shape = nz_retail,
   value = c("Per_capita", "Per_capi_1", "Per_capi_2", "Per_capi_3",
             "Per_capi_4", "Per_capi_5", "Total_trad", "Total_tr_1", "Total_tr_2",

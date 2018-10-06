@@ -93,10 +93,10 @@ usethis::use_data(paris, overwrite = TRUE)
 # Tests -------------------------------------------------------------------
 
 
-library(topogRam)
+library(topogram)
 
 
-topogRam(
+topogram(
   shape = paris,
   value = "AGE_00"
 )

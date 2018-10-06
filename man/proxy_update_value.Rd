@@ -23,7 +23,7 @@ Use this in 'shiny' application to update an already generated cartogram.
 \examples{
 if (interactive()) {
 
-library(topogRam)
+library(topogram)
 library(sf)
 library(rnaturalearth)
 
@@ -54,14 +54,14 @@ ui <- fluidPage(
     choices = paste0("foo", 1:4),
     inline = TRUE
   ),
-  topogRamOutput(outputId = "world", height = "800px")
+  topogramOutput(outputId = "world", height = "800px")
 )
 
 server <- function(input, output, session) {
 
   # Initialize the cartogram (non reactive)
   output$world <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = wrld,
       value = "foo1",
       tooltip_label = ~name,
@@ -88,14 +88,14 @@ ui <- fluidPage(
   tags$h2("Update value use to distort topology"),
   tags$h4("Use a vector to update data"),
   actionButton(inputId = "update", label = "Update !"),
-  topogRamOutput(outputId = "world", height = "800px")
+  topogramOutput(outputId = "world", height = "800px")
 )
 
 server <- function(input, output, session) {
 
   # Initialize the cartogram (non reactive)
   output$world <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = wrld,
       value = "foo1",
       tooltip_label = ~name,
@@ -103,7 +103,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Update with a vector (must be same length as data used in topogRam)
+  # Update with a vector (must be same length as data used in topogram)
   observeEvent(input$update, {
     topogramProxy(shinyId = "world") \%>\%
       proxy_update_value(new_value = floor(runif(nrow(wrld), 500, 5000)))

@@ -14,7 +14,7 @@
 
 library( shiny )
 library( rnaturalearth )
-library( topogRam )
+library( topogram )
 library( dplyr )
 
 
@@ -52,12 +52,12 @@ ui <- fluidPage(
   fluidRow(
     column(
       width = 10, offset = 1,
-      tags$h2("topogRam : update number of iterations with proxy"),
+      tags$h2("topogram : update number of iterations with proxy"),
       sliderInput(
         inputId = "n_iteration", label = "Number of iteration (more takes longer)",
         min = 1, max = 120, value = 20
       ),
-      topogRamOutput(outputId = "carto", height = "600px")
+      topogramOutput(outputId = "carto", height = "600px")
     )
   )
 )
@@ -66,7 +66,7 @@ server <- function(input, output, session) {
 
   # Initialize
   output$carto <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = fr_data,
       value = "femmes_0_a_19_ans",
       tooltip_label = ~name,

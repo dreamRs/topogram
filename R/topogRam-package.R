@@ -3,22 +3,22 @@
 #' This package allow you to use cartogram-chart.js (\url{https://github.com/vasturiano/cartogram-chart}),
 #' an interactive contiguous cartogram reusable chart for visualizing geographical data.
 #'
-#' @name topogRam-package
+#' @name topogram-package
 #' @docType package
 #' @author Victor Perrier (@@dreamRs_fr)
 NULL
 
-#' topogRam exported operators and S3 methods
+#' topogram exported operators and S3 methods
 #'
 #' The following functions are imported and then re-exported
-#' from the topogRam package to avoid listing the magrittr
-#' as Depends of topogRam
+#' from the topogram package to avoid listing the magrittr
+#' as Depends of topogram
 #'
-#' @name topogRam-exports
+#' @name topogram-exports
 NULL
 
 #' @importFrom magrittr %>%
 #' @name %>%
 #' @export
-#' @rdname topogRam-exports
+#' @rdname topogram-exports
 NULL

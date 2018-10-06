@@ -61,7 +61,7 @@ dropNulls <- function(x) {
 
 
 
-# Check params for topogRam
+# Check params for topogram
 
 check_sf <- function(obj) {
   if (!"sf" %in% class(obj)) {
@@ -78,14 +78,14 @@ check_variables <- function(data, vars) {
 check_na <- function(data, vars) {
   vars <- unlist(vars, use.names = FALSE, recursive = TRUE)
   if (anyNA(data[, vars])) {
-    stop("topogRam does not support missing values.", call. = FALSE)
+    stop("topogram does not support missing values.", call. = FALSE)
   }
 }
 
 
 
 check_locale <- function(x) {
-  json <- list.files(system.file("htmlwidgets/locale", package = "topogRam"))
+  json <- list.files(system.file("htmlwidgets/locale", package = "topogram"))
   njson <- gsub("\\.json", "", json)
   if (!x %in% njson) {
     stop(paste(

@@ -6,21 +6,21 @@ ui <- fluidPage(
   fluidRow(
     column(
       width = 6,
-      topogRamOutput(outputId = "carto1")
+      topogramOutput(outputId = "carto1")
     ),
     column(
       width = 6,
-      topogRamOutput(outputId = "carto2")
+      topogramOutput(outputId = "carto2")
     )
   ),
   fluidRow(
     column(
       width = 6,
-      topogRamOutput(outputId = "carto3")
+      topogramOutput(outputId = "carto3")
     ),
     column(
       width = 6,
-      topogRamOutput(outputId = "carto4")
+      topogramOutput(outputId = "carto4")
     )
   )
 )
@@ -28,7 +28,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   output$carto1 <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = fr_data,
       value = "femmes_20_a_39_ans",
       tooltip_label = ~name,
@@ -39,7 +39,7 @@ server <- function(input, output, session) {
   })
 
   output$carto2 <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = fr_data,
       value = "femmes_20_a_39_ans",
       tooltip_label = ~name,
@@ -51,7 +51,7 @@ server <- function(input, output, session) {
   })
 
   output$carto3 <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = fr_data,
       value = "femmes_20_a_39_ans",
       tooltip_label = ~name,
@@ -62,7 +62,7 @@ server <- function(input, output, session) {
   })
 
   output$carto4 <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = fr_data,
       value = "femmes_20_a_39_ans",
       tooltip_label = ~name,

@@ -14,7 +14,7 @@
 
 library( shiny )
 library( rnaturalearth )
-library( topogRam )
+library( topogram )
 library( dplyr )
 
 
@@ -52,8 +52,8 @@ ui <- fluidPage(
   fluidRow(
     column(
       width = 10, offset = 1,
-      tags$h2("topogRam : retrieve data by clicking"),
-      topogRamOutput(outputId = "carto", height = "600px"),
+      tags$h2("topogram : retrieve data by clicking"),
+      topogramOutput(outputId = "carto", height = "600px"),
       verbatimTextOutput(outputId = "click")
     )
   )
@@ -63,7 +63,7 @@ server <- function(input, output, session) {
 
   # Initialize
   output$carto <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = fr_data,
       value = "femmes_0_a_19_ans",
       tooltip_label = ~name,

@@ -34,13 +34,13 @@
 #'
 #' ## Example from sf
 #'
-#' library(topogRam)
+#' library(topogram)
 #' library(sf)
 #'
 #' demo(nc, ask = FALSE, echo = FALSE)
 #'
 #' # Create a cartogram
-#' topogRam(
+#' topogram(
 #'   shape = nc,
 #'   value = "NWBIR74",
 #'   tooltip_label = ~NAME
@@ -50,7 +50,7 @@
 #' # if you pass several values, a dropdown menu
 #' # will be added on top of the cartogram
 #' # to interactively select variable to use
-#' topogRam(
+#' topogram(
 #'   shape = nc,
 #'   value = c("BIR74", "NWBIR74", "BIR79", "NWBIR79"),
 #'   tooltip_label = ~NAME
@@ -59,7 +59,7 @@
 #'
 #' ## World example
 #'
-#' library(topogRam)
+#' library(topogram)
 #' library(sf)
 #' library(rnaturalearth)
 #'
@@ -69,21 +69,21 @@
 #' # Antarctica is not a whole polygon
 #' wrld <- wrld[wrld$name != "Antarctica", ]
 #'
-#' topogRam(
+#' topogram(
 #'   shape = wrld,
 #'   value = "pop_est",
 #'   tooltip_label = ~name,
 #'   n_iteration = 50
 #' )
 #'
-#' topogRam(
+#' topogram(
 #'   shape = wrld,
 #'   value = c("pop_est", "gdp_md_est"),
 #'   tooltip_label = ~name,
 #'   n_iteration = 30
 #' )
 
-topogRam <- function(shape, value, tooltip_label = NULL,
+topogram <- function(shape, value, tooltip_label = NULL,
                      format_value = NULL, unit_value = "",
                      palette = "Viridis", n_iteration = 20,
                      projection = "Mercator", d3_locale = "en-US",
@@ -129,7 +129,7 @@ topogRam <- function(shape, value, tooltip_label = NULL,
 
 
   check_locale(d3_locale)
-  path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogRam")
+  path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogram")
   if (path != "") {
     d3_locale <- jsonlite::fromJSON(txt = path)
   }
@@ -189,11 +189,11 @@ topogRam <- function(shape, value, tooltip_label = NULL,
 
   # create widget
   createWidget(
-    name = if (select) "topogRamSelect" else "topogRam",
+    name = if (select) "topogramSelect" else "topogram",
     x = x,
     width = width,
     height = height,
-    package = "topogRam",
+    package = "topogram",
     elementId = elementId,
     sizingPolicy = sizingPolicy(
       defaultWidth = "95%",
@@ -210,7 +210,7 @@ topogRam <- function(shape, value, tooltip_label = NULL,
 }
 
 
-topogRam_html <- function(id, style, class, ...) {
+topogram_html <- function(id, style, class, ...) {
   tags$div(
     id = id, class = class, style = style,
     # tags$div(
@@ -228,7 +228,7 @@ topogRam_html <- function(id, style, class, ...) {
 #' @importFrom shiny selectInput
 #' @importFrom htmltools tags attachDependencies tagAppendAttributes
 #' @importFrom rmarkdown html_dependency_jquery
-topogRamSelect_html <- function(id, style, class, ...) {
+topogramSelect_html <- function(id, style, class, ...) {
   selectMenu <- selectInput(
     inputId = paste0(id, "_select"), label = "",
     choices = NULL, selectize = FALSE, width = "300px"

@@ -12,7 +12,7 @@
 # Packages ----------------------------------------------------------------
 
 library( rnaturalearth )
-library( topogRam )
+library( topogram )
 library( dplyr )
 
 
@@ -44,7 +44,7 @@ fr_data
 # Cartogram ---------------------------------------------------------------
 
 # one var
-topogRam(
+topogram(
   shape = fr_data,
   value = "femmes_20_a_39_ans",
   tooltip_label = ~name,
@@ -60,7 +60,7 @@ topogRam(
 
 
 # all vars
-topogRam(
+topogram(
   shape = fr_data,
   value = names(fr_data)[5:22],
   tooltip_label = ~name,

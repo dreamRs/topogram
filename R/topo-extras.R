@@ -1,19 +1,19 @@
 
 #' Utility function to create topogram parameters
 #'
-#' @param topo A \code{topogRam} \code{htmlwidget} object.
+#' @param topo A \code{topogram} \code{htmlwidget} object.
 #' @param name Slot's name to edit
 #' @param ... Arguments for the slot
 #'
-#' @return A \code{topogRam} \code{htmlwidget} object.
+#' @return A \code{topogram} \code{htmlwidget} object.
 #'
 #' @importFrom utils modifyList
 #'
 #' @noRd
 .topo_opt <- function(topo, name, ...) {
 
-  if(!any(class(topo) %in% c("topogRam", "topogRamSelect"))){
-    stop("bb must be a topogRam object")
+  if(!any(class(topo) %in% c("topogram", "topogramSelect"))){
+    stop("bb must be a topogram object")
   }
 
   if (is.null(topo$x$bb_opts[[name]])) {
@@ -27,9 +27,9 @@
 
 
 
-#' Labs for topogRam
+#' Labs for topogram
 #'
-#' @param topo A \code{topogRam} \code{htmlwidget} object.
+#' @param topo A \code{topogram} \code{htmlwidget} object.
 #' @param title Main title.
 #' @param subtitle Subtitle.
 #' @param caption Brief explanation of the source of the data.
@@ -37,10 +37,10 @@
 #' @export
 #'
 #' @examples
-#' library(topogRam)
+#' library(topogram)
 #' data(paris)
 #'
-#' topogRam(
+#' topogram(
 #'   shape = paris,
 #'   value = "TOTAL",
 #'   n_iteration = 10
@@ -58,9 +58,9 @@ add_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 
 
 
-#' Legend for topogRam
+#' Legend for topogram
 #'
-#' @param topo A \code{topogRam} \code{htmlwidget} object.
+#' @param topo A \code{topogram} \code{htmlwidget} object.
 #' @param title Legend title
 #' @param n_cells Number of cells in the legend.
 #' @param label_format A string passed to \code{d3.format},
@@ -75,10 +75,10 @@ add_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 #' @export
 #'
 #' @examples
-#' library(topogRam)
+#' library(topogram)
 #' data(paris)
 #'
-#' topogRam(
+#' topogram(
 #'   shape = paris,
 #'   value = "TOTAL",
 #'   n_iteration = 10
@@ -90,7 +90,7 @@ add_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 #'
 #'
 #' # Format labels favue with D3 format
-#' topogRam(
+#' topogram(
 #'   shape = paris,
 #'   value = "TOTAL",
 #'   n_iteration = 10
@@ -103,7 +103,7 @@ add_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 #'
 #' # No space between cells
 #' # and custom labels
-#' topogRam(
+#' topogram(
 #'   shape = paris,
 #'   value = "TOTAL",
 #'   n_iteration = 10

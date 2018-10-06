@@ -14,7 +14,7 @@
 
 library( shiny )
 library( rnaturalearth )
-library( topogRam )
+library( topogram )
 library( dplyr )
 
 
@@ -40,9 +40,9 @@ ui <- fluidPage(
   fluidRow(
     column(
       width = 10, offset = 1,
-      tags$h2("topogRam : update value with proxy"),
+      tags$h2("topogram : update value with proxy"),
       actionButton(inputId = "update", label = "Update random data"),
-      topogRamOutput(outputId = "carto", height = "600px")
+      topogramOutput(outputId = "carto", height = "600px")
     )
   )
 )
@@ -51,7 +51,7 @@ server <- function(input, output, session) {
 
   # Initialize
   output$carto <- renderTopogRam({
-    topogRam(
+    topogram(
       shape = fr_dept,
       value = "foo",
       tooltip_label = ~name,
