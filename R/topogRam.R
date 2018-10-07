@@ -231,7 +231,7 @@ topogram_html <- function(id, style, class, ...) {
 topogramSelect_html <- function(id, style, class, ...) {
   selectMenu <- selectInput(
     inputId = paste0(id, "_select"), label = "",
-    choices = NULL, selectize = FALSE, width = "300px"
+    choices = NULL, selectize = FALSE, width = "350px"
   )
   selectMenu$children[[2]]$children[[1]] <- tagAppendAttributes(
     tag = selectMenu$children[[2]]$children[[1]],

@@ -34,7 +34,7 @@ str(eu_wine)
 
 # europe <- ne_countries(scale = 50, continent = "europe", returnclass = "sf")
 europe <- get_eurostat_geospatial(output_class = "sf", resolution = "10", nuts_level = 0, year = 2016)
-europe <- st_crop(europe, xmin = -20, ymin = 30, xmax = 35, ymax = 75)
+europe <- st_crop(europe, xmin = -20, ymin = 25, xmax = 35, ymax = 75)
 
 
 
@@ -49,33 +49,40 @@ europe <- europe %>%
     y = eu_wine %>% filter(
       prod_bal == "P.D.O. - Red and rose wine",
       bal_item == "Gross human consumption (1000 hl)",
-      format(time, "%Y") == "2016"
-    ) %>% select(geo_code, name = geo, red_wine = values),
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, name = geo, red_wine = values),
     by = c("id" = "geo_code")
   ) %>%
   inner_join(
     y = eu_wine %>% filter(
       prod_bal == "P.D.O. -  white wine",
       bal_item == "Gross human consumption (1000 hl)",
-      format(time, "%Y") == "2016"
-    ) %>% select(geo_code, white_wine = values),
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, white_wine = values),
     by = c("id" = "geo_code")
   ) %>%
   inner_join(
     y = eu_wine %>% filter(
       prod_bal == "Red and rose wine",
       bal_item == "Gross human consumption per capita (lt/head)",
-      format(time, "%Y") == "2015"
-    ) %>% select(geo_code, red_wine_per_capita = values),
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, red_wine_per_capita = values),
     by = c("id" = "geo_code")
   ) %>%
   inner_join(
     y = eu_wine %>% filter(
       prod_bal == "White wine",
       bal_item == "Gross human consumption per capita (lt/head)",
-      format(time, "%Y") == "2015"
-    ) %>% select(geo_code, white_wine_per_capita = values) %>%
-      mutate(white_wine_per_capita = if_else(white_wine_per_capita == 0, 1, white_wine_per_capita)),
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, white_wine_per_capita = values),
     by = c("id" = "geo_code")
   )
 
@@ -100,12 +107,12 @@ topogram(shape = europe, value = c("red_wine", "white_wine"), n_iteration = 60)
 topogram(
   shape = europe,
   value = list(
-    "Total vin rouge" = "red_wine",
-    "Total vin blanc" = "white_wine",
-    "Vin rouge par habitant" = "red_wine_per_capita",
-    "Vin blanc par habitant" = "white_wine_per_capita"
+    "Total vin rouge (en milliers d'hectolitres)" = "red_wine",
+    "Total vin blanc (en milliers d'hectolitres)" = "white_wine",
+    "Vin rouge par habitant (litre/hab)" = "red_wine_per_capita",
+    "Vin blanc par habitant (litre/hab)" = "white_wine_per_capita"
   ),
-  n_iteration = 60,
+  n_iteration = 40,
   format_value = ",",
   d3_locale = "fr-FR"
 ) %>% add_legend(
@@ -115,6 +122,7 @@ topogram(
   label_format = ",.2r" #.2s
 ) %>% add_labs(
   title = "Consommation de vin en Europe",
+  subtitle = "en 2013",
   caption = "Source Eurostat"
 )
 
