@@ -2,7 +2,7 @@
 
 > Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology (using [cartogram-chart](https://github.com/vasturiano/cartogram-chart))
 
-[![Travis build status](https://travis-ci.org/dreamRs/topogRam.svg?branch=master)](https://travis-ci.org/dreamRs/topogRam)
+[![Travis build status](https://travis-ci.org/dreamRs/topogram.svg?branch=master)](https://travis-ci.org/dreamRs/topogram)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
 
@@ -92,7 +92,7 @@ An example in a R markdown document is availabe here : https://pvictor.github.io
 
 A proxy method is implemented to update an existing cartogram with classic Shiny inputs.
 
-![](img/topogram-proxy.gif)
+![](img/example-proxy.gif)
 
 
 
