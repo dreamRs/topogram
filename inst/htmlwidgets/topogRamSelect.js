@@ -10,19 +10,46 @@ HTMLWidgets.widget({
 
     var padding = 30;
 
-      Array.prototype.max = function() {
-        return Math.max.apply(null, this);
-      };
+    Array.prototype.max = function() {
+      return Math.max.apply(null, this);
+    };
 
-      Array.prototype.min = function() {
-        return Math.min.apply(null, this);
-      };
+    Array.prototype.min = function() {
+      return Math.min.apply(null, this);
+    };
+
+    function removeElement(elementId) {
+      var element = document.getElementById(elementId);
+      element.parentNode.removeChild(element);
+    }
 
     return {
 
       renderValue: function(x) {
 
         palette = x.palette;
+
+        if (!x.labs) {
+          removeElement(el.id + '-title');
+          removeElement(el.id + '-subtitle');
+          removeElement(el.id + '-caption');
+        } else {
+          if (x.labsOpts.title !== null) {
+            document.getElementById(el.id + '-title').innerHTML = x.labsOpts.title;
+          } else {
+            removeElement(el.id + '-title');
+          }
+          if (x.labsOpts.subtitle !== null) {
+            document.getElementById(el.id + '-subtitle').innerHTML = x.labsOpts.subtitle;
+          } else {
+            removeElement(el.id + '-subtitle');
+          }
+          if (x.labsOpts.caption !== null) {
+            document.getElementById(el.id + '-caption').innerHTML = x.labsOpts.caption;
+          } else {
+            removeElement(el.id + '-caption');
+          }
+        }
 
         // select menu
         var $selectMenu = $('#' + el.id + '_select');
@@ -60,7 +87,7 @@ HTMLWidgets.widget({
           .valFormatter(x.format_value)
           .units(x.unit_value)
           //.onClick(function(d) {console.info(d)})
-          (document.getElementById(el.id));
+          (document.getElementById(el.id + '-topogram'));
 
 
           if (HTMLWidgets.shinyMode) {
@@ -110,7 +137,7 @@ HTMLWidgets.widget({
             carto
               .color(function(d) {
                 var colorScale = d3.scaleSequential(d3[palette]).domain([Math.min.apply(null, values), Math.max.apply(null, values)]);
-                if (typeof lgdTopo !== 'undefined') {
+                if (typeof legendSequential !== 'undefined') {
                   legendSequential.scale(colorScale);
                   svg.select(".legendSequential")
                     .call(legendSequential);

@@ -239,10 +239,12 @@ topogramSelect_html <- function(id, style, class, ...) {
   )
   attachDependencies(
     x = tags$div(
+      id = id, class = class, style = style,
+      tags$div(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold; font-size: 160%;"),
+      tags$div(id = paste0(id, "-subtitle"), class = "topogram-subtitle", style = "font-size: 110%;"),
       selectMenu,
-      tags$div(
-        id = id, class = class, style = style
-      )
+      tags$div(id = paste0(id, "-topogram")),
+      tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "position: absolute; bottom: 0; right: 15px;")
     ),
     value = html_dependency_jquery()
   )
