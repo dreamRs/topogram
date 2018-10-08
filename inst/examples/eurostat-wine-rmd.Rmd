@@ -1,0 +1,124 @@
+---
+title: "Consommation de vin en Europe"
+author: "Victor"
+date: "8 octobre 2018"
+output: html_document
+---
+
+
+## Donn&eacute;es
+
+Les donn&eacute;es viennent d'Eurostat et ont &eacute;t&eacute; r&eacute;cup&eacute;r&eacute;es via le package [`eurostat`](https://github.com/rOpenGov/eurostat). Les contours g&eacute;ographiques viennent &eacute;galement d'Eurostat.
+
+
+Pour pouvoir construire un cartogramme, les donn&eacute;es doivent &ecirc;tre au format `sf` et contenir une variable numérique ne contenant pas de valeurs manquantes ni de 0 pour déformer les formes g&eacute;ographiques !
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# Packages ----------------------------------------------------------------
+
+library(topogram)
+library(sf)
+library(eurostat)
+library(dplyr)
+
+
+
+
+# Eurostat data -----------------------------------------------------------
+
+eu_wine <- get_eurostat(id = "apro_cpb_wine", stringsAsFactors = FALSE)
+eu_wine <- label_eurostat(eu_wine, code = "geo")
+# str(eu_wine)
+
+
+
+
+# Geographical data -------------------------------------------------------
+
+# europe <- ne_countries(scale = 50, continent = "europe", returnclass = "sf")
+europe <- get_eurostat_geospatial(output_class = "sf", resolution = "10", nuts_level = 0, year = 2016)
+europe <- st_crop(europe, xmin = -20, ymin = 25, xmax = 35, ymax = 75)
+
+
+
+
+# Prepare data ------------------------------------------------------------
+
+# Merge data
+europe <- europe %>%
+  select(NUTS_NAME, id) %>%
+  inner_join(
+    y = eu_wine %>% filter(
+      prod_bal == "P.D.O. - Red and rose wine",
+      bal_item == "Gross human consumption (1000 hl)",
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, name = geo, red_wine = values),
+    by = c("id" = "geo_code")
+  ) %>%
+  inner_join(
+    y = eu_wine %>% filter(
+      prod_bal == "P.D.O. -  white wine",
+      bal_item == "Gross human consumption (1000 hl)",
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, white_wine = values),
+    by = c("id" = "geo_code")
+  ) %>%
+  inner_join(
+    y = eu_wine %>% filter(
+      prod_bal == "Red and rose wine",
+      bal_item == "Gross human consumption per capita (lt/head)",
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, red_wine_per_capita = values),
+    by = c("id" = "geo_code")
+  ) %>%
+  inner_join(
+    y = eu_wine %>% filter(
+      prod_bal == "White wine",
+      bal_item == "Gross human consumption per capita (lt/head)",
+      format(time, "%Y") == "2013"
+    ) %>%
+      mutate(values = if_else(values == 0, 1, values)) %>%
+      select(geo_code, white_wine_per_capita = values),
+    by = c("id" = "geo_code")
+  )
+```
+
+
+
+## Cartogramme
+
+Dans un document markdown, on peut passer plusieurs vairables comme argument à la fonction `topogram` pour ajouter un menu d\u00earoulant au-dessus du cartogramme : 
+
+```{r}
+topogram(
+  shape = europe,
+  value = list(
+    "Total vin rouge (en milliers d'hectolitres)" = "red_wine",
+    "Total vin blanc (en milliers d'hectolitres)" = "white_wine",
+    "Vin rouge par habitant (litre/hab)" = "red_wine_per_capita",
+    "Vin blanc par habitant (litre/hab)" = "white_wine_per_capita"
+  ),
+  n_iteration = 40,
+  format_value = ",",
+  d3_locale = "fr-FR", 
+  height = "600px"
+) %>% add_legend(
+  title = "",
+  title_width = 200,
+  orientation = "vertical",
+  label_format = ",.2r" #.2s
+) %>% add_labs(
+  title = "Consommation de vin en Europe",
+  subtitle = "en 2013",
+  caption = "Source : Eurostat"
+)
+```
+
+

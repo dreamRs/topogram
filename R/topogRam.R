@@ -244,7 +244,7 @@ topogramSelect_html <- function(id, style, class, ...) {
       tags$div(id = paste0(id, "-subtitle"), class = "topogram-subtitle", style = "font-size: 110%;"),
       selectMenu,
       tags$div(id = paste0(id, "-topogram")),
-      tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "position: absolute; bottom: 0; right: 15px;")
+      tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "float: right;")
     ),
     value = html_dependency_jquery()
   )
