@@ -1,29 +1,13 @@
 Package: topogram
 Title: Create Continuous Cartogram in 'D3.js'
-Version: 0.2.9700
+Version: 1.0.0
 Authors@R: c(
-      person(
-        "Victor", "Perrier"
-        , role = c("aut", "cre")
-        , comment = "R interface"
-        , email = "victor.perrier@dreamRs.fr"
-      ),
-      person(
-        "Mike", "Bostock"
-        , role = c("cph")
-        , comment = "d3.js library in htmlwidgets/lib, http://d3js.org"
-      ),
-      person(
-        "Shawn", "Allen"
-        , role = c("cph")
-        , comment = "topogram library"
-      ),
-      person(
-        "Vasco", "Asturiano"
-        , role = c("cph")
-        , comment = "cartogram-chart library in htmlwidgets/lib, https://github.com/vasturiano/cartogram-chart"
-      ),
-      person("Carlos", "Herrera", role = c("ctb"), comment = "Include Spain (in previous release)")
+      person("Victor", "Perrier", role = c("aut", "cre"), comment = "R interface", email = "victor.perrier@dreamRs.fr"),
+      person("Fanny", "Meyer", role = "aut", email = "fanny.meyer@dreamRs.fr"),
+      person("Mike", "Bostock", role = "cph", comment = "d3.js library in htmlwidgets/lib, http://d3js.org"),
+      person("Shawn", "Allen", role = "cph", comment = "topogram library"),
+      person("Vasco", "Asturiano", role = "cph", comment = "cartogram-chart library in htmlwidgets/lib, https://github.com/vasturiano/cartogram-chart"),
+      person("Carlos", "Herrera", role = "ctb", comment = "Include Spain (in previous release)")
     )
 Description: Cartogram 'htmlwidget' for visualizing geographical data by distorting a TopoJson topology.
 Depends: R (>= 2.10)
