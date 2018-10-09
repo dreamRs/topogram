@@ -85,7 +85,7 @@ topogram(
 
 You can pass several column names, in that case a dropdown menu is added to the widget to select the variable used to distort topology. Use this in markdown to add interactivity.
 
-An example in a R markdown document is availabe here : https://pvictor.github.io/NZ-topogram/
+An example in a R markdown document is availabe here : https://pvictor.github.io/NZ-topogram/ and an other one here : https://pvictor.github.io/cartogramme-vin/
 
 
 ### Shiny
