@@ -26,7 +26,7 @@
 #' @export
 #'
 #' @importFrom htmlwidgets createWidget JS sizingPolicy
-#' @importFrom geojsonio geojson_json geojson_list geo2topo
+#' @importFrom geojsonio geojson_json geo2topo
 #' @importFrom stats model.frame
 #' @importFrom utils packageVersion
 #'
@@ -94,9 +94,6 @@ topogram <- function(shape, value, tooltip_label = NULL,
   check_variables(shape, value)
   check_na(shape, value)
 
-  if (packageVersion("geojsonio") < "0.6.0.9100")
-    stop("You need geojsonio >= 0.6.0.9100 to use this function.", call. = FALSE)
-
   projection <- match.arg(
     arg = projection,
     choices = c("Mercator", "Albers", "ConicEqualArea", "NaturalEarth1",
@@ -156,12 +153,10 @@ topogram <- function(shape, value, tooltip_label = NULL,
     select <- FALSE
   }
 
-  geo_list <- geojson_list(input = shape)
-  for (i in seq_along(geo_list$features)) {
-    geo_list$features[[i]]$id <- i - 1
-    geo_list$features[[i]]$properties$id <- i - 1
-  }
-  geo_json <- geojson_json(input = geo_list)
+
+  # convert to geojson
+  shape$topogram_id <- seq_len(nrow(shape)) - 1
+  geo_json <- geojson_json(input = shape)
 
   # convert to topojson
   geo_topo <- geo2topo(x = geo_json, object_name = "states", quantization = 1e5)

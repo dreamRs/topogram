@@ -47,7 +47,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   # Initialize
-  output$carto <- renderTopogRam({
+  output$carto <- renderTopogram({
     topogram(
       shape = paris,
       value = "AGE_00",

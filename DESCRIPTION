@@ -1,6 +1,6 @@
 Package: topogram
 Title: Create Continuous Cartogram in 'D3.js'
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: c(
       person("Victor", "Perrier", role = c("aut", "cre"), comment = "R interface", email = "victor.perrier@dreamRs.fr"),
       person("Fanny", "Meyer", role = "aut", email = "fanny.meyer@dreamRs.fr"),
@@ -13,7 +13,7 @@ Description: Cartogram 'htmlwidget' for visualizing geographical data by distort
 Depends: R (>= 2.10)
 Imports: 
     htmlwidgets,
-    geojsonio,
+    geojsonio (>= 0.6.0.9100),
     htmltools,
     shiny,
     rmarkdown,

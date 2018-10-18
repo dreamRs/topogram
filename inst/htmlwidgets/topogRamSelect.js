@@ -82,7 +82,7 @@ HTMLWidgets.widget({
           .label(function(d) {
             //console.log(d);
             //return "Population of" + d.properties.name + "(" + d.properties[x.value] + ")";
-            return x.tooltip_label[d.id];
+            return x.tooltip_label[d.properties.topogram_id];
           })
           .valFormatter(x.format_value)
           .units(x.unit_value)
@@ -96,7 +96,7 @@ HTMLWidgets.widget({
                 if (x.layerId === null) {
                   Shiny.onInputChange(el.id + '_click', d.properties);
                 } else {
-                  Shiny.onInputChange(el.id + '_click', x.layerId[d.id]);
+                  Shiny.onInputChange(el.id + '_click', x.layerId[d.properties.topogram_id]);
                 }
               });
           }

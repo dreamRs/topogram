@@ -78,7 +78,7 @@ HTMLWidgets.widget({
           .label(function(d) {
             //console.log(d);
             //return "Population of" + d.properties.name + "(" + d.properties[x.value] + ")";
-            return tooltip_label[d.id];
+            return tooltip_label[d.properties.topogram_id];
           })
           .valFormatter(format_value)
           .units(x.unit_value)
@@ -91,7 +91,7 @@ HTMLWidgets.widget({
                 if (x.layerId === null) {
                   Shiny.onInputChange(el.id + '_click', d.properties);
                 } else {
-                  Shiny.onInputChange(el.id + '_click', x.layerId[d.id]);
+                  Shiny.onInputChange(el.id + '_click', x.layerId[d.properties.topogram_id]);
                 }
               });
           }
@@ -243,7 +243,7 @@ if (HTMLWidgets.shinyMode) {
           })
           .valFormatter(fval)
           .label(function(d) {
-            return tlab[d.id];
+            return tlab[d.properties.topogram_id];
           });
         //console.log(values);
         carto
@@ -283,14 +283,15 @@ if (HTMLWidgets.shinyMode) {
         }
         carto
           .color(function(d) {
-            return colorScale(params.data.new_value[d.id]);
+            return colorScale(params.data.new_value[d.properties.topogram_id]);
           })
           .value(function(d) {
-            return params.data.new_value[d.id];
+            console.log(d);
+            return params.data.new_value[d.properties.topogram_id];
           })
           .valFormatter(fval)
           .label(function(d) {
-            return tlab[d.id];
+            return tlab[d.properties.topogram_id];
           });
       }
   });

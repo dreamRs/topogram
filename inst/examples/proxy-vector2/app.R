@@ -50,7 +50,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   # Initialize
-  output$carto <- renderTopogRam({
+  output$carto <- renderTopogram({
     topogram(
       shape = fr_dept,
       value = "foo",
