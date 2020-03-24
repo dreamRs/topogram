@@ -2,8 +2,10 @@
 
 > Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology (using [cartogram-chart](https://github.com/vasturiano/cartogram-chart))
 
+<!-- badges: start -->
 [![Travis build status](https://travis-ci.org/dreamRs/topogram.svg?branch=master)](https://travis-ci.org/dreamRs/topogram)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+<!-- badges: end -->
 
 
 ### Installation
@@ -11,21 +13,14 @@
 Install from GitHub:
 
 ```r
-# with remotes
 remotes::install_github("dreamRs/topogram")
-
-# or with install-github.me service (based on remotes)
-source("https://install-github.me/dreamRs/topogram")
-
-# or with devtools:
-devtools::install_github("dreamRs/topogram")
 ```
 
 
 ### Features
 
 
-![](img/features.png)
+![](man/figures/features.png)
 
 
 ### Examples
@@ -33,8 +28,8 @@ devtools::install_github("dreamRs/topogram")
 Use a {sf} object as input :
 
 ```r
-library( rnaturalearth )
-library( topogram )
+library(rnaturalearth)
+library(topogram)
 
 # sf polygons
 fr_dept <- ne_states(country = "france", returnclass = "sf")
@@ -43,21 +38,21 @@ fr_dept <- fr_dept[fr_dept$type_en %in% "Metropolitan department", ]
 # Add a numeric column
 fr_dept$foo <- sample.int(100, nrow(fr_dept))
 
-# Create cartogram
+# Create a cartogram
 topogram(
   shape = fr_dept, 
   value = "foo"
 )
 ```
 
-![](img/france.png)
+![](man/figures/france.png)
 
 
 ```r
-library( rnaturalearth )
-library( eurostat )
-library( sf )
-library( topogram )
+library(rnaturalearth)
+library(eurostat)
+library(sf)
+library(topogram)
 
 # Get polygons
 europe <- ne_countries(scale = 50, continent = "europe", returnclass = "sf")
@@ -68,7 +63,7 @@ europe <- st_crop(europe, xmin = -20, ymin = 10, xmax = 35, ymax = 75)
 # Add a numeric column 
 europe$foo <- sample.int(100, nrow(europe))
 
-# Create cartogram
+# Create a cartogram
 topogram(
   shape = europe, 
   value = "foo", 
@@ -77,7 +72,7 @@ topogram(
   palette = "Blues"
 )
 ```
-![](img/europe.png)
+![](man/figures/europe.png)
 
 
 
@@ -92,7 +87,7 @@ An example in an R markdown document is availabe here : https://pvictor.github.i
 
 A proxy method is implemented to update an existing cartogram with classic Shiny inputs.
 
-![](img/example-proxy.gif)
+![](man/figures/example-proxy.gif)
 
 
 

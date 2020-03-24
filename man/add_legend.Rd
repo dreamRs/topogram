@@ -4,9 +4,18 @@
 \alias{add_legend}
 \title{Legend for topogram}
 \usage{
-add_legend(topo, title, n_cells = 10, label_format = ".2f",
-  labels = NULL, orientation = "horizontal", cells_width = 30,
-  cells_height = 15, cells_padding = 2, title_width = 100)
+add_legend(
+  topo,
+  title,
+  n_cells = 10,
+  label_format = ".2f",
+  labels = NULL,
+  orientation = "horizontal",
+  cells_width = 30,
+  cells_height = 15,
+  cells_padding = 2,
+  title_width = 100
+)
 }
 \arguments{
 \item{topo}{A \code{topogram} \code{htmlwidget} object.}

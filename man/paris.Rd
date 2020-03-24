@@ -4,7 +4,8 @@
 \name{paris}
 \alias{paris}
 \title{Population of Paris by age in 2014}
-\format{A data frame with 20 observations on the following 15 variables.
+\format{
+A data frame with 20 observations on the following 15 variables.
 \describe{
   \item{\code{CODE_INSEE}}{Code of the district}
   \item{\code{LIB}}{Label of the district}
@@ -21,7 +22,8 @@
   \item{\code{AGE_80}}{Population of people aged 80 and over}
   \item{\code{TOTAL}}{Population total}
   \item{\code{geometry}}{a sfc_POLYGON}
-}}
+}
+}
 \source{
 INSEE (\url{https://www.insee.fr/fr/statistiques/1893198}) and \url{opendata.paris.fr}
 }

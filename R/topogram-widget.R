@@ -1,6 +1,6 @@
-#' Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology
+#' @title Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology
 #'
-#' Continuous area cartograms with `d3.js`
+#' @description Continuous area cartograms with `d3.js`
 #'
 #' @param shape An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).
 #' @param value Variable name to use to distort topology. You can use a character vector or a named list of length > 1,
@@ -195,9 +195,6 @@ topogram <- function(shape, value, tooltip_label = NULL,
       # defaultHeight = "90%",
       viewer.defaultHeight = "100%",
       viewer.defaultWidth = "100%",
-      knitr.figure = FALSE,
-      viewer.suppress = TRUE,
-      browser.external = TRUE,
       browser.fill = TRUE,
       padding = 10
     )

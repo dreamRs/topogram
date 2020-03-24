@@ -4,7 +4,8 @@
 \name{pop_france}
 \alias{pop_france}
 \title{French population estimate as at 1er January 2018}
-\format{A data frame with 101 observations on the following 20 variables.
+\format{
+A data frame with 101 observations on the following 20 variables.
 \describe{
   \item{\code{departements_code}}{Department code}
   \item{\code{departements_lib}}{Department label}
@@ -26,7 +27,8 @@
   \item{\code{femmes_60_a_74_ans}}{Total population of women aged 60-74 years}
   \item{\code{femmes_75_ans_et_plus}}{Total population of women aged 75 and over}
   \item{\code{femmes_total}}{Total population of women}
-}}
+}
+}
 \source{
 INSEE (\url{https://www.insee.fr/fr/statistiques/1893198})
 }

@@ -1,9 +1,9 @@
 Package: topogram
 Title: Create Continuous Cartogram in 'D3.js'
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(
-      person("Victor", "Perrier", role = c("aut", "cre"), comment = "R interface", email = "victor.perrier@dreamRs.fr"),
-      person("Fanny", "Meyer", role = "aut", email = "fanny.meyer@dreamRs.fr"),
+      person("Victor", "Perrier", role = c("aut", "cre"), email = "victor.perrier@dreamRs.fr"),
+      person("Fanny", "Meyer", role = "aut"),
       person("Mike", "Bostock", role = "cph", comment = "d3.js library in htmlwidgets/lib, http://d3js.org"),
       person("Shawn", "Allen", role = "cph", comment = "topogram library"),
       person("Vasco", "Asturiano", role = "cph", comment = "cartogram-chart library in htmlwidgets/lib, https://github.com/vasturiano/cartogram-chart"),
@@ -22,8 +22,7 @@ Imports:
 Suggests: 
     rnaturalearth,
     sf
-Remotes: ropensci/geojsonio
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 7.1.0
