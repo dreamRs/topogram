@@ -10,6 +10,7 @@ Authors@R: c(
 Depends: R (>= 2.10)
 Imports: 
     geojsonio (>= 0.6.1),
+    glue,
     htmlwidgets,
     htmltools,
     jsonlite,

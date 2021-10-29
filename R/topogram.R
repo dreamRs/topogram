@@ -3,21 +3,12 @@
 #' @description Continuous area cartograms with `d3.js`
 #'
 #' @param shape An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).
-#' @param value Variable name to use to distort topology. You can use a character vector or a named list of length > 1,
-#'  in that case a dropdownmenu will be added to select a variable.
-#' @param tooltip_label Formula for tooltip's label.
-#' @param format_value A string passed to \code{d3.format},
-#'  see \url{https://github.com/d3/d3-format}.
-#' @param unit_value Character, the value unit, to include in the tooltip.
+#' @param value Variable name to use to distort topology.
+#' @param label `glue` string to be used in tooltip, you can use HTML tags in it.
 #' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
-#' @param projection D3 projection to use among : \code{"Mercator"}, \code{"Albers"}, \code{"ConicEqualArea"}, \code{"NaturalEarth1"},
-#'  \code{"Eckert1"}, \code{"Eckert2"}, \code{"Eckert3"}, \code{"Eckert4"}, \code{"Eckert5"}, \code{"Eckert6"}, \code{"Wagner4"},
-#'  \code{"Wagner6"}, \code{"Wagner7"}, \code{"Armadillo"}.
-#' @param d3_locale Locale for \code{d3_format}, for exemple \code{"fr-FR"} for french,
-#'  see possible values here \url{https://github.com/d3/d3-format/tree/master/locale}.
-#' @param select_label Label for the dropdown menu if \code{length(value) > 1}.
+#' @param projection Name of a projection, see availableones here: https://github.com/d3/d3-geo-projection
 #' @param layerId A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.
 #' @param width A numeric input in pixels.
 #' @param height A numeric input in pixels.
@@ -28,7 +19,8 @@
 #' @importFrom htmlwidgets createWidget JS sizingPolicy
 #' @importFrom geojsonio geojson_json geo2topo
 #' @importFrom stats model.frame
-#' @importFrom utils packageVersion
+#' @importFrom scales col_numeric
+#' @importFrom glue glue_data
 #'
 #' @examples
 #'
@@ -85,15 +77,11 @@
 
 topogram <- function(shape, 
                      value, 
-                     tooltip_label = NULL,
-                     format_value = NULL, 
-                     unit_value = "",
+                     label = "{value}",
                      palette = "viridis",
                      na_color = "#808080",
                      n_iteration = 20,
                      projection = "geoMercator", 
-                     d3_locale = "en-US",
-                     select_label = NULL, 
                      layerId = NULL,
                      width = NULL,
                      height = NULL, 
@@ -103,49 +91,9 @@ topogram <- function(shape,
   check_variables(shape, value)
   check_na(shape, value)
   
-  if (!is.null(tooltip_label)) {
-    tooltip_label <- model.frame(formula = tooltip_label, data = shape)[[1]]
-  } else {
-    if (!is.null(shape$name)) {
-      tooltip_label <- shape$name
-    } else {
-      tooltip_label <- rep_len("", nrow(shape))
-    }
-  }
-  
   if (!is.null(layerId)) {
     layerId <- model.frame(formula = layerId, data = shape)[[1]]
   }
-  
-  
-  check_locale(d3_locale)
-  path <- system.file(file.path("locales", paste0(d3_locale, ".json")), package = "topogram")
-  if (path != "") {
-    d3_locale <- jsonlite::fromJSON(txt = path)
-  }
-  
-  if (is.null(format_value)) {
-    format_value <- JS("function(n) {return n;}")
-  } else {
-    if (is.null(d3_locale)) {
-      format_value <- sprintf('d3.format("%s")', format_value)
-    } else {
-      format_value <- paste0('d3.formatLocale(', jsonlite::toJSON(x = d3_locale), sprintf(').format("%s")', format_value))
-    }
-    format_value <- JS(format_value)
-  }
-  
-  if (length(value) > 1) {
-    select <- TRUE
-    values <- choicesWithNames(value)
-    select_opts <- selectOptions(values)
-    value <- unlist(value, use.names = FALSE)[1]
-    select_label <- if (is.null(select_label)) "" else select_label
-  } else {
-    select_opts <- list()
-    select <- FALSE
-  }
-  
   
   # add id for shapes
   shape$topogram_id <- seq_len(nrow(shape)) - 1
@@ -162,6 +110,12 @@ topogram <- function(shape,
   } else {
     stop("'palette' must a character (palette name) or a function (see ?scales::col_numeric)")
   }
+  # set label
+  label <- htmltools::doRenderTags(tags$div(
+    style = "margin-top:-25px;",
+    label
+  ))
+  shape$topogram_label <- glue::glue_data(shape, label, value = values)
   # convert to geojson
   geo_json <- geojson_json(input = shape)
   
@@ -171,15 +125,11 @@ topogram <- function(shape,
   x <- list(
     shape = geo_topo,
     value = value,
-    tooltip_label = tooltip_label,
-    format_value = format_value,
-    unit_value = unit_value,
     n_iteration = n_iteration,
     layerId = layerId,
     projection = projection,
     labs = FALSE,
     labsOpts = list(),
-    d3_locale = jsonlite::toJSON(x = d3_locale, auto_unbox = FALSE),
     legend = FALSE,
     legendOpts = list()
   )

@@ -19,9 +19,6 @@ HTMLWidgets.widget({
       projection,
       topoWidth,
       topoHeight,
-      palette,
-      format_value,
-      tooltip_label,
       svg;
 
     var padding = 20;
@@ -30,16 +27,10 @@ HTMLWidgets.widget({
 
       renderValue: function(x) {
 
-        // Color palette
-        palette = x.palette;
-        // Tooltip val formatter
-        format_value = x.format_value;
-        // Tooltip label
-        tooltip_label = x.tooltip_label;
-
         // Set labs (title, subtitle, caption)
         utils.setLabs(el.id, x.labs, x.labsOpts);
 
+        // sizing
         topoWidth = width - padding;
         topoHeight = height - padding;
 
@@ -63,14 +54,12 @@ HTMLWidgets.widget({
           .color(function(d) {
             return d.properties.topogram_color;
           })
-          .label(function(d) {
-            //console.log(d);
-            //return "Population of" + d.properties.name + "(" + d.properties[x.value] + ")";
-            return tooltip_label[d.properties.topogram_id];
+          .tooltipContent(function(d) {
+            return d.properties.topogram_label;
           })
-          .valFormatter(format_value)
-          .units(x.unit_value)(
-          //.onClick(function(d) {console.info(d)})
+          .valFormatter(function() {
+           return "";
+          })(
           document.getElementById(el.id + "-topogram")
         );
 
