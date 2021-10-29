@@ -85,7 +85,7 @@ check_na <- function(data, vars) {
 
 
 check_locale <- function(x) {
-  json <- list.files(system.file("htmlwidgets/locale", package = "topogram"))
+  json <- list.files(system.file("locales", package = "topogram"))
   njson <- gsub("\\.json", "", json)
   if (!x %in% njson) {
     stop(paste(

@@ -24,7 +24,7 @@ HTMLWidgets.widget({
       legendSequential,
       svg;
 
-    var padding = 30;
+    var padding = 0;
 
     function removeElement(elementId) {
       var element = document.getElementById(elementId);
@@ -70,7 +70,6 @@ HTMLWidgets.widget({
         topoWidth = width - padding;
         topoHeight = height - padding;
 
-        console.log(proj);
         projection = proj[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
         projection.fitExtent(

@@ -134,7 +134,7 @@ topogram <- function(shape,
   
   
   check_locale(d3_locale)
-  path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogram")
+  path <- system.file(file.path("locales", paste0(d3_locale, ".json")), package = "topogram")
   if (path != "") {
     d3_locale <- jsonlite::fromJSON(txt = path)
   }
