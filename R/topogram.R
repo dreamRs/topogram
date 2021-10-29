@@ -88,7 +88,8 @@ topogram <- function(shape,
                      tooltip_label = NULL,
                      format_value = NULL, 
                      unit_value = "",
-                     palette = "Viridis",
+                     palette = "viridis",
+                     na_color = "#808080",
                      n_iteration = 20,
                      projection = "Mercator", 
                      d3_locale = "en-US",
@@ -107,15 +108,6 @@ topogram <- function(shape,
     choices = c("Mercator", "Albers", "ConicEqualArea", "NaturalEarth1",
                 "Eckert1", "Eckert2", "Eckert3", "Eckert4", "Eckert5", "Eckert6",
                 "Wagner4", "Wagner6", "Wagner7", "Armadillo")
-  )
-  palette <- match.arg(
-    arg = palette, choices = c(
-      "Viridis", "Inferno", "Magma", "Plasma", "Warm", "Cool", "CubehelixDefault",
-      "BuGn", "BuPu", "GnBu", "OrRd", "PuBuGn", "PuBu", "PuRd", "RdPu", "YlGnBu",
-      "YlGn", "YlOrBr", "YlOrRd", "Rainbow", "Sinebow",
-      "Reds", "Purples", "Oranges", "Greens", "Blues",
-      "BrBG", "PRGn", "PiYG", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral"
-    )
   )
   
   if (!is.null(tooltip_label)) {
@@ -164,12 +156,18 @@ topogram <- function(shape,
   
   # convert to geojson
   shape$topogram_id <- seq_len(nrow(shape)) - 1
+  values <- shape[[value]]
+  shape$topogram_color <- scales::col_numeric(
+    palette = palette,
+    domain = range(values, na.rm = TRUE), 
+    na.color = na_color
+  )(values)
   geo_json <- geojson_json(input = shape)
   
   # convert to topojson
   geo_topo <- geo2topo(x = geo_json, object_name = "states", quantization = 1e5)
   
-  x = list(
+  x <- list(
     shape = geo_topo,
     value = value,
     palette = paste0("interpolate", palette),
@@ -188,7 +186,6 @@ topogram <- function(shape,
     legend = FALSE,
     legendOpts = list()
   )
-  
   
   # create widget
   createWidget(

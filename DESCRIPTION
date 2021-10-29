@@ -9,13 +9,14 @@ Authors@R: c(
     )
 Depends: R (>= 2.10)
 Imports: 
+    geojsonio (>= 0.6.1),
     htmlwidgets,
-    geojsonio (>= 0.6.0.9100),
     htmltools,
-    shiny,
-    rmarkdown,
     jsonlite,
-    magrittr
+    magrittr,
+    rmarkdown,
+    scales,
+    shiny
 Suggests: 
     rnaturalearth,
     sf

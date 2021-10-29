@@ -22,10 +22,9 @@ HTMLWidgets.widget({
       palette,
       format_value,
       tooltip_label,
-      legendSequential,
       svg;
 
-    var padding = 0;
+    var padding = 20;
 
     return {
 
@@ -51,8 +50,6 @@ HTMLWidgets.widget({
           statesbbox
         );
 
-        //var colorScale = d3.scaleSequential(d3[palette]).domain(x.range);
-
         carto = Cartogram()
           .width(width)
           .height(height)
@@ -61,12 +58,11 @@ HTMLWidgets.widget({
           .projection(projection)
           .iterations(x.n_iteration)
           .value(function(d) {
-            //console.log(d);
             return d.properties[x.value];
           })
-          //.color(function(d) {
-          //  return colorScale(d.properties[x.value]);
-          //})
+          .color(function(d) {
+            return d.properties.topogram_color;
+          })
           .label(function(d) {
             //console.log(d);
             //return "Population of" + d.properties.name + "(" + d.properties[x.value] + ")";
