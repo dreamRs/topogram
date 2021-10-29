@@ -4,6 +4,7 @@ import * as topojson from "topojson-client";
 import * as proj1 from "d3-geo";
 import * as proj2 from "d3-geo-projection";
 const proj = { ...proj1, ...proj2 };
+import * as utils from "../modules/utils";
 
 HTMLWidgets.widget({
 
@@ -26,11 +27,6 @@ HTMLWidgets.widget({
 
     var padding = 0;
 
-    function removeElement(elementId) {
-      var element = document.getElementById(elementId);
-      element.parentNode.removeChild(element);
-    }
-
     return {
 
       renderValue: function(x) {
@@ -42,30 +38,8 @@ HTMLWidgets.widget({
         // Tooltip label
         tooltip_label = x.tooltip_label;
 
-        if (!x.labs) {
-          removeElement(el.id + "-title");
-          removeElement(el.id + "-subtitle");
-          removeElement(el.id + "-caption");
-        } else {
-          if (x.labsOpts.title !== null) {
-            document.getElementById(el.id + "-title").innerHTML =
-              x.labsOpts.title;
-          } else {
-            removeElement(el.id + "-title");
-          }
-          if (x.labsOpts.subtitle !== null) {
-            document.getElementById(el.id + "-subtitle").innerHTML =
-              x.labsOpts.subtitle;
-          } else {
-            removeElement(el.id + "-subtitle");
-          }
-          if (x.labsOpts.caption !== null) {
-            document.getElementById(el.id + "-caption").innerHTML =
-              x.labsOpts.caption;
-          } else {
-            removeElement(el.id + "-caption");
-          }
-        }
+        // Set labs (title, subtitle, caption)
+        utils.setLabs(el.id, x.labs, x.labsOpts);
 
         topoWidth = width - padding;
         topoHeight = height - padding;
