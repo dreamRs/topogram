@@ -83,17 +83,25 @@
 #'   n_iteration = 30
 #' )
 
-topogram <- function(shape, value, tooltip_label = NULL,
-                     format_value = NULL, unit_value = "",
-                     palette = "Viridis", n_iteration = 20,
-                     projection = "Mercator", d3_locale = "en-US",
-                     select_label = NULL, layerId = NULL,
-                     width = NULL, height = NULL, elementId = NULL) {
-
+topogram <- function(shape, 
+                     value, 
+                     tooltip_label = NULL,
+                     format_value = NULL, 
+                     unit_value = "",
+                     palette = "Viridis",
+                     n_iteration = 20,
+                     projection = "Mercator", 
+                     d3_locale = "en-US",
+                     select_label = NULL, 
+                     layerId = NULL,
+                     width = NULL,
+                     height = NULL, 
+                     elementId = NULL) {
+  
   check_sf(shape)
   check_variables(shape, value)
   check_na(shape, value)
-
+  
   projection <- match.arg(
     arg = projection,
     choices = c("Mercator", "Albers", "ConicEqualArea", "NaturalEarth1",
@@ -109,7 +117,7 @@ topogram <- function(shape, value, tooltip_label = NULL,
       "BrBG", "PRGn", "PiYG", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral"
     )
   )
-
+  
   if (!is.null(tooltip_label)) {
     tooltip_label <- model.frame(formula = tooltip_label, data = shape)[[1]]
   } else {
@@ -119,18 +127,18 @@ topogram <- function(shape, value, tooltip_label = NULL,
       tooltip_label <- rep_len("", nrow(shape))
     }
   }
-
+  
   if (!is.null(layerId)) {
     layerId <- model.frame(formula = layerId, data = shape)[[1]]
   }
-
-
+  
+  
   check_locale(d3_locale)
   path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogram")
   if (path != "") {
     d3_locale <- jsonlite::fromJSON(txt = path)
   }
-
+  
   if (is.null(format_value)) {
     format_value <- JS("function(n) {return n;}")
   } else {
@@ -141,7 +149,7 @@ topogram <- function(shape, value, tooltip_label = NULL,
     }
     format_value <- JS(format_value)
   }
-
+  
   if (length(value) > 1) {
     select <- TRUE
     values <- choicesWithNames(value)
@@ -152,15 +160,15 @@ topogram <- function(shape, value, tooltip_label = NULL,
     select_opts <- list()
     select <- FALSE
   }
-
-
+  
+  
   # convert to geojson
   shape$topogram_id <- seq_len(nrow(shape)) - 1
   geo_json <- geojson_json(input = shape)
-
+  
   # convert to topojson
   geo_topo <- geo2topo(x = geo_json, object_name = "states", quantization = 1e5)
-
+  
   x = list(
     shape = geo_topo,
     value = value,
@@ -180,19 +188,19 @@ topogram <- function(shape, value, tooltip_label = NULL,
     legend = FALSE,
     legendOpts = list()
   )
-
-
+  
+  
   # create widget
   createWidget(
-    name = if (select) "topogramSelect" else "topogram",
+    name = "topogram",
     x = x,
     width = width,
     height = height,
     package = "topogram",
     elementId = elementId,
     sizingPolicy = sizingPolicy(
-      defaultWidth = "95%",
-      # defaultHeight = "90%",
+      defaultWidth = "100%",
+      defaultHeight = "400px",
       viewer.defaultHeight = "100%",
       viewer.defaultWidth = "100%",
       browser.fill = TRUE,
@@ -204,41 +212,24 @@ topogram <- function(shape, value, tooltip_label = NULL,
 
 topogram_html <- function(id, style, class, ...) {
   tags$div(
-    id = id, class = class, style = style,
-    # tags$div(
-      # style = "position: absolute;",
-      tags$div(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold; font-size: 160%;"),
-      tags$div(id = paste0(id, "-subtitle"), class = "topogram-subtitle", style = "font-size: 110%;"),
-    # ),
-    tags$div(id = paste0(id, "-topogram")),
-    tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "position: absolute; bottom: 0; right: 15px;")
-  )
-}
-
-# , style = "margin-top: 20px; margin-bottom: 10px;"
-
-#' @importFrom shiny selectInput
-#' @importFrom htmltools tags attachDependencies tagAppendAttributes
-#' @importFrom rmarkdown html_dependency_jquery
-topogramSelect_html <- function(id, style, class, ...) {
-  selectMenu <- selectInput(
-    inputId = paste0(id, "_select"), label = "",
-    choices = NULL, selectize = FALSE, width = "350px"
-  )
-  selectMenu$children[[2]]$children[[1]] <- tagAppendAttributes(
-    tag = selectMenu$children[[2]]$children[[1]],
-    class = "custom-select"
-  )
-  attachDependencies(
-    x = tags$div(
-      id = id, class = class, style = style,
-      tags$div(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold; font-size: 160%;"),
-      tags$div(id = paste0(id, "-subtitle"), class = "topogram-subtitle", style = "font-size: 110%;"),
-      selectMenu,
-      tags$div(id = paste0(id, "-topogram")),
-      tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "float: right;")
+    id = id,
+    class = class,
+    style = style,
+    tags$div(
+      id = paste0(id, "-title"), 
+      class = "topogram-title", 
+      style = "font-weight: bold; font-size: 160%;"
     ),
-    value = html_dependency_jquery()
+    tags$div(
+      id = paste0(id, "-subtitle"), 
+      class = "topogram-subtitle",
+      style = "font-size: 110%;"
+    ),
+    tags$div(id = paste0(id, "-topogram")),
+    tags$p(
+      id = paste0(id, "-caption"),
+      class = "topogram-caption",
+      style = "position: absolute; bottom: 0; right: 15px;"
+    )
   )
 }
-
