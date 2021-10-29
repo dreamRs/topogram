@@ -91,7 +91,7 @@ topogram <- function(shape,
                      palette = "viridis",
                      na_color = "#808080",
                      n_iteration = 20,
-                     projection = "Mercator", 
+                     projection = "geoMercator", 
                      d3_locale = "en-US",
                      select_label = NULL, 
                      layerId = NULL,
@@ -102,13 +102,6 @@ topogram <- function(shape,
   check_sf(shape)
   check_variables(shape, value)
   check_na(shape, value)
-  
-  projection <- match.arg(
-    arg = projection,
-    choices = c("Mercator", "Albers", "ConicEqualArea", "NaturalEarth1",
-                "Eckert1", "Eckert2", "Eckert3", "Eckert4", "Eckert5", "Eckert6",
-                "Wagner4", "Wagner6", "Wagner7", "Armadillo")
-  )
   
   if (!is.null(tooltip_label)) {
     tooltip_label <- model.frame(formula = tooltip_label, data = shape)[[1]]
@@ -154,14 +147,22 @@ topogram <- function(shape,
   }
   
   
-  # convert to geojson
+  # add id for shapes
   shape$topogram_id <- seq_len(nrow(shape)) - 1
+  # set colors
   values <- shape[[value]]
-  shape$topogram_color <- scales::col_numeric(
-    palette = palette,
-    domain = range(values, na.rm = TRUE), 
-    na.color = na_color
-  )(values)
+  if (is.character(palette)) {
+    shape$topogram_color <- scales::col_numeric(
+      palette = palette,
+      domain = range(values, na.rm = TRUE), 
+      na.color = na_color
+    )(values)
+  } else if (is.function(palette)) {
+    shape$topogram_color <- palette(values)
+  } else {
+    stop("'palette' must a character (palette name) or a function (see ?scales::col_numeric)")
+  }
+  # convert to geojson
   geo_json <- geojson_json(input = shape)
   
   # convert to topojson
@@ -170,16 +171,12 @@ topogram <- function(shape,
   x <- list(
     shape = geo_topo,
     value = value,
-    palette = paste0("interpolate", palette),
-    range = range(shape[[value]], na.rm = TRUE),
     tooltip_label = tooltip_label,
     format_value = format_value,
     unit_value = unit_value,
     n_iteration = n_iteration,
-    select_opts = select_opts,
-    select_label = select_label,
     layerId = layerId,
-    projection = paste0("geo", projection),
+    projection = projection,
     labs = FALSE,
     labsOpts = list(),
     d3_locale = jsonlite::toJSON(x = d3_locale, auto_unbox = FALSE),
