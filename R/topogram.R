@@ -99,16 +99,20 @@ topogram <- function(shape,
   shape$topogram_id <- seq_len(nrow(shape)) - 1
   # set colors
   values <- shape[[value]]
+  values_range <- range(values, na.rm = TRUE)
   if (is.character(palette)) {
-    shape$topogram_color <- scales::col_numeric(
+    col_fun <- scales::col_numeric(
       palette = palette,
-      domain = range(values, na.rm = TRUE), 
+      domain = values_range, 
       na.color = na_color
-    )(values)
+    )
+    shape$topogram_color <- col_fun(values)
+    colors <- col_fun(seq(from = values_range[1], to = values_range[2], length.out = 20))
   } else if (is.function(palette)) {
     shape$topogram_color <- palette(values)
+    colors <- palette(seq(from = values_range[1], to = values_range[2], length.out = 20))
   } else {
-    stop("'palette' must a character (palette name) or a function (see ?scales::col_numeric)")
+    stop("'palette' must be a character (palette name) or a function (like ?scales::col_numeric)")
   }
   # set label
   label <- htmltools::doRenderTags(tags$div(
@@ -131,7 +135,10 @@ topogram <- function(shape,
     labs = FALSE,
     labsOpts = list(),
     legend = FALSE,
-    legendOpts = list()
+    legendOpts = list(
+      labels = values_range,
+      colors = colors
+    )
   )
   
   # create widget
@@ -159,6 +166,7 @@ topogram_html <- function(id, style, class, ...) {
     id = id,
     class = class,
     style = style,
+    style = "position: relative;",
     tags$div(
       id = paste0(id, "-title"), 
       class = "topogram-title", 

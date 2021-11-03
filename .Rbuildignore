@@ -2,8 +2,7 @@
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^img$
-^dev$
+^examples$
 ^LICENSE\.md$
 ^srcjs$
 ^node_modules$

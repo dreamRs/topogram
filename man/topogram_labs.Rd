@@ -2,7 +2,7 @@
 % Please edit documentation in R/topo-extras.R
 \name{topogram_labs}
 \alias{topogram_labs}
-\title{Labs for topogram}
+\title{Labs for topogram widget}
 \usage{
 topogram_labs(topo, title = NULL, subtitle = NULL, caption = NULL)
 }

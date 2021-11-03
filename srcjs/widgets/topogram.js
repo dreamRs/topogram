@@ -18,8 +18,7 @@ HTMLWidgets.widget({
       statesbbox,
       projection,
       topoWidth,
-      topoHeight,
-      svg;
+      topoHeight;
 
     var padding = 20;
 
@@ -29,6 +28,10 @@ HTMLWidgets.widget({
 
         // Set labs (title, subtitle, caption)
         utils.setLabs(el.id, x.labs, x.labsOpts);
+        
+        if (x.legend) {
+          el.innerHTML += x.legendOpts.content;
+        }
 
         // sizing
         topoWidth = width - padding;
@@ -80,18 +83,6 @@ HTMLWidgets.widget({
 
       getChart: function() {
         return carto;
-      },
-
-      getSvg: function() {
-        return svg;
-      },
-
-      getParams: function() {
-        return {
-          palette: palette,
-          format_value: format_value,
-          tooltip_label: tooltip_label
-        };
       },
 
       resize: function(width, height) {

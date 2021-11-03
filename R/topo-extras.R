@@ -12,10 +12,6 @@
 #' @noRd
 .topo_opt <- function(topo, name, ...) {
 
-  if (!inherits(topo, "topogram")){
-    stop("topo must be a topogram object")
-  }
-
   if (is.null(topo$x[[name]])) {
     topo$x[[name]] <- list(...)
   } else {
@@ -27,7 +23,7 @@
 
 
 
-#' @title Labs for topogram
+#' @title Labs for topogram widget
 #' 
 #' @description Add title, subtitle and caption to a topogram.
 #'
@@ -42,6 +38,7 @@
 #'
 #' @example examples/labs.R
 topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
+  check_topogram(topo)
   topo$x$labs <- TRUE
   if (!is.null(title))
     title <- doRenderTags(title)
@@ -55,21 +52,25 @@ topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 
 
 
-#' Legend for topogram
+#' @title Legend for topogram widget
+#' 
+#' @description Add a legend
 #'
-#' @param topo A \code{topogram} \code{htmlwidget} object.
-#' @param title Legend title
-#' @param n_cells Number of cells in the legend.
-#' @param label_format A string passed to \code{d3.format},
-#'  see \url{https://github.com/d3/d3-format}.
-#' @param labels A character vector to use as labels, better if same length as number of cells.
-#' @param orientation Legend orientation: vertical or horizontal, can be abbreviated.
-#' @param cells_width Width of each cells.
-#' @param cells_height Height of each cells.
-#' @param cells_padding Space between each cells.
-#' @param title_width Width for the title.
+#' @param topo A [topogram()] `htmlwidget` object.
+#' @param colors Vector of colors.
+#' @param labels Labels associated to colors:
+#'  - For gradient: a vector of length 2 for range of values.
+#'  - For breaks: a vector of same length as colors, or length+1 to display the minimal value.
+#'  - For discrete: a vector of same length as colors.
+#' @param formatter Function to format labels.
+#' @param title Title for the legend.
+#' @param direction Direction: horizontal or vertical.
+#' @param height,width Height, width for legend. For gradient legend it represent the size of the dradient according to direction.
 #'
 #' @export
+#' 
+#' @importFrom htmltools tags tagList doRenderTags
+#' @importFrom scales colour_ramp
 #'
 #' @examples
 #' library(topogram)
@@ -113,24 +114,67 @@ topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 #'   labels = c("15 000", rep("", 18), "250 000"),
 #'   orientation = "vertical"
 #' )
-add_legend <- function(topo, title, n_cells = 10,
-                       label_format = ".2f", labels = NULL,
-                       orientation = "horizontal",
-                       cells_width = 30, cells_height = 15, cells_padding = 2,
-                       title_width = 100) {
+topogram_legend <- function(topo,
+                            colors = NULL,
+                            labels = NULL,
+                            formatter = NULL,
+                            title = NULL,
+                            direction = c("h", "v"),
+                            height = "250px",
+                            width = "250px") {
+  check_topogram(topo)
   topo$x$legend <- TRUE
+  direction <- match.arg(direction)
+  if (is.null(colors))
+    colors <- topo$x$legendOpts$colors
+  if (is.null(labels))
+    labels <- topo$x$legendOpts$labels
+  if (is.function(formatter))
+    labels <- formatter(labels)
+  if (direction == "h") {
+    tag_legend <- tagList(
+      tags$div(
+        style = paste("height: 12px; width: ", width, ";"),
+        style = paste("background:", linear_gradient(colour_ramp(colors)(seq(0, 1, length = 100))))
+      ),
+      tags$div(
+        tags$span(labels[1]),
+        tags$span(labels[2], style = "float: right;")
+      )
+    )
+  } else  {
+    tag_legend <- tags$div(
+      style = "width: 100%;",
+      tags$div(
+        style = paste("height: ", height, ";"),
+        style = "width: 12px; float: left;",
+        style = paste("background:", linear_gradient(colour_ramp(colors)(seq(0, 1, length = 100)), direction = "v"))
+      ),
+      tags$div(
+        style = paste("height: ", height, ";"),
+        style = "margin-left: 12px; padding-left: 2px; position: relative;",
+        tags$div(labels[1]),
+        tags$div(labels[2], style = "position: absolute; bottom: 0;")
+      )
+    )
+  }
   .topo_opt(
     topo = topo,
     name = "legendOpts",
-    title = title,
-    n_cells = n_cells,
-    label_format = label_format,
-    labels = if(is.null(labels)) "" else labels,
-    orientation = match.arg(orientation, c("horizontal", "vertical")),
-    cells_width = cells_width,
-    cells_height = cells_height,
-    cells_padding = cells_padding,
-    title_width = title_width
+    content = doRenderTags(tags$div(
+      style = "font-size: smaller; position: absolute; bottom: 0; left: 15px;",
+      if (!is.null(title)) {
+        tags$div(
+          title,
+          class = "topogram-legend-title",
+          style = "font-weight: bolder;"
+        )
+      },
+      tags$div(
+        class = "topogram-legend-colors",
+        tag_legend
+      )
+    ))
   )
 }
 
