@@ -7,14 +7,11 @@
 topogram(
   shape,
   value,
-  tooltip_label = NULL,
-  format_value = NULL,
-  unit_value = "",
-  palette = "Viridis",
+  label = "{value}",
+  palette = "viridis",
+  na_color = "#808080",
   n_iteration = 20,
-  projection = "Mercator",
-  d3_locale = "en-US",
-  select_label = NULL,
+  projection = "geoMercator",
   layerId = NULL,
   width = NULL,
   height = NULL,
@@ -24,31 +21,18 @@ topogram(
 \arguments{
 \item{shape}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
 
-\item{value}{Variable name to use to distort topology. You can use a character vector or a named list of length > 1,
-in that case a dropdownmenu will be added to select a variable.}
+\item{value}{Variable name to use to distort topology.}
 
-\item{tooltip_label}{Formula for tooltip's label.}
+\item{label}{\code{glue} string to be used in tooltip, you can use HTML tags in it.}
 
-\item{format_value}{A string passed to \code{d3.format},
-see \url{https://github.com/d3/d3-format}.}
-
-\item{unit_value}{Character, the value unit, to include in the tooltip.}
-
-\item{palette}{Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.}
+\item{palette}{Name of a color palette, such as \code{"viridis"}, \code{"Blues"}, ... Or a function to map data values to colors, see \code{\link[scales:col_numeric]{scales::col_numeric()}}.}
 
 \item{n_iteration}{Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 at the cost of performance.}
 
-\item{projection}{D3 projection to use among : \code{"Mercator"}, \code{"Albers"}, \code{"ConicEqualArea"}, \code{"NaturalEarth1"},
-\code{"Eckert1"}, \code{"Eckert2"}, \code{"Eckert3"}, \code{"Eckert4"}, \code{"Eckert5"}, \code{"Eckert6"}, \code{"Wagner4"},
-\code{"Wagner6"}, \code{"Wagner7"}, \code{"Armadillo"}.}
+\item{projection}{Name of a projection, see available ones here: https://github.com/d3/d3-geo-projection}
 
-\item{d3_locale}{Locale for \code{d3_format}, for exemple \code{"fr-FR"} for french,
-see possible values here \url{https://github.com/d3/d3-format/tree/master/locale}.}
-
-\item{select_label}{Label for the dropdown menu if \code{length(value) > 1}.}
-
-\item{layerId}{A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.}
+\item{layerId}{A formula, the layer id to specify value returned by \verb{input$<ID>_click} in 'shiny' application.}
 
 \item{width}{A numeric input in pixels.}
 
@@ -57,7 +41,7 @@ see possible values here \url{https://github.com/d3/d3-format/tree/master/locale
 \item{elementId}{Use an explicit element ID for the widget.}
 }
 \description{
-Continuous area cartograms with `d3.js`
+Continuous area cartograms with \code{d3.js}
 }
 \examples{
 

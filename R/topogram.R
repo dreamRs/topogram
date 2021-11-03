@@ -2,14 +2,14 @@
 #'
 #' @description Continuous area cartograms with `d3.js`
 #'
-#' @param shape An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).
+#' @param shape An `sf` object. For the time being, shape must be projected in Mercator (CRS 4326).
 #' @param value Variable name to use to distort topology.
 #' @param label `glue` string to be used in tooltip, you can use HTML tags in it.
-#' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
+#' @param palette Name of a color palette, such as `"viridis"`, `"Blues"`, ... Or a function to map data values to colors, see [scales::col_numeric()].
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
-#' @param projection Name of a projection, see availableones here: https://github.com/d3/d3-geo-projection
-#' @param layerId A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.
+#' @param projection Name of a projection, see available ones here: https://github.com/d3/d3-geo-projection
+#' @param layerId A formula, the layer id to specify value returned by `input$<ID>_click` in 'shiny' application.
 #' @param width A numeric input in pixels.
 #' @param height A numeric input in pixels.
 #' @param elementId Use an explicit element ID for the widget.
