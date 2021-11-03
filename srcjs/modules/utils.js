@@ -1,6 +1,7 @@
 export function removeElement(elementId) {
   var element = document.getElementById(elementId);
-  element.parentNode.removeChild(element);
+  if (element !== null)
+    element.parentNode.removeChild(element);
 }
 
 export function setLabs(elementId, enabled, options) {

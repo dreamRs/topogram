@@ -25,6 +25,10 @@ HTMLWidgets.widget({
     return {
 
       renderValue: function(x) {
+        
+        if (typeof carto !== "undefined") {
+          document.getElementById(el.id + "-topogram").innerHTML = "";
+        }
 
         // Set labs (title, subtitle, caption)
         utils.setLabs(el.id, x.labs, x.labsOpts);
@@ -34,8 +38,8 @@ HTMLWidgets.widget({
         }
 
         // sizing
-        topoWidth = width - padding;
-        topoHeight = height - padding;
+        topoWidth = el.clientWidth - padding;
+        topoHeight = el.clientHeight - padding;
 
         projection = proj[x.projection]();
         statesbbox = topojson.feature(x.shape, x.shape.objects.states);
@@ -45,8 +49,8 @@ HTMLWidgets.widget({
         );
 
         carto = Cartogram()
-          .width(width)
-          .height(height)
+          .width(el.clientWidth)
+          .height(el.clientHeight)
           .topoJson(x.shape)
           .topoObjectName("states")
           .projection(projection)
