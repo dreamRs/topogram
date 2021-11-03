@@ -13,9 +13,7 @@ Imports:
     glue,
     htmlwidgets,
     htmltools,
-    jsonlite,
     magrittr,
-    rmarkdown,
     scales,
     shiny
 Suggests: 

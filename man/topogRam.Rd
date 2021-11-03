@@ -9,7 +9,6 @@ topogram(
   value,
   label = "{value}",
   palette = "viridis",
-  na_color = "#808080",
   n_iteration = 20,
   projection = "geoMercator",
   layerId = NULL,
@@ -42,57 +41,4 @@ at the cost of performance.}
 }
 \description{
 Continuous area cartograms with \code{d3.js}
-}
-\examples{
-
-## Example from sf
-
-library(topogram)
-library(sf)
-
-demo(nc, ask = FALSE, echo = FALSE)
-
-# Create a cartogram
-topogram(
-  shape = nc,
-  value = "NWBIR74",
-  tooltip_label = ~NAME
-)
-
-
-# if you pass several values, a dropdown menu
-# will be added on top of the cartogram
-# to interactively select variable to use
-topogram(
-  shape = nc,
-  value = c("BIR74", "NWBIR74", "BIR79", "NWBIR79"),
-  tooltip_label = ~NAME
-)
-
-
-## World example
-
-library(topogram)
-library(sf)
-library(rnaturalearth)
-
-wrld <- st_as_sf(countries110)
-# doesn't support missing values !
-wrld <- wrld[!is.na(wrld$pop_est), c("name", "pop_est", "gdp_md_est")]
-# Antarctica is not a whole polygon
-wrld <- wrld[wrld$name != "Antarctica", ]
-
-topogram(
-  shape = wrld,
-  value = "pop_est",
-  tooltip_label = ~name,
-  n_iteration = 50
-)
-
-topogram(
-  shape = wrld,
-  value = c("pop_est", "gdp_md_est"),
-  tooltip_label = ~name,
-  n_iteration = 30
-)
 }

@@ -72,48 +72,6 @@ topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 #' @importFrom htmltools tags tagList doRenderTags
 #' @importFrom scales colour_ramp
 #'
-#' @examples
-#' library(topogram)
-#' data(paris)
-#'
-#' topogram(
-#'   shape = paris,
-#'   value = "TOTAL",
-#'   n_iteration = 10
-#' ) %>% add_legend(
-#'   title = "Population",
-#'   n_cells = 12,
-#'   orientation = "vertical"
-#' )
-#'
-#'
-#' # Format labels favue with D3 format
-#' topogram(
-#'   shape = paris,
-#'   value = "TOTAL",
-#'   n_iteration = 10
-#' ) %>% add_legend(
-#'   title = "Population",
-#'   label_format = ".2s",
-#'   orientation = "vertical"
-#' )
-#'
-#'
-#' # No space between cells
-#' # and custom labels
-#' topogram(
-#'   shape = paris,
-#'   value = "TOTAL",
-#'   n_iteration = 10
-#' ) %>% add_legend(
-#'   title = "Population",
-#'   n_cells = 20,
-#'   cells_padding = 0,
-#'   cells_width = 10,
-#'   cells_height = 20,
-#'   labels = c("15 000", rep("", 18), "250 000"),
-#'   orientation = "vertical"
-#' )
 topogram_legend <- function(topo,
                             colors = NULL,
                             labels = NULL,
