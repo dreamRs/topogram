@@ -12,11 +12,11 @@
 #' @noRd
 .topo_opt <- function(topo, name, ...) {
 
-  if(!any(class(topo) %in% c("topogram", "topogramSelect"))){
-    stop("bb must be a topogram object")
+  if (!inherits(topo, "topogram")){
+    stop("topo must be a topogram object")
   }
 
-  if (is.null(topo$x$bb_opts[[name]])) {
+  if (is.null(topo$x[[name]])) {
     topo$x[[name]] <- list(...)
   } else {
     topo$x[[name]] <- modifyList(x = topo$x[[name]], val = list(...), keep.null = TRUE)
