@@ -27,31 +27,28 @@
 
 
 
-#' Labs for topogram
+#' @title Labs for topogram
+#' 
+#' @description Add title, subtitle and caption to a topogram.
 #'
-#' @param topo A \code{topogram} \code{htmlwidget} object.
+#' @param topo A [topogram()] `htmlwidget` object.
 #' @param title Main title.
 #' @param subtitle Subtitle.
 #' @param caption Brief explanation of the source of the data.
 #'
 #' @export
+#' 
+#' @importFrom htmltools doRenderTags
 #'
-#' @examples
-#' library(topogram)
-#' data(paris)
-#'
-#' topogram(
-#'   shape = paris,
-#'   value = "TOTAL",
-#'   n_iteration = 10
-#' ) %>% add_labs(
-#'   title = "Paris",
-#'   subtitle = "A subtitle",
-#'   caption = "Data source: INSEE & opendata.paris.fr"
-#' )
-
-add_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
+#' @example examples/labs.R
+topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
   topo$x$labs <- TRUE
+  if (!is.null(title))
+    title <- doRenderTags(title)
+  if (!is.null(subtitle))
+    subtitle <- doRenderTags(subtitle)
+  if (!is.null(caption))
+    caption <- doRenderTags(caption)
   .topo_opt(topo, "labsOpts", title = title, subtitle = subtitle, caption = caption)
 }
 
