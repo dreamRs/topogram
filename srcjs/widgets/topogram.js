@@ -5,6 +5,7 @@ import * as proj1 from "d3-geo";
 import * as proj2 from "d3-geo-projection";
 const proj = { ...proj1, ...proj2 };
 import * as utils from "../modules/utils";
+import * as proxy from "../modules/proxy";
 
 HTMLWidgets.widget({
 
@@ -42,7 +43,7 @@ HTMLWidgets.widget({
         topoHeight = el.clientHeight - padding;
 
         projection = proj[x.projection]();
-        statesbbox = topojson.feature(x.shape, x.shape.objects.states);
+        statesbbox = topojson.feature(x.sfobj, x.sfobj.objects.states);
         projection.fitExtent(
           [[padding, padding], [topoWidth, topoHeight]],
           statesbbox
@@ -51,7 +52,7 @@ HTMLWidgets.widget({
         carto = Cartogram()
           .width(el.clientWidth)
           .height(el.clientHeight)
-          .topoJson(x.shape)
+          .topoJson(x.sfobj)
           .topoObjectName("states")
           .projection(projection)
           .iterations(x.n_iteration)
@@ -89,7 +90,7 @@ HTMLWidgets.widget({
 
       },
 
-      getChart: function() {
+      getTopogram: function() {
         return carto;
       },
 
@@ -109,3 +110,7 @@ HTMLWidgets.widget({
     };
   }
 });
+
+if (HTMLWidgets.shinyMode) {
+  Shiny.addCustomMessageHandler("proxy-topogram-variable", proxy.updateVariable);
+}
