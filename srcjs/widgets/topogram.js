@@ -56,7 +56,11 @@ HTMLWidgets.widget({
           .projection(projection)
           .iterations(x.n_iteration)
           .value(function(d) {
-            return d.properties[x.value];
+            var value = d.properties[x.value];
+            if (value <= 0) {
+              value = 0.001;
+            }
+            return value;
           })
           .color(function(d) {
             return d.properties.topogram_color;
