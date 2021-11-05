@@ -61,6 +61,9 @@ colSums(is.na(wrld))
 # wrld <- wrld[!is.na(wrld$co2_emissions_2020), ]
 wrld$renewables_percent_electricity[is.na(wrld$renewables_percent_electricity)] <- 0
 wrld$co2_emissions_2020[is.na(wrld$co2_emissions_2020)] <- 0
+wrld$co2_emissions_1990[is.na(wrld$co2_emissions_1990)] <- 0
+
+
 
 # Use ---------------------------------------------------------------------
 
