@@ -50,3 +50,34 @@ linear_gradient <- function(cols, direction = c("h", "v")) {
     paste0("linear-gradient(to bottom, ", res, ");")
   }
 }
+
+
+getColors <- function(palette, values) {
+  values_range <- range(values, na.rm = TRUE)
+  if (is.character(palette)) {
+    col_fun <- scales::col_numeric(
+      palette = palette,
+      domain = values_range
+    )
+    topogram_color <- col_fun(values)
+    colors <- col_fun(seq(from = values_range[1], to = values_range[2], length.out = 20))
+  } else if (is.function(palette)) {
+    topogram_color <- palette(values)
+    colors <- palette(seq(from = values_range[1], to = values_range[2], length.out = 20))
+  } else {
+    stop(
+      "'palette' must be a character (palette name) or a function (like ?scales::col_numeric)", 
+      call. = FALSE
+    )
+  }
+  list(values = topogram_color, legend = colors)
+}
+
+#' @importFrom htmltools doRenderTags tags
+getLabels <- function(sfobj, label, values) {
+  label <- doRenderTags(tags$div(
+    style = "margin-top:-25px;",
+    label
+  ))
+  glue::glue_data(sfobj, label, value = values)
+}

@@ -2,7 +2,7 @@
 #'
 #' @description Continuous area cartograms with `d3.js`
 #'
-#' @param shape An `sf` object. For the time being, shape must be projected in Mercator (CRS 4326).
+#' @param sfobj An `sf` object. For the time being, shape must be projected in Mercator (CRS 4326).
 #' @param value Variable name to use to distort topology.
 #' @param label `glue` string to be used in tooltip, you can use HTML tags in it.
 #' @param palette Name of a color palette, such as `"viridis"`, `"Blues"`, ... Or a function to map data values to colors, see [scales::col_numeric()].
@@ -22,7 +22,7 @@
 #' @importFrom scales col_numeric
 #' @importFrom glue glue_data
 #'
-topogram <- function(shape, 
+topogram <- function(sfobj, 
                      value, 
                      label = "{value}",
                      palette = "viridis",
@@ -33,46 +33,34 @@ topogram <- function(shape,
                      height = NULL, 
                      elementId = NULL) {
   
-  check_sf(shape)
-  check_variables(shape, value)
-  check_na(shape, value)
+  check_sf(sfobj)
+  check_variables(sfobj, value)
+  check_na(sfobj, value)
   
   if (!is.null(layerId)) {
-    layerId <- model.frame(formula = layerId, data = shape)[[1]]
+    layerId <- model.frame(formula = layerId, data = sfobj)[[1]]
   }
   
-  # add id for shapes
-  shape$topogram_id <- seq_len(nrow(shape)) - 1
+  # add id for sfobjs
+  sfobj$topogram_id <- seq_len(nrow(sfobj)) - 1
+  
   # set colors
-  values <- shape[[value]]
+  values <- sfobj[[value]]
   values_range <- range(values, na.rm = TRUE)
-  if (is.character(palette)) {
-    col_fun <- scales::col_numeric(
-      palette = palette,
-      domain = values_range
-    )
-    shape$topogram_color <- col_fun(values)
-    colors <- col_fun(seq(from = values_range[1], to = values_range[2], length.out = 20))
-  } else if (is.function(palette)) {
-    shape$topogram_color <- palette(values)
-    colors <- palette(seq(from = values_range[1], to = values_range[2], length.out = 20))
-  } else {
-    stop("'palette' must be a character (palette name) or a function (like ?scales::col_numeric)")
-  }
+  colors <- getColors(palette, values)
+  sfobj$topogram_color <- colors$values
+  
   # set label
-  label <- htmltools::doRenderTags(tags$div(
-    style = "margin-top:-25px;",
-    label
-  ))
-  shape$topogram_label <- glue::glue_data(shape, label, value = values)
+  sfobj$topogram_label <- getLabels(sfobj, label, values)
+  
   # convert to geojson
-  geo_json <- geojson_json(input = shape)
+  geo_json <- geojson_json(input = sfobj)
   
   # convert to topojson
   geo_topo <- geo2topo(x = geo_json, object_name = "states", quantization = 1e5)
   
   x <- list(
-    shape = geo_topo,
+    sfobj = geo_topo,
     value = value,
     n_iteration = n_iteration,
     layerId = layerId,
@@ -82,7 +70,7 @@ topogram <- function(shape,
     legend = FALSE,
     legendOpts = list(
       labels = values_range,
-      colors = colors
+      colors = colors$legend
     )
   )
   
@@ -100,7 +88,7 @@ topogram <- function(shape,
       viewer.defaultHeight = "100%",
       viewer.defaultWidth = "100%",
       browser.fill = TRUE,
-      padding = 10
+      padding = 0
     )
   )
 }

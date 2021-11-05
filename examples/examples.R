@@ -15,18 +15,18 @@ data("world", package = "topogram")
 
 # Default -----------------------------------------------------------------
 
-topogram(shape = world, value = "pop_est")
-topogram(shape = world, value = "pop_est", n_iteration = 50)
+topogram(world, value = "pop_est")
+topogram(world, value = "pop_est", n_iteration = 50)
 
 
 
 # Tooltip -----------------------------------------------------------------
 
-topogram(shape = world, value = "pop_est", label = "{name}: {format(pop_est, big.mark = ',')}")
+topogram(world, value = "pop_est", label = "{name}: {format(pop_est, big.mark = ',')}")
 
 library(htmltools)
 topogram(
-  shape = world, 
+  sfobj = world, 
   value = "pop_est", 
   label = tagList(tags$b("{name}:"), tags$br(), "{format(pop_est, big.mark = ',')}")
 )
@@ -39,12 +39,12 @@ topogram(shape = world, value = "pop_est", palette = "Blues")
 
 library(scales)
 topogram(
-  shape = world, 
+  sfobj = world, 
   value = "pop_est", 
   palette = col_quantile("Blues", domain = NULL)
 )
 topogram(
-  shape = world, 
+  sfobj = world, 
   value = "pop_est", 
   palette = col_bin("Blues", domain = NULL)
 )
@@ -53,8 +53,8 @@ topogram(
 
 # Projections -------------------------------------------------------------
 
-topogram(shape = world, value = "pop_est", n_iteration = 1)
-topogram(shape = world, value = "pop_est", n_iteration = 1, projection = "geoEqualEarth")
-topogram(shape = world, value = "pop_est", n_iteration = 1, projection = "geoEckert1")
-topogram(shape = world, value = "pop_est", n_iteration = 1, projection = "geoKavrayskiy7")
+topogram(world, value = "pop_est", n_iteration = 1)
+topogram(world, value = "pop_est", n_iteration = 1, projection = "geoEqualEarth")
+topogram(world, value = "pop_est", n_iteration = 1, projection = "geoEckert1")
+topogram(world, value = "pop_est", n_iteration = 1, projection = "geoKavrayskiy7")
 
