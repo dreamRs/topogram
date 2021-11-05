@@ -24,8 +24,8 @@
 #' @importFrom shiny getDefaultReactiveDomain
 #'
 #' @export
-topogramOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'topogram', width, height, package = 'topogram')
+topogramOutput <- function(outputId, width = "100%", height = "400px"){
+  htmlwidgets::shinyWidgetOutput(outputId, "topogram", width, height, package = "topogram")
 }
 
 #' @rdname topogram-shiny
@@ -38,7 +38,7 @@ renderTopogram <- function(expr, env = parent.frame(), quoted = FALSE) {
 
 #' @rdname topogram-shiny
 #' @export
-topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) {
+topogram_proxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) {
 
   if (is.null(session)) {
     stop("topogramProxy must be called from the server function of a Shiny app")
@@ -70,7 +70,7 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 .topogram_proxy <- function(proxy, name, l) {
 
   proxy$session$sendCustomMessage(
-    type = sprintf("update-topogram-%s", name),
+    type = sprintf("proxy-topogram-%s", name),
     message = list(id = proxy$id, data = l)
   )
 
@@ -84,120 +84,29 @@ topogramProxy <- function(shinyId, session = shiny::getDefaultReactiveDomain()) 
 #'
 #' Use this in 'shiny' application to update an already generated cartogram.
 #'
-#' @param proxy A \code{topogramProxy} \code{htmlwidget} object.
-#' @param new_value New variable to use, must a \code{character} of length one,
-#'  and a valid variable name of data used to construct the cartogram.
-#' @param legend_title New title for the legend.
+#' @param proxy A `topogram_proxy` `htmlwidget` object.
+#' @inheritParams topogram
 #'
-#' @return A \code{topogramProxy} \code{htmlwidget} object.
+#' @return A `topogram_proxy` `htmlwidget` object.
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'
-#' library(topogram)
-#' library(sf)
-#' library(rnaturalearth)
-#'
-#' wrld <- st_as_sf(countries110)
-#' # doesn't support missing values !
-#' wrld <- wrld[, c("name", "pop_est", "gdp_md_est")]
-#' # Antarctica is not a whole polygon
-#' wrld <- wrld[wrld$name != "Antarctica", ]
-#'
-#' # add dummies vars
-#' wrld$foo1 <- floor(runif(nrow(wrld), 500, 5000))
-#' wrld$foo2 <- floor(runif(nrow(wrld), 500, 5000))
-#' wrld$foo3 <- floor(runif(nrow(wrld), 500, 5000))
-#' wrld$foo4 <- floor(runif(nrow(wrld), 500, 5000))
-#'
-#' library(shiny)
-#'
-#'
-#'
-#' #### Update with variable name
-#'
-#' ui <- fluidPage(
-#'   tags$h2("Update value use to distort topology"),
-#'   tags$h4("Use a column name of the original data"),
-#'   radioButtons(
-#'     inputId = "new_value",
-#'     label = "Update value:",
-#'     choices = paste0("foo", 1:4),
-#'     inline = TRUE
-#'   ),
-#'   topogramOutput(outputId = "world", height = "800px")
-#' )
-#'
-#' server <- function(input, output, session) {
-#'
-#'   # Initialize the cartogram (non reactive)
-#'   output$world <- renderTopogRam({
-#'     topogram(
-#'       shape = wrld,
-#'       value = "foo1",
-#'       tooltip_label = ~name,
-#'       n_iteration = 10
-#'     )
-#'   })
-#'
-#'   # Update variable used (foo1, foo2, foo3, foo4)
-#'   observeEvent(input$new_value, {
-#'     topogramProxy(shinyId = "world") %>%
-#'       proxy_update_value(new_value = input$new_value)
-#'   }, ignoreInit = TRUE)
-#'
-#' }
-#'
-#' shinyApp(ui, server)
-#'
-#'
-#'
-#'
-#' #### Update with a numeric vector
-#'
-#' ui <- fluidPage(
-#'   tags$h2("Update value use to distort topology"),
-#'   tags$h4("Use a vector to update data"),
-#'   actionButton(inputId = "update", label = "Update !"),
-#'   topogramOutput(outputId = "world", height = "800px")
-#' )
-#'
-#' server <- function(input, output, session) {
-#'
-#'   # Initialize the cartogram (non reactive)
-#'   output$world <- renderTopogRam({
-#'     topogram(
-#'       shape = wrld,
-#'       value = "foo1",
-#'       tooltip_label = ~name,
-#'       n_iteration = 10
-#'     )
-#'   })
-#'
-#'   # Update with a vector (must be same length as data used in topogram)
-#'   observeEvent(input$update, {
-#'     topogramProxy(shinyId = "world") %>%
-#'       proxy_update_value(new_value = floor(runif(nrow(wrld), 500, 5000)))
-#'   }, ignoreInit = TRUE)
-#'
-#' }
-#'
-#' shinyApp(ui, server)
-#'
-#' }
-proxy_update_value <- function(proxy, new_value, legend_title = NULL) {
-  if (is.character(new_value) && length(new_value) == 1) {
-    .topogram_proxy(proxy, "value",  l = dropNulls(list(
-      new_value = new_value, legend_title = legend_title
-    )))
-  } else if (is.vector(new_value) && is.numeric(new_value)) {
-    .topogram_proxy(proxy, "vector",  l = dropNulls(list(
-      new_value = new_value, range = range(new_value, na.rm = TRUE),
-      legend_title = legend_title
-    )))
+topogram_proxy_update <- function(proxy, sfobj, value, label = "{value}", palette = "viridis") {
+  if (is.character(proxy)) {
+    proxy <- topogram_proxy(proxy)
+  }
+  if (is.character(value) && length(value) == 1) {
+    values <- sfobj[[value]]
+    colors <- getColors(palette, values)
+    .topogram_proxy(proxy, "variable",  l = list(
+      variable = value,
+      colors = colors$values,
+      labels = getLabels(sfobj, label, values)
+    ))
+  } else if (is.vector(value) && is.numeric(value)) {
+    .topogram_proxy(proxy, "vector",  l = list(vector = value))
   } else {
-    stop("'new_value' must a character of length 1 or a numeric vector.", call. = FALSE)
+    stop("topogram_proxy_update: 'value' must a character of length 1 or a numeric vector.", call. = FALSE)
   }
 
 }

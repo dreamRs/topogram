@@ -5,7 +5,7 @@
 \title{Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology}
 \usage{
 topogram(
-  shape,
+  sfobj,
   value,
   label = "{value}",
   palette = "viridis",
@@ -18,7 +18,7 @@ topogram(
 )
 }
 \arguments{
-\item{shape}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
+\item{sfobj}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
 
 \item{value}{Variable name to use to distort topology.}
 
