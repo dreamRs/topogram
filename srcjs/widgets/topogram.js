@@ -112,5 +112,6 @@ HTMLWidgets.widget({
 });
 
 if (HTMLWidgets.shinyMode) {
-  Shiny.addCustomMessageHandler("proxy-topogram-variable", proxy.updateVariable);
+  Shiny.addCustomMessageHandler("proxy-topogram-values", proxy.updateValues);
+  Shiny.addCustomMessageHandler("proxy-topogram-iteration", proxy.updateIteration);
 }

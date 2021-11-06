@@ -80,9 +80,9 @@ topogram_proxy <- function(shinyId, session = shiny::getDefaultReactiveDomain())
 
 
 
-#' Update variable used to distort topology with proxy
+#' @title Update topogram with proxy
 #'
-#' Use this in 'shiny' application to update an already generated cartogram.
+#' @description Use this in 'shiny' application to update an already generated [topogram()].
 #'
 #' @param proxy A `topogram_proxy` `htmlwidget` object.
 #' @inheritParams topogram
@@ -90,98 +90,53 @@ topogram_proxy <- function(shinyId, session = shiny::getDefaultReactiveDomain())
 #' @return A `topogram_proxy` `htmlwidget` object.
 #' @export
 #'
-#' @examples
-topogram_proxy_update <- function(proxy, sfobj, value, label = "{value}", palette = "viridis") {
+#' @example examples/proxy-update.R
+topogram_proxy_update <- function(proxy, 
+                                  sfobj, 
+                                  value, 
+                                  label = "{value}", 
+                                  palette = "viridis",
+                                  rescale_to = c(1, 1000),
+                                  n_iteration = 10) {
   if (is.character(proxy)) {
     proxy <- topogram_proxy(proxy)
   }
   if (is.character(value) && length(value) == 1) {
     values <- sfobj[[value]]
-    colors <- getColors(palette, values)
-    .topogram_proxy(proxy, "variable",  l = list(
-      variable = value,
-      colors = colors$values,
-      labels = getLabels(sfobj, label, values)
-    ))
   } else if (is.vector(value) && is.numeric(value)) {
-    .topogram_proxy(proxy, "vector",  l = list(vector = value))
+    values <- value
   } else {
     stop("topogram_proxy_update: 'value' must a character of length 1 or a numeric vector.", call. = FALSE)
   }
-
+  colors <- getColors(palette, values)
+  if (is.numeric(rescale_to) && length(rescale_to) == 2) {
+    values <- scales::rescale(x = values, to = rescale_to)
+  }
+  .topogram_proxy(proxy, "values",  l = list(
+    values = values,
+    colors = colors$values,
+    labels = getLabels(sfobj, label, values),
+    n_iteration = n_iteration
+  ))
 }
 
 
 
-#' Update number of iteration to distort topology
+#' @title Update number of iteration with proxy
 #'
-#' Use this in 'shiny' application to update an already generated cartogram.
+#' @description Use this in 'shiny' application to update an already generated [topogram()].
 #'
-#' @param proxy A \code{topogramProxy} \code{htmlwidget} object.
-#' @param n_iteration Number of iteration to perform.
+#' @param proxy A `topogram_proxy` `htmlwidget` object.
+#' @inheritParams topogram
 #'
-#' @return A \code{topogramProxy} \code{htmlwidget} object.
+#' @return A `topogram_proxy` `htmlwidget` object.
 #' @export
 #'
-#' @examples
-#' if (interactive()) {
-#'
-#' library(topogram)
-#' library(sf)
-#' library(rnaturalearth)
-#'
-#' wrld <- st_as_sf(countries110)
-#' # doesn't support missing values !
-#' wrld <- wrld[, c("name", "pop_est", "gdp_md_est")]
-#' # Antarctica is not a whole polygon
-#' wrld <- wrld[wrld$name != "Antarctica", ]
-#'
-#' # add dummy vars
-#' wrld$foo <- floor(runif(nrow(wrld), 500, 5000))
-#'
-#'
-#' library(shiny)
-#'
-#' library(shiny)
-#'
-#' ui <- fluidPage(
-#'   fluidRow(
-#'     column(
-#'       width = 10, offset = 1,
-#'       tags$h2("topogram : update number of iterations with proxy"),
-#'       sliderInput(
-#'         inputId = "n_iteration", label = "Number of iteration (more takes longer)",
-#'         min = 1, max = 60, value = 20
-#'       ),
-#'       topogramOutput(outputId = "carto", height = "600px")
-#'     )
-#'   )
-#' )
-#'
-#' server <- function(input, output, session) {
-#'
-#'   # Initialize
-#'   output$carto <- renderTopogRam({
-#'     topogram(
-#'       shape = wrld,
-#'       value = "foo",
-#'       tooltip_label = ~name,
-#'       n_iteration = 20
-#'     )
-#'   })
-#'
-#'   # Update
-#'   observeEvent(input$n_iteration, {
-#'     topogramProxy(shinyId = "carto") %>%
-#'       proxy_update_iteration(n_iteration = input$n_iteration)
-#'   }, ignoreInit = TRUE)
-#'
-#' }
-#'
-#' shinyApp(ui, server)
-#'
-#' }
-proxy_update_iteration <- function(proxy, n_iteration) {
+#' @example examples/proxy-iteration.R
+topogram_proxy_iteration <- function(proxy, n_iteration) {
+  if (is.character(proxy)) {
+    proxy <- topogram_proxy(proxy)
+  }
   stopifnot(is.numeric(n_iteration) && length(n_iteration) == 1)
   .topogram_proxy(proxy, "iteration", list(n_iteration = n_iteration))
 }

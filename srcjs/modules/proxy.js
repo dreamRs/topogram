@@ -12,11 +12,12 @@ export function getTopogram(id) {
   return widgetObj;
 }
 
-export function updateVariable(obj) {
+export function updateValues(obj) {
   var carto = getTopogram(obj.id);
+  if (typeof carto == "undefined") return;
   carto
     .value(function(d) {
-      var value = d.properties[obj.data.variable];
+      var value = obj.data.values[d.properties.topogram_id];
       if (value <= 0) {
         value = 0.001;
       }
@@ -27,6 +28,14 @@ export function updateVariable(obj) {
     })
     .tooltipContent(function(d) {
       return obj.data.labels[d.properties.topogram_id];
-    });
+    })
+    .iterations(obj.data.n_iteration);
 }
 
+export function updateIteration(obj) {
+  var carto = getTopogram(obj.id);
+  if (typeof carto !== "undefined") {
+    carto
+      .iterations(obj.data.n_iteration);
+  }
+}

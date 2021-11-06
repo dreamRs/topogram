@@ -2,8 +2,7 @@ library(topogram)
 library(shiny)
 
 ui <- fluidPage(
-  tags$h2("Update variable used to distort topology"),
-  tags$h4("Use a column name of the original data"),
+  tags$h2("Update topogram with proxy"),
   radioButtons(
     inputId = "new_value",
     label = "Select a variable:",
@@ -15,17 +14,16 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-  # Initialize the cartogram (non reactive)
+  # Initialize the topogram (non reactive)
   output$ID <- renderTopogram({
     topogram(
       sfobj = world,
       value = "pop_est", 
-      label = "{name} : {value}",
-      n_iteration = 20
+      label = "{name} : {value}"
     )
   })
 
-  # Update variable used (foo1, foo2, foo3, foo4)
+  # Update with proxy
   observeEvent(input$new_value, {
     topogram_proxy_update(
       "ID", world, 
@@ -36,4 +34,5 @@ server <- function(input, output, session) {
 
 }
 
-shinyApp(ui, server)
+if (interactive())
+  shinyApp(ui, server)
