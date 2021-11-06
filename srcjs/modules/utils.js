@@ -30,3 +30,6 @@ export function setLabs(elementId, enabled, options) {
   }
 }
 
+export function setLegend(elementId, content) {
+  document.getElementById(elementId + "-legend").innerHTML = content;
+}

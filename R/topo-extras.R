@@ -81,7 +81,6 @@ topogram_legend <- function(topo,
                             height = "250px",
                             width = "250px") {
   check_topogram(topo)
-  topo$x$legend <- TRUE
   direction <- match.arg(direction)
   if (is.null(colors))
     colors <- topo$x$legendOpts$colors
@@ -116,24 +115,31 @@ topogram_legend <- function(topo,
       )
     )
   }
-  .topo_opt(
-    topo = topo,
-    name = "legendOpts",
-    content = doRenderTags(tags$div(
-      style = "font-size: smaller; position: absolute; bottom: 0; left: 15px;",
-      if (!is.null(title)) {
-        tags$div(
-          title,
-          class = "topogram-legend-title",
-          style = "font-weight: bolder;"
-        )
-      },
+  topo$x$legend <- TRUE
+  content <- doRenderTags(tagList(
+    if (!is.null(title)) {
       tags$div(
-        class = "topogram-legend-colors",
-        tag_legend
+        title,
+        class = "topogram-legend-title",
+        style = "font-weight: bolder;"
       )
+    },
+    tags$div(
+      class = "topogram-legend-colors",
+      tag_legend
+    )
+  ))
+  if (inherits(topo, "topogram_Proxy")) {
+    .topogram_proxy(topo, "legend",  l = list(
+      content = content
     ))
-  )
+  } else {
+    .topo_opt(
+      topo = topo,
+      name = "legendOpts",
+      content = content
+    )
+  }
 }
 
 

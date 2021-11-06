@@ -20,7 +20,8 @@ server <- function(input, output, session) {
       sfobj = world,
       value = "pop_est", 
       label = "{name} : {value}"
-    )
+    ) %>% 
+      topogram_legend(title = "Population")
   })
 
   # Update with proxy
@@ -29,7 +30,8 @@ server <- function(input, output, session) {
       "ID", world, 
       value = input$new_value,
       label = "{name} : {value}"
-    )
+    ) %>% 
+      topogram_legend(title = input$new_value)
   }, ignoreInit = TRUE)
 
 }

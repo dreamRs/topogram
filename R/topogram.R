@@ -123,6 +123,11 @@ topogram_html <- function(id, style, class, ...) {
       id = paste0(id, "-caption"),
       class = "topogram-caption",
       style = "position: absolute; bottom: 0; right: 15px;"
+    ),
+    tags$div(
+      id = paste0(id, "-legend"),
+      style = "position: absolute; bottom: 0; left: 15px;",
+      class = "topogram-legend"
     )
   )
 }

@@ -35,7 +35,7 @@ HTMLWidgets.widget({
         utils.setLabs(el.id, x.labs, x.labsOpts);
         
         if (x.legend) {
-          el.innerHTML += x.legendOpts.content;
+          utils.setLegend(el.id, x.legendOpts.content);
         }
 
         // sizing
@@ -114,4 +114,5 @@ HTMLWidgets.widget({
 if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler("proxy-topogram-values", proxy.updateValues);
   Shiny.addCustomMessageHandler("proxy-topogram-iteration", proxy.updateIteration);
+  Shiny.addCustomMessageHandler("proxy-topogram-legend", proxy.updateLegend);
 }

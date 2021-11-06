@@ -68,12 +68,10 @@ topogram_proxy <- function(shinyId, session = shiny::getDefaultReactiveDomain())
 #' @return A \code{topogramProxy} \code{htmlwidget} object.
 #' @noRd
 .topogram_proxy <- function(proxy, name, l) {
-
   proxy$session$sendCustomMessage(
     type = sprintf("proxy-topogram-%s", name),
     message = list(id = proxy$id, data = l)
   )
-
   proxy
 }
 
@@ -109,6 +107,10 @@ topogram_proxy_update <- function(proxy,
     stop("topogram_proxy_update: 'value' must a character of length 1 or a numeric vector.", call. = FALSE)
   }
   colors <- getColors(palette, values)
+  proxy$x$legendOpts = list(
+    labels = range(values, na.rm = TRUE),
+    colors = colors$legend
+  )
   if (is.numeric(rescale_to) && length(rescale_to) == 2) {
     values <- scales::rescale(x = values, to = rescale_to)
   }

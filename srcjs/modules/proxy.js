@@ -1,3 +1,5 @@
+import * as utils from "./utils";
+
 export function getTopogram(id) {
   // Get the HTMLWidgets object
   var htmlWidgetsObj = HTMLWidgets.find("#" + id);
@@ -38,4 +40,8 @@ export function updateIteration(obj) {
     carto
       .iterations(obj.data.n_iteration);
   }
+}
+
+export function updateLegend(obj) {
+  utils.setLegend(obj.id, obj.data.content);
 }

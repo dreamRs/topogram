@@ -10,8 +10,8 @@ check_sf <- function(obj) {
 }
 
 check_topogram <- function(topo) {
-  if (!inherits(topo, "topogram")){
-    stop("topo must be a topogram() object")
+  if (!inherits(topo, c("topogram", "topogram_Proxy"))) {
+    stop("topo must be a topogram() object.", call. = FALSE)
   }
 }
 
