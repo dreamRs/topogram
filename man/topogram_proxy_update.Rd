@@ -15,7 +15,7 @@ topogram_proxy_update(
 )
 }
 \arguments{
-\item{proxy}{A \code{topogram_proxy} \code{htmlwidget} object.}
+\item{proxy}{A \code{\link[=topogram_proxy]{topogram_proxy()}} \code{htmlwidget} object or a valid Shiny output ID.}
 
 \item{sfobj}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
 

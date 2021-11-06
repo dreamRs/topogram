@@ -46,7 +46,13 @@ topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
     subtitle <- doRenderTags(subtitle)
   if (!is.null(caption))
     caption <- doRenderTags(caption)
-  .topo_opt(topo, "labsOpts", title = title, subtitle = subtitle, caption = caption)
+  if (inherits(topo, "topogram_Proxy")) {
+    .topogram_proxy(topo, "labs",  l = list(
+      title = title, subtitle = subtitle, caption = caption
+    ))
+  } else {
+    .topo_opt(topo, "labsOpts", title = title, subtitle = subtitle, caption = caption)
+  }
 }
 
 
@@ -54,15 +60,12 @@ topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 
 #' @title Legend for topogram widget
 #' 
-#' @description Add a legend
+#' @description Add a gradient legend in a [topogram()] widget.
 #'
-#' @param topo A [topogram()] `htmlwidget` object.
-#' @param colors Vector of colors.
-#' @param labels Labels associated to colors:
-#'  - For gradient: a vector of length 2 for range of values.
-#'  - For breaks: a vector of same length as colors, or length+1 to display the minimal value.
-#'  - For discrete: a vector of same length as colors.
-#' @param formatter Function to format labels.
+#' @param topo A [topogram()] / [topogram_proxy()] `htmlwidget` object.
+#' @param colors Vector of colors used in legend, default is to use colors used in [topogram()].
+#' @param labels Labels to display for values, default is to use range of values used in [topogram()].
+#' @param formatter Function to format labels, like [scales::label_number()].
 #' @param title Title for the legend.
 #' @param direction Direction: horizontal or vertical.
 #' @param height,width Height, width for legend. For gradient legend it represent the size of the dradient according to direction.

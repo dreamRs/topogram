@@ -6,26 +6,29 @@ export function removeElement(elementId) {
 
 export function setLabs(elementId, enabled, options) {
   if (!enabled) {
-    removeElement(elementId + "-title");
-    removeElement(elementId + "-subtitle");
-    removeElement(elementId + "-caption");
+    document.getElementById(elementId + "-title").style.display = "none";
+    document.getElementById(elementId + "-subtitle").style.display = "none";
+    document.getElementById(elementId + "-caption").style.display = "none";
   } else {
-    if (options.title !== null) {
+    if (typeof options.title === "string" || options.title instanceof String) {
       document.getElementById(elementId + "-title").innerHTML = options.title;
+      document.getElementById(elementId + "-title").style.display = "block";
     } else {
-      removeElement(elementId + "-title");
+      document.getElementById(elementId + "-title").style.display = "none";
     }
-    if (options.subtitle !== null) {
+    if (typeof options.subtitle === "string" || options.subtitle instanceof String) {
       document.getElementById(elementId + "-subtitle").innerHTML =
         options.subtitle;
+      document.getElementById(elementId + "-subtitle").style.display = "block";
     } else {
-      removeElement(elementId + "-subtitle");
+      document.getElementById(elementId + "-subtitle").style.display = "none";
     }
-    if (options.caption !== null) {
+    if (typeof options.caption === "string" || options.caption instanceof String) {
       document.getElementById(elementId + "-caption").innerHTML =
         options.caption;
+      document.getElementById(elementId + "-caption").style.display = "block";
     } else {
-      removeElement(elementId + "-caption");
+      document.getElementById(elementId + "-caption").style.display = "none";
     }
   }
 }

@@ -45,3 +45,7 @@ export function updateIteration(obj) {
 export function updateLegend(obj) {
   utils.setLegend(obj.id, obj.data.content);
 }
+
+export function updateLabs(obj) {
+  utils.setLabs(obj.id, true, obj.data);
+}

@@ -16,18 +16,13 @@ topogram_legend(
 )
 }
 \arguments{
-\item{topo}{A \code{\link[=topogram]{topogram()}} \code{htmlwidget} object.}
+\item{topo}{A \code{\link[=topogram]{topogram()}} / \code{\link[=topogram_proxy]{topogram_proxy()}} \code{htmlwidget} object.}
 
-\item{colors}{Vector of colors.}
+\item{colors}{Vector of colors used in legend, default is to use colors used in \code{\link[=topogram]{topogram()}}.}
 
-\item{labels}{Labels associated to colors:
-\itemize{
-\item For gradient: a vector of length 2 for range of values.
-\item For breaks: a vector of same length as colors, or length+1 to display the minimal value.
-\item For discrete: a vector of same length as colors.
-}}
+\item{labels}{Labels to display for values, default is to use range of values used in \code{\link[=topogram]{topogram()}}.}
 
-\item{formatter}{Function to format labels.}
+\item{formatter}{Function to format labels, like \code{\link[scales:label_number]{scales::label_number()}}.}
 
 \item{title}{Title for the legend.}
 
@@ -36,5 +31,5 @@ topogram_legend(
 \item{height, width}{Height, width for legend. For gradient legend it represent the size of the dradient according to direction.}
 }
 \description{
-Add a legend
+Add a gradient legend in a \code{\link[=topogram]{topogram()}} widget.
 }

@@ -115,4 +115,5 @@ if (HTMLWidgets.shinyMode) {
   Shiny.addCustomMessageHandler("proxy-topogram-values", proxy.updateValues);
   Shiny.addCustomMessageHandler("proxy-topogram-iteration", proxy.updateIteration);
   Shiny.addCustomMessageHandler("proxy-topogram-legend", proxy.updateLegend);
+  Shiny.addCustomMessageHandler("proxy-topogram-labs", proxy.updateLabs);
 }

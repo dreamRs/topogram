@@ -70,7 +70,7 @@ topogram_proxy <- function(shinyId, session = shiny::getDefaultReactiveDomain())
 .topogram_proxy <- function(proxy, name, l) {
   proxy$session$sendCustomMessage(
     type = sprintf("proxy-topogram-%s", name),
-    message = list(id = proxy$id, data = l)
+    message = list(id = proxy$id, data = dropNulls(l))
   )
   proxy
 }
@@ -82,7 +82,7 @@ topogram_proxy <- function(shinyId, session = shiny::getDefaultReactiveDomain())
 #'
 #' @description Use this in 'shiny' application to update an already generated [topogram()].
 #'
-#' @param proxy A `topogram_proxy` `htmlwidget` object.
+#' @param proxy A [topogram_proxy()] `htmlwidget` object or a valid Shiny output ID.
 #' @inheritParams topogram
 #'
 #' @return A `topogram_proxy` `htmlwidget` object.
