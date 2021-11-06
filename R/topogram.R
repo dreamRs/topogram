@@ -5,10 +5,12 @@
 #' @param sfobj An `sf` object. For the time being, shape must be projected in Mercator (CRS 4326).
 #' @param value Variable name to use to distort topology.
 #' @param label `glue` string to be used in tooltip, you can use HTML tags in it.
-#' @param palette Name of a color palette, such as `"viridis"`, `"Blues"`, ... Or a function to map data values to colors, see [scales::col_numeric()].
+#' @param palette Name of a color palette, such as `"viridis"`, `"Blues"`, ...
+#'  Or a function to map data values to colors, see [scales::col_numeric()].
+#' @param rescale_to Rescale value to distort topology to a specified range, use `NULL` to use values as is.
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
-#' @param projection Name of a projection, see available ones here: https://github.com/d3/d3-geo-projection
+#' @param projection Name of a projection, see available ones here: https://github.com/d3/d3-geo-projection.
 #' @param layerId A formula, the layer id to specify value returned by `input$<ID>_click` in 'shiny' application.
 #' @param width A numeric input in pixels.
 #' @param height A numeric input in pixels.
@@ -19,15 +21,16 @@
 #' @importFrom htmlwidgets createWidget JS sizingPolicy
 #' @importFrom geojsonio geojson_json geo2topo
 #' @importFrom stats model.frame
-#' @importFrom scales col_numeric
+#' @importFrom scales col_numeric rescale
 #' @importFrom glue glue_data
 #'
 topogram <- function(sfobj, 
                      value, 
                      label = "{value}",
                      palette = "viridis",
-                     n_iteration = 20,
-                     projection = "geoMercator", 
+                     rescale_to = c(1, 1000),
+                     n_iteration = 10,
+                     projection = "geoMercator",
                      layerId = NULL,
                      width = NULL,
                      height = NULL, 
@@ -52,6 +55,11 @@ topogram <- function(sfobj,
   
   # set label
   sfobj$topogram_label <- getLabels(sfobj, label, values)
+  
+  # rescale value
+  if (is.numeric(rescale_to) && length(rescale_to) == 2) {
+    sfobj[[value]] <- rescale(x = values, to = rescale_to)
+  }
   
   # convert to geojson
   geo_json <- geojson_json(input = sfobj)

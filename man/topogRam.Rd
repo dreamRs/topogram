@@ -9,7 +9,8 @@ topogram(
   value,
   label = "{value}",
   palette = "viridis",
-  n_iteration = 20,
+  rescale_to = c(1, 1000),
+  n_iteration = 10,
   projection = "geoMercator",
   layerId = NULL,
   width = NULL,
@@ -24,12 +25,15 @@ topogram(
 
 \item{label}{\code{glue} string to be used in tooltip, you can use HTML tags in it.}
 
-\item{palette}{Name of a color palette, such as \code{"viridis"}, \code{"Blues"}, ... Or a function to map data values to colors, see \code{\link[scales:col_numeric]{scales::col_numeric()}}.}
+\item{palette}{Name of a color palette, such as \code{"viridis"}, \code{"Blues"}, ...
+Or a function to map data values to colors, see \code{\link[scales:col_numeric]{scales::col_numeric()}}.}
+
+\item{rescale_to}{Rescale value to distort topology to a specified range, use \code{NULL} to use values as is.}
 
 \item{n_iteration}{Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 at the cost of performance.}
 
-\item{projection}{Name of a projection, see available ones here: https://github.com/d3/d3-geo-projection}
+\item{projection}{Name of a projection, see available ones here: https://github.com/d3/d3-geo-projection.}
 
 \item{layerId}{A formula, the layer id to specify value returned by \verb{input$<ID>_click} in 'shiny' application.}
 
