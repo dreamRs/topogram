@@ -1,0 +1,18 @@
+
+.topogram-title {
+  font-weight: bold; 
+  font-size: 160%;
+}
+.topogram-subtitle {
+  font-size: 110%;
+}
+.topogram-caption {
+  position: absolute; 
+  bottom: 0;
+  right: 15px;
+}
+.topogram-legend {
+  position: absolute; 
+  bottom: 0; 
+  left: 15px;
+}

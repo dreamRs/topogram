@@ -6,6 +6,7 @@ import * as proj2 from "d3-geo-projection";
 const proj = { ...proj1, ...proj2 };
 import * as utils from "../modules/utils";
 import * as proxy from "../modules/proxy";
+import "../modules/topogram.css";
 
 HTMLWidgets.widget({
 

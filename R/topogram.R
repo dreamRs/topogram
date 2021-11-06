@@ -110,23 +110,19 @@ topogram_html <- function(id, style, class, ...) {
     style = "position: relative;",
     tags$div(
       id = paste0(id, "-title"), 
-      class = "topogram-title", 
-      style = "font-weight: bold; font-size: 160%;"
+      class = "topogram-title"
     ),
     tags$div(
       id = paste0(id, "-subtitle"), 
-      class = "topogram-subtitle",
-      style = "font-size: 110%;"
+      class = "topogram-subtitle"
     ),
     tags$div(id = paste0(id, "-topogram")),
     tags$p(
       id = paste0(id, "-caption"),
-      class = "topogram-caption",
-      style = "position: absolute; bottom: 0; right: 15px;"
+      class = "topogram-caption"
     ),
     tags$div(
       id = paste0(id, "-legend"),
-      style = "position: absolute; bottom: 0; left: 15px;",
       class = "topogram-legend"
     )
   )
