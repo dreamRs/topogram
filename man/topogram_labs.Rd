@@ -21,17 +21,16 @@ Add title, subtitle and caption to a topogram.
 \examples{
 library(topogram)
 library(htmltools)
-data(paris)
 
-topogram(paris, "TOTAL") \%>\% 
+topogram(world, "pop_est") \%>\% 
   topogram_labs(
-    title = "Paris",
-    subtitle = "Population by district",
+    title = "World population",
+    subtitle = "Population estimate for 2017",
     caption = tagList(
-      "Data source: INSEE &",
+      "Data source:",
       tags$a(
-        href = "opendata.paris.fr",
-        "opendata.paris.fr"
+        href = "https://www.naturalearthdata.com/",
+        "NaturalEarth"
       )
     )
   )
