@@ -19,13 +19,14 @@ topogram_select <- function(topogramId,
     FUN = function(x) {
       values <- sfobj[[x]]
       colors <- getColors(palette, values)
+      labels <- getLabels(sfobj, label, values)
       if (is.numeric(rescale_to) && length(rescale_to) == 2) {
         values <- scales::rescale(x = values, to = rescale_to)
       }
       list(
         values = values,
         colors = colors$values,
-        labels = getLabels(sfobj, label, values)
+        labels = labels
       )
     }
   )
