@@ -2,7 +2,7 @@
 % Please edit documentation in R/topogram_select.R
 \name{topogram_select}
 \alias{topogram_select}
-\title{Select mmenu to update \code{\link[=topogram]{topogram()}}}
+\title{Select menu to update \code{\link[=topogram]{topogram()}}}
 \usage{
 topogram_select(
   topogramId,
@@ -15,6 +15,53 @@ topogram_select(
   width = NULL
 )
 }
+\arguments{
+\item{topogramId}{The \code{elementId} of the \code{\link[=topogram]{topogram()}} to update.}
+
+\item{sfobj}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
+
+\item{label}{\code{glue} string to be used in tooltip, you can use HTML tags in it.}
+
+\item{palette}{Name of a color palette, such as \code{"viridis"}, \code{"Blues"}, ...
+Or a function to map data values to colors, see \code{\link[scales:col_numeric]{scales::col_numeric()}}.}
+
+\item{rescale_to}{Rescale value to distort topology to a specified range, use \code{NULL} to use values as is.}
+
+\item{n_iteration}{Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
+at the cost of performance.}
+
+\item{width}{A numeric input in pixels.}
+}
 \description{
 Use in RMarkdown documents to update a \code{\link[=topogram]{topogram()}} dynamically.
+}
+\examples{
+library(topogram)
+library(htmltools)
+
+# normally, you would use the following in RMarkdown
+
+browsable(tagList(
+  # Select menu
+  topogram_select(
+    topogramId = "ID",
+    sfobj = world,
+    values = list(
+      "Population" = "pop_est",
+      "GDP" = "gdp_md_est", 
+      "CO2 emissions (1990)" = "co2_emissions_1990", 
+      "CO2 emissions (2020)" = "co2_emissions_2020", 
+      "Share of electricity production from renewables" = "renewables_percent_electricity"
+    ),
+    label = "{name} : {value}"
+  ),
+  
+  # Topogram
+  topogram(
+    sfobj = world,
+    value = "pop_est", 
+    label = "{name} : {value}",
+    elementId = "ID"
+  )
+))
 }

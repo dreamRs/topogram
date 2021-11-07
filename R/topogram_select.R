@@ -1,10 +1,17 @@
-#' @title Select mmenu to update [topogram()]
+
+#' @title Select menu to update [topogram()]
 #'
 #' @description Use in RMarkdown documents to update a [topogram()] dynamically.
+#' 
+#' @param topogramId The `elementId` of the [topogram()] to update.
+#' @inheritParams topogram
 #'
-#' @importFrom htmlwidgets createWidget
+#' @importFrom htmlwidgets createWidget sizingPolicy
+#' @importFrom stats setNames
 #'
 #' @export
+#' 
+#' @example examples/selectmenu.R
 topogram_select <- function(topogramId,
                             sfobj,
                             values, 
@@ -46,15 +53,14 @@ topogram_select <- function(topogramId,
     n_iteration = n_iteration
   )
 
-  # create widget
-  htmlwidgets::createWidget(
+  createWidget(
     name = "topogram_select",
     x,
     width = width,
     height = NULL,
     package = "topogram",
     elementId = NULL,
-    sizingPolicy = htmlwidgets::sizingPolicy(
+    sizingPolicy = sizingPolicy(
       defaultWidth = "100%",
       defaultHeight = "auto",
       knitr.figure = FALSE
