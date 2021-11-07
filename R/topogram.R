@@ -96,7 +96,8 @@ topogram <- function(sfobj,
       viewer.defaultHeight = "100%",
       viewer.defaultWidth = "100%",
       browser.fill = TRUE,
-      padding = 0
+      padding = 0,
+      knitr.figure = FALSE
     )
   )
 }

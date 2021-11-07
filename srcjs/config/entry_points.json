@@ -1,3 +1,4 @@
 {
-  "topogram": "./srcjs/widgets/topogram.js"
+  "topogram": "./srcjs/widgets/topogram.js",
+  "topogram_select": "./srcjs/widgets/topogram_select.js"
 }
