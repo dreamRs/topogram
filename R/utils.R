@@ -52,16 +52,18 @@ linear_gradient <- function(cols, direction = c("h", "v")) {
 }
 
 
+#' @importFrom scales col_numeric
+#' @importFrom rlang is_function is_character
 getColors <- function(palette, values) {
   values_range <- range(values, na.rm = TRUE)
-  if (is.character(palette)) {
+  if (is_character(palette)) {
     col_fun <- scales::col_numeric(
       palette = palette,
       domain = values_range
     )
     topogram_color <- col_fun(values)
     colors <- col_fun(seq(from = values_range[1], to = values_range[2], length.out = 20))
-  } else if (is.function(palette)) {
+  } else if (is_function(palette)) {
     topogram_color <- palette(values)
     colors <- palette(seq(from = values_range[1], to = values_range[2], length.out = 20))
   } else {
@@ -74,6 +76,7 @@ getColors <- function(palette, values) {
 }
 
 #' @importFrom htmltools doRenderTags tags
+#' @importFrom glue glue_data
 getLabels <- function(sfobj, label, values) {
   label <- doRenderTags(tags$div(
     style = "margin-top:-25px;",
@@ -81,3 +84,90 @@ getLabels <- function(sfobj, label, values) {
   ))
   glue::glue_data(sfobj, label, value = values)
 }
+
+
+#' @importFrom rlang is_character is_list is_named is_null %||%
+get_topogram_options <- function(x, palette = "viridis", label = "{value]") {
+  if (is_character(x)) {
+    lapply(
+      X = x,
+      FUN = function(value) {
+        list(value = value, palette = palette, label = label)
+      }
+    )
+  } else if (is_list(x) && is_named(x)) {
+    lapply(
+      X = unname(x),
+      FUN = function(value) {
+        list(value = value, palette= palette, label = label)
+      }
+    )
+  } else if (is_list(x) && is_list(x[[1]])) {
+    if (!is_named(x[[1]])) {
+      stop(
+        "topogram_select: 'values' must be either a character vector, or a named list, or a list of lists",
+        call. = FALSE
+      )
+    }
+    if (is_null(x[[1]]$value)) {
+      stop(
+        "topogram_select: if 'values' is a list of lists, it must have a `value` field",
+        call. = FALSE
+      )
+    }
+    lapply(
+      X = x,
+      FUN = function(l) {
+        list(value = l$value, palette = l$palette %||% palette, label = l$label %||% label)
+      }
+    )
+  } else {
+    stop(
+      "topogram_select: 'values' must be either a character vector, or a named list, or a list of lists",
+      call. = FALSE
+    )
+  }
+}
+
+get_select_options <- function(x) {
+  if (is_character(x)) {
+    lapply(
+      X = x,
+      FUN = function(value) {
+        list(value = value, text = value)
+      }
+    )
+  } else if (is_list(x) && is_named(x)) {
+    lapply(
+      X = seq_along(x),
+      FUN = function(i) {
+        list(value = x[[i]], text = names(x)[i])
+      }
+    )
+  } else if (is_list(x) && is_list(x[[1]])) {
+    if (!is_named(x[[1]])) {
+      stop(
+        "topogram_select: 'values' must be either a character vector, or a named list, or a list of lists",
+        call. = FALSE
+      )
+    }
+    if (is_null(x[[1]]$value)) {
+      stop(
+        "topogram_select: if 'values' is a list of lists, it must have a `value` field",
+        call. = FALSE
+      )
+    }
+    lapply(
+      X = x,
+      FUN = function(l) {
+        list(value = l$value, text = l$text %||% l$value)
+      }
+    )
+  } else {
+    stop(
+      "topogram_select: 'values' must be either a character vector, or a named list, or a list of lists",
+      call. = FALSE
+    )
+  }
+}
+

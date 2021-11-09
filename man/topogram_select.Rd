@@ -20,6 +20,14 @@ topogram_select(
 
 \item{sfobj}{An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).}
 
+\item{values}{Parameters to construct cartograms, can be:
+\itemize{
+\item a \code{character} vector of variable to use
+\item a named \code{list} where names will be used in select menu and values as variable
+\item a \code{list} of \code{lists} where each sub-list can contain: \code{value} (variable), \code{text} (label for select menu),
+\code{palette}, \code{labels} (parameters specific for the variable considered)
+}}
+
 \item{label}{\code{glue} string to be used in tooltip, you can use HTML tags in it.}
 
 \item{palette}{Name of a color palette, such as \code{"viridis"}, \code{"Blues"}, ...
@@ -63,5 +71,40 @@ browsable(tagList(
     label = "{name} : {value}",
     elementId = "ID"
   )
-))
+), value = interactive())
+
+
+# specific options according to variables
+browsable(tagList(
+  # Select menu
+  topogram_select(
+    topogramId = "ID",
+    sfobj = world,
+    values = list(
+      list(
+        text = "Population", 
+        value = "pop_est", 
+        palette = "Greens", 
+        label = "{name} : {value} inhabitants"
+      ),
+      list(
+        text = "GDP",
+        value = "gdp_md_est", 
+        palette = "Blues", 
+        label = "{name} : ${value}"
+      )
+    ),
+    label = "{name} : {value}"
+  ),
+  
+  # Topogram
+  topogram(
+    sfobj = world,
+    value = "pop_est", 
+    elementId = "ID",
+    # you have to specify parameters for initializing topogram
+    palette = "Greens",
+    label = "{name} : {value} inhabitants"
+  )
+), value = interactive())
 }

@@ -25,4 +25,39 @@ browsable(tagList(
     label = "{name} : {value}",
     elementId = "ID"
   )
-))
+), value = interactive())
+
+
+# specific options according to variables
+browsable(tagList(
+  # Select menu
+  topogram_select(
+    topogramId = "ID",
+    sfobj = world,
+    values = list(
+      list(
+        text = "Population", 
+        value = "pop_est", 
+        palette = "Greens", 
+        label = "{name} : {value} inhabitants"
+      ),
+      list(
+        text = "GDP",
+        value = "gdp_md_est", 
+        palette = "Blues", 
+        label = "{name} : ${value}"
+      )
+    ),
+    label = "{name} : {value}"
+  ),
+  
+  # Topogram
+  topogram(
+    sfobj = world,
+    value = "pop_est", 
+    elementId = "ID",
+    # you have to specify parameters for initializing topogram
+    palette = "Greens",
+    label = "{name} : {value} inhabitants"
+  )
+), value = interactive())
