@@ -117,8 +117,10 @@ get_topogram_options <- function(x, palette = "viridis", label = "{value]") {
     }
     lapply(
       X = x,
-      FUN = function(l) {
-        list(value = l$value, palette = l$palette %||% palette, label = l$label %||% label)
+      FUN = function(.list) {
+        .list$palette <- .list$palette %||% palette
+        .list$label <- .list$label %||% label
+        return(.list)
       }
     )
   } else {

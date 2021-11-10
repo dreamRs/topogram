@@ -36,11 +36,12 @@ topogram_select <- function(topogramId,
       if (is.numeric(rescale_to) && length(rescale_to) == 2) {
         values <- scales::rescale(x = values, to = rescale_to)
       }
-      list(
+      dropNulls(list(
         values = values,
         colors = colors$values,
-        labels = labels
-      )
+        labels = labels,
+        labs = x$labs
+      ))
     }
   )
   data <- get_select_options(values)

@@ -2,6 +2,7 @@ import "widgets";
 import SlimSelect from "slim-select";
 import "../modules/slimselect.min.css";
 import {getTopogram} from "../modules/proxy";
+import * as utils from "../modules/utils";
 
 HTMLWidgets.widget({
 
@@ -37,6 +38,7 @@ HTMLWidgets.widget({
               .tooltipContent(function(d) {
                 return topo.labels[d.properties.topogram_id];
               });
+            utils.setLabs(x.topogramId, topo.hasOwnProperty("labs"), topo.labs);
           }
         });
 
