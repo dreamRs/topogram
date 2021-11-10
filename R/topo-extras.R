@@ -31,6 +31,8 @@
 #' @param title Main title.
 #' @param subtitle Subtitle.
 #' @param caption Brief explanation of the source of the data.
+#' 
+#' @return A [topogram()] / [topogram_proxy()] `htmlwidget` object.
 #'
 #' @export
 #' 
@@ -68,13 +70,16 @@ topogram_labs <- function(topo, title = NULL, subtitle = NULL, caption = NULL) {
 #' @param formatter Function to format labels, like [scales::label_number()].
 #' @param title Title for the legend.
 #' @param direction Direction: horizontal or vertical.
-#' @param height,width Height, width for legend. For gradient legend it represent the size of the dradient according to direction.
+#' @param height,width Height, width for legend. For gradient legend it
+#'  represent the size of the dradient according to direction.
+#' 
+#' @return A [topogram()] / [topogram_proxy()] `htmlwidget` object.
 #'
 #' @export
 #' 
 #' @importFrom htmltools tags tagList doRenderTags
-#' @importFrom scales colour_ramp
-#'
+#' 
+#' @example examples/legend.R
 topogram_legend <- function(topo,
                             colors = NULL,
                             labels = NULL,
@@ -91,47 +96,15 @@ topogram_legend <- function(topo,
     labels <- topo$x$legendOpts$labels
   if (is.function(formatter))
     labels <- formatter(labels)
-  if (direction == "h") {
-    tag_legend <- tagList(
-      tags$div(
-        style = paste("height: 12px; width: ", width, ";"),
-        style = paste("background:", linear_gradient(colour_ramp(colors)(seq(0, 1, length = 100))))
-      ),
-      tags$div(
-        tags$span(labels[1]),
-        tags$span(labels[2], style = "float: right;")
-      )
-    )
-  } else  {
-    tag_legend <- tags$div(
-      style = "width: 100%;",
-      tags$div(
-        style = paste("height: ", height, ";"),
-        style = "width: 12px; float: left;",
-        style = paste("background:", linear_gradient(colour_ramp(colors)(seq(0, 1, length = 100)), direction = "v"))
-      ),
-      tags$div(
-        style = paste("height: ", height, ";"),
-        style = "margin-left: 12px; padding-left: 2px; position: relative;",
-        tags$div(labels[1]),
-        tags$div(labels[2], style = "position: absolute; bottom: 0;")
-      )
-    )
-  }
   topo$x$legend <- TRUE
-  content <- doRenderTags(tagList(
-    if (!is.null(title)) {
-      tags$div(
-        title,
-        class = "topogram-legend-title",
-        style = "font-weight: bolder;"
-      )
-    },
-    tags$div(
-      class = "topogram-legend-colors",
-      tag_legend
-    )
-  ))
+  content <- create_legend(
+    colors = colors, 
+    labels = labels, 
+    title= title, 
+    direction = direction, 
+    height = height, 
+    width = width
+  )
   if (inherits(topo, "topogram_Proxy")) {
     .topogram_proxy(topo, "legend",  l = list(
       content = content
@@ -145,4 +118,64 @@ topogram_legend <- function(topo,
   }
 }
 
+#' @importFrom scales colour_ramp
+#' @importFrom htmltools css validateCssUnit tagList tags doRenderTags
+create_legend <- function(colors, 
+                          labels, 
+                          title = NULL,
+                          direction = c("h", "v"), 
+                          height = "250px", width = "250px") {
+  direction <- match.arg(direction)
+  height <- validateCssUnit(height)
+  width <- validateCssUnit(width)
+  colors <- colour_ramp(colors)(seq(0, 1, length = 100))
+  if (direction == "h") {
+    tag_legend <- tagList(
+      tags$div(
+        class = "topogram-legend-gradient",
+        style = css(
+          height = "12px",
+          width = width,
+          background = linear_gradient(colors)
+        )
+      ),
+      tags$div(
+        class = "topogram-legend-labels-h",
+        tags$span(labels[1]),
+        tags$span(labels[2], style = "float: right;")
+      )
+    )
+  } else  {
+    tag_legend <- tags$div(
+      style = "width: 100%;",
+      tags$div(
+        class = "topogram-legend-gradient",
+        style = css(
+          height = height,
+          width = "12px",
+          float = "left",
+          background = linear_gradient(colors, direction = "v")
+        )
+      ),
+      tags$div(
+        style = paste("height: ", height, ";"),
+        class = "topogram-legend-labels-v",
+        tags$div(labels[1]),
+        tags$div(labels[2], class = "topogram-legend-labels-v-2")
+      )
+    )
+  }
+  doRenderTags(tagList(
+    if (!is.null(title)) {
+      tags$div(
+        title,
+        class = "topogram-legend-title"
+      )
+    },
+    tags$div(
+      class = "topogram-legend-colors",
+      tag_legend
+    )
+  ))
+}
 

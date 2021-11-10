@@ -28,8 +28,25 @@ topogram_legend(
 
 \item{direction}{Direction: horizontal or vertical.}
 
-\item{height, width}{Height, width for legend. For gradient legend it represent the size of the dradient according to direction.}
+\item{height, width}{Height, width for legend. For gradient legend it
+represent the size of the dradient according to direction.}
+}
+\value{
+A \code{\link[=topogram]{topogram()}} / \code{\link[=topogram_proxy]{topogram_proxy()}} \code{htmlwidget} object.
 }
 \description{
 Add a gradient legend in a \code{\link[=topogram]{topogram()}} widget.
+}
+\examples{
+library(topogram)
+
+topogram(world, value = "pop_est") \%>\% 
+  topogram_legend(title = "Population")
+
+topogram(world, value = "pop_est", palette = "Blues") \%>\% 
+  topogram_legend(
+    title = NULL,
+    formatter = scales::label_comma(),
+    direction = "v"
+  )
 }

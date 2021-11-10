@@ -15,6 +15,9 @@ topogram_labs(topo, title = NULL, subtitle = NULL, caption = NULL)
 
 \item{caption}{Brief explanation of the source of the data.}
 }
+\value{
+A \code{\link[=topogram]{topogram()}} / \code{\link[=topogram_proxy]{topogram_proxy()}} \code{htmlwidget} object.
+}
 \description{
 Add title, subtitle and caption to a topogram.
 }

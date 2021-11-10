@@ -45,7 +45,8 @@ browsable(tagList(
         text = "GDP",
         value = "gdp_md_est", 
         palette = "Blues", 
-        label = "{name} : ${value}"
+        label = "{name} : ${value}",
+        labs = list(title = "GDP", subtitle = "estimate, in 2017")
       )
     ),
     label = "{name} : {value}"

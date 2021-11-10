@@ -43,6 +43,9 @@ at the cost of performance.}
 
 \item{elementId}{Use an explicit element ID for the widget.}
 }
+\value{
+A \code{\link[=topogram]{topogram()}} \code{htmlwidget} object.
+}
 \description{
-Continuous area cartograms with \code{d3.js}
+Continuous area cartograms with \code{d3.js} and \href{https://github.com/vasturiano/cartogram-chart}{\code{cartogram-chart}}.
 }

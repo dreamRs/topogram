@@ -13,6 +13,18 @@
 }
 .topogram-legend {
   position: absolute; 
-  bottom: 0; 
+  bottom: 15px; 
   left: 15px;
+}
+.topogram-legend-title {
+  font-weight: bolder;
+}
+.topogram-legend-labels-v {
+  margin-left: 12px;
+  padding-left: 2px; 
+  position: relative;
+}
+.topogram-legend-labels-v-2 {
+  position: absolute;
+  bottom: 0;
 }

@@ -1,6 +1,6 @@
 #' @title Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology
 #'
-#' @description Continuous area cartograms with `d3.js`
+#' @description Continuous area cartograms with `d3.js` and [`cartogram-chart`](https://github.com/vasturiano/cartogram-chart).
 #'
 #' @param sfobj An `sf` object. For the time being, shape must be projected in Mercator (CRS 4326).
 #' @param value Variable name to use to distort topology.
@@ -15,6 +15,8 @@
 #' @param width A numeric input in pixels.
 #' @param height A numeric input in pixels.
 #' @param elementId Use an explicit element ID for the widget.
+#' 
+#' @return A [topogram()] `htmlwidget` object.
 #'
 #' @export
 #'
