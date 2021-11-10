@@ -18,6 +18,8 @@ Imports:
     scales,
     shiny
 Suggests: 
+    rmarkdown,
+    knitr,
     rnaturalearth,
     sf
 Encoding: UTF-8
@@ -25,3 +27,4 @@ LazyData: true
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 License: MIT + file LICENSE
+VignetteBuilder: knitr
