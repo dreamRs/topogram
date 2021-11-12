@@ -25,7 +25,8 @@ topogram_select <- function(topogramId,
                             rescale_to = c(1, 1000),
                             n_iteration = 10,
                             width = NULL) {
-
+  if (!is.character(topogramId))
+    stop("'topogramId' must be a character string.")
   topo_opts <- get_topogram_options(values, palette = palette, label = label)
   topo <- lapply(
     X = topo_opts,

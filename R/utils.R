@@ -96,6 +96,12 @@ get_topogram_options <- function(x, palette = "viridis", label = "{value]") {
       }
     )
   } else if (is_list(x) && is_named(x)) {
+    if (!is_character(x[[1]], n = 1)) {
+      stop(
+        "topogram_select: if 'values' is a list, items must be character of length 1.",
+        call. = FALSE
+      )
+    }
     lapply(
       X = unname(x),
       FUN = function(value) {
@@ -140,6 +146,12 @@ get_select_options <- function(x) {
       }
     )
   } else if (is_list(x) && is_named(x)) {
+    if (!is_character(x[[1]], n = 1)) {
+      stop(
+        "topogram_select: if 'values' is a list, items mustbe character of length 1.",
+        call. = FALSE
+      )
+    }
     lapply(
       X = seq_along(x),
       FUN = function(i) {

@@ -21,7 +21,8 @@ Suggests:
     rmarkdown,
     knitr,
     rnaturalearth,
-    sf
+    sf, 
+    tinytest
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
