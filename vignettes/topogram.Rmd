@@ -23,7 +23,7 @@ library(htmltools)
 
 Create continuous area cartograms with [`cartogram-chart`](https://github.com/vasturiano/cartogram-chart):
 
-```{r}
+```{r topogram-basic}
 topogram(world, value = "pop_est")
 ```
 
@@ -31,7 +31,7 @@ First argument is an `sf` object containing geometries to visualize, the specify
 
 You can use a `glue` string to be used in tooltip, specify geographic projection to use, add labs and legend, ...
 
-```{r}
+```{r topogram-options}
 world %>% 
   topogram( 
     value = "pop_est", 
@@ -56,9 +56,11 @@ world %>%
 ```
 
 
-In Markdown documents, you can use `topogram_select()`, to add a menu tu update variable used to distort topology. First add select menu:
+## R markdown
 
-```{r}
+In Markdown documents, you can use `topogram_select()`, to add a menu to update variable used to distort topology interactively. First add select menu:
+
+```{r markdown-select}
 topogram_select(
   topogramId = "ID",
   sfobj = world,
@@ -75,12 +77,43 @@ topogram_select(
 
 Then create topogram:
 
-```{r}
+```{r markdown-topogram}
 topogram(
   sfobj = world,
   value = "pop_est", 
   label = "{name} : {value}",
   elementId = "ID"
 )
+```
+
+
+## Shiny
+
+In Shiny applications, a proxy method is available to update a topogram.
+
+```{r shiny-proxy, eval=FALSE}
+function(input, output, session) {
+
+  # Initialize the topogram (non reactive)
+  output$ID <- renderTopogram({
+    topogram(
+      sfobj = world,
+      value = "pop_est", 
+      label = "{name} : {value}"
+    ) %>% 
+      topogram_legend(title = "Population")
+  })
+
+  # Update with proxy
+  observeEvent(input$new_value, {
+    topogram_proxy_update(
+      "ID", world, 
+      value = input$new_value,
+      label = "{name} : {value}"
+    ) %>% 
+      topogram_legend(title = input$new_value)
+  }, ignoreInit = TRUE)
+
+}
 ```
 
