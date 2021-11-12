@@ -4,6 +4,8 @@
 
 <!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/)
+[![R-CMD-check](https://github.com/dreamRs/topogram/workflows/R-CMD-check/badge.svg)](https://github.com/dreamRs/topogram/actions)
+[![Codecov test coverage](https://codecov.io/gh/dreamRs/topogram/branch/master/graph/badge.svg)](https://app.codecov.io/gh/dreamRs/topogram?branch=master)
 <!-- badges: end -->
 
 
