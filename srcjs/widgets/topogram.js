@@ -16,27 +16,29 @@ HTMLWidgets.widget({
 
   factory: function(el, width, height) {
 
+    var topoEl = document.getElementById(el.id + "-topogram");
+    var widgetId = el.id;
     var carto,
       statesbbox,
       projection,
       topoWidth,
       topoHeight;
 
-    var padding = 20;
+    var padding = 10;
 
     return {
 
       renderValue: function(x) {
         
         if (typeof carto !== "undefined") {
-          document.getElementById(el.id + "-topogram").innerHTML = "";
+          topoEl.innerHTML = "";
         }
 
         // Set labs (title, subtitle, caption)
-        utils.setLabs(el.id, x.labs, x.labsOpts);
+        utils.setLabs(widgetId, x.labs, x.labsOpts);
         
         if (x.legend) {
-          utils.setLegend(el.id, x.legendOpts.content);
+          utils.setLegend(widgetId, x.legendOpts.content);
         }
 
         // sizing

@@ -1,4 +1,9 @@
-
+/* topogram CSS */
+.topogram-heading {
+  position: absolute; 
+  top: 10px; 
+  left: 15px;
+}
 .topogram-title {
   font-weight: bold; 
   font-size: 160%;
@@ -10,10 +15,11 @@
   position: absolute; 
   bottom: 0;
   right: 15px;
+  font-size: smaller;
 }
 .topogram-legend {
   position: absolute; 
-  bottom: 15px; 
+  bottom: 10px; 
   left: 15px;
 }
 .topogram-legend-title {

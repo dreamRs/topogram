@@ -112,12 +112,15 @@ topogram_html <- function(id, style, class, ...) {
     style = style,
     style = "position: relative;",
     tags$div(
-      id = paste0(id, "-title"), 
-      class = "topogram-title"
-    ),
-    tags$div(
-      id = paste0(id, "-subtitle"), 
-      class = "topogram-subtitle"
+      class = "topogram-heading",
+      tags$div(
+        id = paste0(id, "-title"), 
+        class = "topogram-title"
+      ),
+      tags$div(
+        id = paste0(id, "-subtitle"), 
+        class = "topogram-subtitle"
+      )
     ),
     tags$div(id = paste0(id, "-topogram")),
     tags$p(
