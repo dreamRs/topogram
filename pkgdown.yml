@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  topogram: topogram.html
+last_built: 2021-11-12T19:17Z
+urls:
+  reference: https://dreamrs.github.io/topogram/reference
+  article: https://dreamrs.github.io/topogram/articles
+
