@@ -5,3 +5,4 @@ dev/
 *.Rproj
 node_modules
 inst/doc
+docs
