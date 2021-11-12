@@ -1,0 +1,36 @@
+/* topogram CSS */
+.topogram-heading {
+  position: absolute; 
+  top: 10px; 
+  left: 15px;
+}
+.topogram-title {
+  font-weight: bold; 
+  font-size: 160%;
+}
+.topogram-subtitle {
+  font-size: 110%;
+}
+.topogram-caption {
+  position: absolute; 
+  bottom: 0;
+  right: 15px;
+  font-size: smaller;
+}
+.topogram-legend {
+  position: absolute; 
+  bottom: 10px; 
+  left: 15px;
+}
+.topogram-legend-title {
+  font-weight: bolder;
+}
+.topogram-legend-labels-v {
+  margin-left: 12px;
+  padding-left: 2px; 
+  position: relative;
+}
+.topogram-legend-labels-v-2 {
+  position: absolute;
+  bottom: 0;
+}

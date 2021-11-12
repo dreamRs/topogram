@@ -1,0 +1,41 @@
+---
+title: "Interactive topogram"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(topogram)
+```
+
+
+Create interactive topogram that you can update dynamically with a select menu.
+
+First add select menu:
+
+```{r}
+topogram_select(
+  topogramId = "ID",
+  sfobj = world,
+  values = list(
+    "Population" = "pop_est",
+    "GDP" = "gdp_md_est", 
+    "CO2 emissions (1990)" = "co2_emissions_1990", 
+    "CO2 emissions (2020)" = "co2_emissions_2020", 
+    "Share of electricity production from renewables" = "renewables_percent_electricity"
+  ),
+  label = "{name} : {value}"
+)
+```
+
+Then create topogram:
+
+```{r}
+topogram(
+  sfobj = world,
+  value = "pop_est", 
+  label = "{name} : {value}",
+  elementId = "ID"
+)
+```
+

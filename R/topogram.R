@@ -1,202 +1,105 @@
 #' @title Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology
 #'
-#' @description Continuous area cartograms with `d3.js`
+#' @description Continuous area cartograms with `d3.js` and [`cartogram-chart`](https://github.com/vasturiano/cartogram-chart).
 #'
-#' @param shape An \code{sf} object. For the time being, shape must be projected in Mercator (CRS 4326).
-#' @param value Variable name to use to distort topology. You can use a character vector or a named list of length > 1,
-#'  in that case a dropdownmenu will be added to select a variable.
-#' @param tooltip_label Formula for tooltip's label.
-#' @param format_value A string passed to \code{d3.format},
-#'  see \url{https://github.com/d3/d3-format}.
-#' @param unit_value Character, the value unit, to include in the tooltip.
-#' @param palette Color palette to use, see \url{https://github.com/d3/d3-scale-chromatic}, all \code{interpolate} palettes are available.
+#' @param sfobj An `sf` object. For the time being, shape must be projected in Mercator (CRS 4326).
+#' @param value Variable name to use to distort topology.
+#' @param label `glue` string to be used in tooltip, you can use HTML tags in it.
+#' @param palette Name of a color palette, such as `"viridis"`, `"Blues"`, ...
+#'  Or a function to map data values to colors, see [scales::col_numeric()].
+#' @param rescale_to Rescale value to distort topology to a specified range, use `NULL` to use values as is.
 #' @param n_iteration Number of iterations to run the algorithm for. Higher numbers distorts the areas closer to their associated value,
 #'  at the cost of performance.
-#' @param projection D3 projection to use among : \code{"Mercator"}, \code{"Albers"}, \code{"ConicEqualArea"}, \code{"NaturalEarth1"},
-#'  \code{"Eckert1"}, \code{"Eckert2"}, \code{"Eckert3"}, \code{"Eckert4"}, \code{"Eckert5"}, \code{"Eckert6"}, \code{"Wagner4"},
-#'  \code{"Wagner6"}, \code{"Wagner7"}, \code{"Armadillo"}.
-#' @param d3_locale Locale for \code{d3_format}, for exemple \code{"fr-FR"} for french,
-#'  see possible values here \url{https://github.com/d3/d3-format/tree/master/locale}.
-#' @param select_label Label for the dropdown menu if \code{length(value) > 1}.
-#' @param layerId A formula, the layer id to specify value returned by \code{input$<ID>_click} in 'shiny' application.
+#' @param projection Name of a projection, see available ones here: https://github.com/d3/d3-geo-projection.
+#' @param layerId A formula, the layer id to specify value returned by `input$<ID>_click` in 'shiny' application.
 #' @param width A numeric input in pixels.
 #' @param height A numeric input in pixels.
 #' @param elementId Use an explicit element ID for the widget.
+#' 
+#' @return A [topogram()] `htmlwidget` object.
 #'
 #' @export
 #'
 #' @importFrom htmlwidgets createWidget JS sizingPolicy
 #' @importFrom geojsonio geojson_json geo2topo
 #' @importFrom stats model.frame
-#' @importFrom utils packageVersion
+#' @importFrom scales col_numeric rescale
+#' @importFrom glue glue_data
 #'
-#' @examples
-#'
-#' ## Example from sf
-#'
-#' library(topogram)
-#' library(sf)
-#'
-#' demo(nc, ask = FALSE, echo = FALSE)
-#'
-#' # Create a cartogram
-#' topogram(
-#'   shape = nc,
-#'   value = "NWBIR74",
-#'   tooltip_label = ~NAME
-#' )
-#'
-#'
-#' # if you pass several values, a dropdown menu
-#' # will be added on top of the cartogram
-#' # to interactively select variable to use
-#' topogram(
-#'   shape = nc,
-#'   value = c("BIR74", "NWBIR74", "BIR79", "NWBIR79"),
-#'   tooltip_label = ~NAME
-#' )
-#'
-#'
-#' ## World example
-#'
-#' library(topogram)
-#' library(sf)
-#' library(rnaturalearth)
-#'
-#' wrld <- st_as_sf(countries110)
-#' # doesn't support missing values !
-#' wrld <- wrld[!is.na(wrld$pop_est), c("name", "pop_est", "gdp_md_est")]
-#' # Antarctica is not a whole polygon
-#' wrld <- wrld[wrld$name != "Antarctica", ]
-#'
-#' topogram(
-#'   shape = wrld,
-#'   value = "pop_est",
-#'   tooltip_label = ~name,
-#'   n_iteration = 50
-#' )
-#'
-#' topogram(
-#'   shape = wrld,
-#'   value = c("pop_est", "gdp_md_est"),
-#'   tooltip_label = ~name,
-#'   n_iteration = 30
-#' )
-
-topogram <- function(shape, value, tooltip_label = NULL,
-                     format_value = NULL, unit_value = "",
-                     palette = "Viridis", n_iteration = 20,
-                     projection = "Mercator", d3_locale = "en-US",
-                     select_label = NULL, layerId = NULL,
-                     width = NULL, height = NULL, elementId = NULL) {
-
-  check_sf(shape)
-  check_variables(shape, value)
-  check_na(shape, value)
-
-  projection <- match.arg(
-    arg = projection,
-    choices = c("Mercator", "Albers", "ConicEqualArea", "NaturalEarth1",
-                "Eckert1", "Eckert2", "Eckert3", "Eckert4", "Eckert5", "Eckert6",
-                "Wagner4", "Wagner6", "Wagner7", "Armadillo")
-  )
-  palette <- match.arg(
-    arg = palette, choices = c(
-      "Viridis", "Inferno", "Magma", "Plasma", "Warm", "Cool", "CubehelixDefault",
-      "BuGn", "BuPu", "GnBu", "OrRd", "PuBuGn", "PuBu", "PuRd", "RdPu", "YlGnBu",
-      "YlGn", "YlOrBr", "YlOrRd", "Rainbow", "Sinebow",
-      "Reds", "Purples", "Oranges", "Greens", "Blues",
-      "BrBG", "PRGn", "PiYG", "PuOr", "RdBu", "RdGy", "RdYlBu", "RdYlGn", "Spectral"
-    )
-  )
-
-  if (!is.null(tooltip_label)) {
-    tooltip_label <- model.frame(formula = tooltip_label, data = shape)[[1]]
-  } else {
-    if (!is.null(shape$name)) {
-      tooltip_label <- shape$name
-    } else {
-      tooltip_label <- rep_len("", nrow(shape))
-    }
-  }
-
+topogram <- function(sfobj, 
+                     value, 
+                     label = "{value}",
+                     palette = "viridis",
+                     rescale_to = c(1, 1000),
+                     n_iteration = 10,
+                     projection = "geoMercator",
+                     layerId = NULL,
+                     width = NULL,
+                     height = NULL, 
+                     elementId = NULL) {
+  
+  check_sf(sfobj)
+  check_variables(sfobj, value)
+  check_na(sfobj, value)
+  
   if (!is.null(layerId)) {
-    layerId <- model.frame(formula = layerId, data = shape)[[1]]
+    layerId <- model.frame(formula = layerId, data = sfobj)[[1]]
   }
-
-
-  check_locale(d3_locale)
-  path <- system.file(file.path("htmlwidgets/locale", paste0(d3_locale, ".json")), package = "topogram")
-  if (path != "") {
-    d3_locale <- jsonlite::fromJSON(txt = path)
+  
+  # add id for sfobjs
+  sfobj$topogram_id <- seq_len(nrow(sfobj)) - 1
+  
+  # set colors
+  values <- sfobj[[value]]
+  values_range <- range(values, na.rm = TRUE)
+  colors <- getColors(palette, values)
+  sfobj$topogram_color <- colors$values
+  
+  # set label
+  sfobj$topogram_label <- getLabels(sfobj, label, values)
+  
+  # rescale value
+  if (is.numeric(rescale_to) && length(rescale_to) == 2) {
+    sfobj[[value]] <- rescale(x = values, to = rescale_to)
   }
-
-  if (is.null(format_value)) {
-    format_value <- JS("function(n) {return n;}")
-  } else {
-    if (is.null(d3_locale)) {
-      format_value <- sprintf('d3.format("%s")', format_value)
-    } else {
-      format_value <- paste0('d3.formatLocale(', jsonlite::toJSON(x = d3_locale), sprintf(').format("%s")', format_value))
-    }
-    format_value <- JS(format_value)
-  }
-
-  if (length(value) > 1) {
-    select <- TRUE
-    values <- choicesWithNames(value)
-    select_opts <- selectOptions(values)
-    value <- unlist(value, use.names = FALSE)[1]
-    select_label <- if (is.null(select_label)) "" else select_label
-  } else {
-    select_opts <- list()
-    select <- FALSE
-  }
-
-
+  
   # convert to geojson
-  shape$topogram_id <- seq_len(nrow(shape)) - 1
-  geo_json <- geojson_json(input = shape)
-
+  geo_json <- geojson_json(input = sfobj)
+  
   # convert to topojson
   geo_topo <- geo2topo(x = geo_json, object_name = "states", quantization = 1e5)
-
-  x = list(
-    shape = geo_topo,
+  
+  x <- list(
+    sfobj = geo_topo,
     value = value,
-    palette = paste0("interpolate", palette),
-    range = range(shape[[value]], na.rm = TRUE),
-    tooltip_label = tooltip_label,
-    format_value = format_value,
-    unit_value = unit_value,
     n_iteration = n_iteration,
-    select_opts = select_opts,
-    select_label = select_label,
     layerId = layerId,
-    projection = paste0("geo", projection),
+    projection = projection,
     labs = FALSE,
     labsOpts = list(),
-    d3_locale = jsonlite::toJSON(x = d3_locale, auto_unbox = FALSE),
     legend = FALSE,
-    legendOpts = list()
+    legendOpts = list(
+      labels = values_range,
+      colors = colors$legend
+    )
   )
-
-
+  
   # create widget
   createWidget(
-    name = if (select) "topogramSelect" else "topogram",
+    name = "topogram",
     x = x,
     width = width,
     height = height,
     package = "topogram",
     elementId = elementId,
     sizingPolicy = sizingPolicy(
-      defaultWidth = "95%",
-      # defaultHeight = "90%",
+      defaultWidth = "100%",
+      defaultHeight = "400px",
       viewer.defaultHeight = "100%",
       viewer.defaultWidth = "100%",
       browser.fill = TRUE,
-      padding = 10
+      padding = 0,
+      knitr.figure = FALSE
     )
   )
 }
@@ -204,41 +107,29 @@ topogram <- function(shape, value, tooltip_label = NULL,
 
 topogram_html <- function(id, style, class, ...) {
   tags$div(
-    id = id, class = class, style = style,
-    # tags$div(
-      # style = "position: absolute;",
-      tags$div(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold; font-size: 160%;"),
-      tags$div(id = paste0(id, "-subtitle"), class = "topogram-subtitle", style = "font-size: 110%;"),
-    # ),
-    tags$div(id = paste0(id, "-topogram")),
-    tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "position: absolute; bottom: 0; right: 15px;")
-  )
-}
-
-# , style = "margin-top: 20px; margin-bottom: 10px;"
-
-#' @importFrom shiny selectInput
-#' @importFrom htmltools tags attachDependencies tagAppendAttributes
-#' @importFrom rmarkdown html_dependency_jquery
-topogramSelect_html <- function(id, style, class, ...) {
-  selectMenu <- selectInput(
-    inputId = paste0(id, "_select"), label = "",
-    choices = NULL, selectize = FALSE, width = "350px"
-  )
-  selectMenu$children[[2]]$children[[1]] <- tagAppendAttributes(
-    tag = selectMenu$children[[2]]$children[[1]],
-    class = "custom-select"
-  )
-  attachDependencies(
-    x = tags$div(
-      id = id, class = class, style = style,
-      tags$div(id = paste0(id, "-title"), class = "topogram-title", style = "font-weight: bold; font-size: 160%;"),
-      tags$div(id = paste0(id, "-subtitle"), class = "topogram-subtitle", style = "font-size: 110%;"),
-      selectMenu,
-      tags$div(id = paste0(id, "-topogram")),
-      tags$p(id = paste0(id, "-caption"), class = "topogram-caption", style = "float: right;")
+    id = id,
+    class = class,
+    style = style,
+    style = "position: relative;",
+    tags$div(
+      class = "topogram-heading",
+      tags$div(
+        id = paste0(id, "-title"), 
+        class = "topogram-title"
+      ),
+      tags$div(
+        id = paste0(id, "-subtitle"), 
+        class = "topogram-subtitle"
+      )
     ),
-    value = html_dependency_jquery()
+    tags$div(id = paste0(id, "-topogram")),
+    tags$p(
+      id = paste0(id, "-caption"),
+      class = "topogram-caption"
+    ),
+    tags$div(
+      id = paste0(id, "-legend"),
+      class = "topogram-legend"
+    )
   )
 }
-

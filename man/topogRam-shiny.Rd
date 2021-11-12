@@ -4,14 +4,14 @@
 \alias{topogram-shiny}
 \alias{topogramOutput}
 \alias{renderTopogram}
-\alias{topogramProxy}
+\alias{topogram_proxy}
 \title{Shiny bindings for topogram}
 \usage{
 topogramOutput(outputId, width = "100\%", height = "400px")
 
 renderTopogram(expr, env = parent.frame(), quoted = FALSE)
 
-topogramProxy(shinyId, session = shiny::getDefaultReactiveDomain())
+topogram_proxy(shinyId, session = shiny::getDefaultReactiveDomain())
 }
 \arguments{
 \item{outputId}{output variable to read from}

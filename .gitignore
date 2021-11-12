@@ -3,3 +3,5 @@
 .RData
 dev/
 *.Rproj
+node_modules
+inst/doc

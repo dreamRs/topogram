@@ -1,0 +1,119 @@
+---
+title: "topogram"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{topogram}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r setup}
+library(topogram)
+library(htmltools)
+```
+
+Create continuous area cartograms with [`cartogram-chart`](https://github.com/vasturiano/cartogram-chart):
+
+```{r topogram-basic}
+topogram(world, value = "pop_est")
+```
+
+First argument is an `sf` object containing geometries to visualize, the specify a numeric variable to use to distort those geometries.
+
+You can use a `glue` string to be used in tooltip, specify geographic projection to use, add labs and legend, ...
+
+```{r topogram-options}
+world %>% 
+  topogram( 
+    value = "pop_est", 
+    label = "{name}: {format(pop_est, big.mark = ',')}",
+    palette = scales::col_bin("Blues", bins = 20, domain = NULL)
+  ) %>% 
+  topogram_legend(
+    title = "Population",
+    formatter = scales::label_comma()
+  ) %>% 
+  topogram_labs(
+    title = "World population",
+    subtitle = "Population estimate for 2017",
+    caption = tagList(
+      "Data source:",
+      tags$a(
+        href = "https://www.naturalearthdata.com/",
+        "NaturalEarth"
+      )
+    )
+  )
+```
+
+
+## R markdown
+
+In Markdown documents, you can use `topogram_select()`, to add a menu to update variable used to distort topology interactively. First add select menu:
+
+```{r markdown-select}
+topogram_select(
+  topogramId = "ID",
+  sfobj = world,
+  values = list(
+    "Population" = "pop_est",
+    "GDP" = "gdp_md_est", 
+    "CO2 emissions (1990)" = "co2_emissions_1990", 
+    "CO2 emissions (2020)" = "co2_emissions_2020", 
+    "Share of electricity production from renewables" = "renewables_percent_electricity"
+  ),
+  label = "{name} : {value}"
+)
+```
+
+Then create topogram:
+
+```{r markdown-topogram}
+topogram(
+  sfobj = world,
+  value = "pop_est", 
+  label = "{name} : {value}",
+  elementId = "ID"
+)
+```
+
+
+## Shiny
+
+In Shiny applications, a proxy method is available to update a topogram.
+
+```{r shiny-proxy, eval=FALSE}
+function(input, output, session) {
+
+  # Initialize the topogram (non reactive)
+  output$ID <- renderTopogram({
+    topogram(
+      sfobj = world,
+      value = "pop_est", 
+      label = "{name} : {value}"
+    ) %>% 
+      topogram_legend(title = "Population")
+  })
+
+  # Update with proxy
+  observeEvent(input$new_value, {
+    topogram_proxy_update(
+      "ID", world, 
+      value = input$new_value,
+      label = "{name} : {value}"
+    ) %>% 
+      topogram_legend(title = input$new_value)
+  }, ignoreInit = TRUE)
+
+}
+```
+

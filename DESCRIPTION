@@ -1,28 +1,32 @@
 Package: topogram
-Title: Create Continuous Cartogram in 'D3.js'
-Version: 1.1.1
+Title: Create Interactive Continuous Cartogram
+Description: Cartogram 'htmlwidget' for visualizing geographical data by distorting a TopoJson topology.
+Version: 1.1.1.9000
 Authors@R: c(
       person("Victor", "Perrier", role = c("aut", "cre"), email = "victor.perrier@dreamRs.fr"),
       person("Fanny", "Meyer", role = "aut"),
-      person("Mike", "Bostock", role = "cph", comment = "d3.js library in htmlwidgets/lib, http://d3js.org"),
-      person("Shawn", "Allen", role = "cph", comment = "topogram library"),
-      person("Vasco", "Asturiano", role = "cph", comment = "cartogram-chart library in htmlwidgets/lib, https://github.com/vasturiano/cartogram-chart"),
-      person("Carlos", "Herrera", role = "ctb", comment = "Include Spain (in previous release)")
+      person("Vasco", "Asturiano", role = "cph", comment = "cartogram-chart library, https://github.com/vasturiano/cartogram-chart")
     )
-Description: Cartogram 'htmlwidget' for visualizing geographical data by distorting a TopoJson topology.
 Depends: R (>= 2.10)
 Imports: 
+    geojsonio (>= 0.6.1),
+    glue,
     htmlwidgets,
-    geojsonio (>= 0.6.0.9100),
     htmltools,
-    shiny,
-    rmarkdown,
-    jsonlite,
-    magrittr
+    magrittr,
+    rlang,
+    scales,
+    shiny
 Suggests: 
+    rmarkdown,
+    knitr,
     rnaturalearth,
-    sf
-License: GPL-3 | file LICENSE
+    sf,
+    tinytest,
+    covr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
+License: MIT + file LICENSE
+VignetteBuilder: knitr

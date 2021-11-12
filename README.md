@@ -1,94 +1,47 @@
 # topogram
 
-> Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology (using [cartogram-chart](https://github.com/vasturiano/cartogram-chart))
+> Cartogram htmlwidget for visualizing geographical data by distorting a TopoJson topology, using [cartogram-chart](https://github.com/vasturiano/cartogram-chart)
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/dreamRs/topogram.svg?branch=master)](https://travis-ci.org/dreamRs/topogram)
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/)
+[![R-CMD-check](https://github.com/dreamRs/topogram/workflows/R-CMD-check/badge.svg)](https://github.com/dreamRs/topogram/actions)
+[![Codecov test coverage](https://codecov.io/gh/dreamRs/topogram/branch/master/graph/badge.svg)](https://app.codecov.io/gh/dreamRs/topogram?branch=master)
 <!-- badges: end -->
 
 
 ### Installation
 
-Install from GitHub:
+Install from [GitHub](https://github.com/dreamRs/topogram):
 
 ```r
 remotes::install_github("dreamRs/topogram")
 ```
 
 
-### Features
+### Overview
 
+![](man/figures/topogram.png)
 
-![](man/figures/features.png)
-
-
-### Examples
-
-Use a {sf} object as input :
+Created with:
 
 ```r
-library(rnaturalearth)
 library(topogram)
-
-# sf polygons
-fr_dept <- ne_states(country = "france", returnclass = "sf")
-fr_dept <- fr_dept[fr_dept$type_en %in% "Metropolitan department", ]
-
-# Add a numeric column
-fr_dept$foo <- sample.int(100, nrow(fr_dept))
-
-# Create a cartogram
-topogram(
-  shape = fr_dept, 
-  value = "foo"
-)
+world %>% 
+  topogram( 
+    value = "pop_est", 
+    label = "{name}: {format(pop_est, big.mark = ',')}",
+    palette = scales::col_bin(, bins = 20, domain = NULL)
+  ) %>% 
+  topogram_legend(
+    title = "Population",
+    formatter = scales::label_comma()
+  ) %>% 
+  topogram_labs(
+    title = "World population",
+    subtitle = "Population estimate for 2017",
+    caption = "Data source: NaturalEarth"
+  )
 ```
 
-![](man/figures/france.png)
-
-
-```r
-library(rnaturalearth)
-library(eurostat)
-library(sf)
-library(topogram)
-
-# Get polygons
-europe <- ne_countries(scale = 50, continent = "europe", returnclass = "sf")
-europe <- europe[europe$name %in% eu_countries$name, ]
-europe <- st_crop(europe, xmin = -20, ymin = 10, xmax = 35, ymax = 75)
-# plot(sf::st_geometry(europe))
-
-# Add a numeric column 
-europe$foo <- sample.int(100, nrow(europe))
-
-# Create a cartogram
-topogram(
-  shape = europe, 
-  value = "foo", 
-  tooltip_label = ~name, 
-  n_iteration = 10, 
-  palette = "Blues"
-)
-```
-![](man/figures/europe.png)
-
-
-
-### Markdown
-
-You can pass several column names, in that case a dropdown menu is added to the widget to select the variable used to distort topology. Use this in markdown to add interactivity.
-
-An example in an R markdown document is availabe here : https://pvictor.github.io/NZ-topogram/ and another one here : https://pvictor.github.io/cartogramme-vin/
-
-
-### Shiny
-
-A proxy method is implemented to update an existing cartogram with classic Shiny inputs.
-
-![](man/figures/example-proxy.gif)
-
-
-
+More examples in the [{pkgdown} website](https://dreamrs.github.io/topogram/)
 

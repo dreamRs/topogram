@@ -2,5 +2,14 @@
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^img$
-^dev$
+^examples$
+^LICENSE\.md$
+^srcjs$
+^node_modules$
+^package\.json$
+^package-lock\.json$
+^webpack\.dev\.js$
+^webpack\.prod\.js$
+^webpack\.common\.js$
+^\.github$
+^codecov\.yml$
