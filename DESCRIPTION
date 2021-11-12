@@ -1,11 +1,12 @@
 Package: topogram
 Title: Create Interactive Continuous Cartogram
-Description: Cartogram 'htmlwidget' for visualizing geographical data by distorting a TopoJson topology.
-Version: 1.1.1.9000
+Description: Cartogram 'htmlwidget' for visualizing geographical data by distorting
+    a 'TopoJson' topology, using 'cartogram-chart' 'JavaScript' library <https://github.com/vasturiano/cartogram-chart>.
+Version: 2.0.0
 Authors@R: c(
       person("Victor", "Perrier", role = c("aut", "cre"), email = "victor.perrier@dreamRs.fr"),
       person("Fanny", "Meyer", role = "aut"),
-      person("Vasco", "Asturiano", role = "cph", comment = "cartogram-chart library, https://github.com/vasturiano/cartogram-chart")
+      person("Vasco", "Asturiano", role = "cph", comment = "cartogram-chart library")
     )
 Depends: R (>= 2.10)
 Imports: 

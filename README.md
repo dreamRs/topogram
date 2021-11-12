@@ -30,7 +30,7 @@ world %>%
   topogram( 
     value = "pop_est", 
     label = "{name}: {format(pop_est, big.mark = ',')}",
-    palette = scales::col_bin(, bins = 20, domain = NULL)
+    palette = scales::col_bin("viridis", bins = 20, domain = NULL)
   ) %>% 
   topogram_legend(
     title = "Population",
