@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   topogram: topogram.html
-last_built: 2021-11-16T14:31Z
+last_built: 2021-11-16T19:25Z
 urls:
   reference: https://dreamrs.github.io/topogram/reference
   article: https://dreamrs.github.io/topogram/articles

@@ -102,6 +102,18 @@
   <span class="op">)</span></code></pre></div>
 <p>More examples in the <a href="https://dreamrs.github.io/topogram/">{pkgdown} website</a></p>
 </div>
+<div id="development" class="section level2">
+<h2 class="hasAnchor">
+<a href="#development" class="anchor"></a>Development</h2>
+<p>This package use <a href="https://github.com/JohnCoene/packer">{packer}</a> to manage JavaScript assets, see packer’s <a href="https://packer.john-coene.com/#/">documentation</a> for more.</p>
+<p>Install nodes modules with:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">packer</span><span class="fu">::</span><span class="fu">npm_install</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Modify <code>srcjs/widgets/topogram.js</code>, then run:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">packer</span><span class="fu">::</span><span class="fu">bundle</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Re-install R package and try <code><a href="reference/topogram.html">topogram()</a></code> functions.</p>
+</div>
 </div>
   </div>
 
