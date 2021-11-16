@@ -45,3 +45,21 @@ world %>%
 
 More examples in the [{pkgdown} website](https://dreamrs.github.io/topogram/)
 
+
+## Development
+
+This package use [{packer}](https://github.com/JohnCoene/packer) to manage JavaScript assets, see packer's [documentation](https://packer.john-coene.com/#/) for more.
+
+Install nodes modules with:
+
+```r
+packer::npm_install()
+```
+
+Modify `srcjs/widgets/topogram.js`, then run:
+
+```r
+packer::bundle()
+```
+
+Re-install R package and try `topogram()` functions.
