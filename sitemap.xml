@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://dreamrs.github.io/topogram/404.html</loc>
+  </url>
+  <url>
+    <loc>https://dreamrs.github.io/topogram/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://dreamrs.github.io/topogram/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://dreamrs.github.io/topogram/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://dreamrs.github.io/topogram/articles/topogram.html</loc>
+  </url>
+  <url>
+    <loc>https://dreamrs.github.io/topogram/authors.html</loc>
+  </url>
+  <url>
     <loc>https://dreamrs.github.io/topogram/index.html</loc>
   </url>
   <url>
     <loc>https://dreamrs.github.io/topogram/reference/france.html</loc>
+  </url>
+  <url>
+    <loc>https://dreamrs.github.io/topogram/reference/index.html</loc>
   </url>
   <url>
     <loc>https://dreamrs.github.io/topogram/reference/topogRam-exports.html</loc>
@@ -35,8 +56,5 @@
   </url>
   <url>
     <loc>https://dreamrs.github.io/topogram/reference/world.html</loc>
-  </url>
-  <url>
-    <loc>https://dreamrs.github.io/topogram/articles/topogram.html</loc>
   </url>
 </urlset>
